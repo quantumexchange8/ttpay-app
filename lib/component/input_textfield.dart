@@ -3,7 +3,9 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 
-final BorderRadius _borderRadius = BorderRadius.circular(100);
+final InputBorder normalBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(100),
+);
 
 const BorderSide focusedBorder = BorderSide(
   width: 1,
@@ -11,44 +13,49 @@ const BorderSide focusedBorder = BorderSide(
   color: Color(0xFF5100FF),
 );
 
-TextFormField customTextfield({
-  TextEditingController? controller,
-  required FocusNode focusNode,
-  String? helperText,
-  required String errorText,
-}) {
+TextFormField customTextfield(
+    {required bool showErrorWidget,
+    TextEditingController? controller,
+    required FocusNode focusNode,
+    String? helperText,
+    required String errorText,
+    Widget? suffixIcon,
+    bool obscureText = false,
+    void Function(String)? onChanged,
+    String? hintText}) {
   return TextFormField(
     focusNode: focusNode,
+    onChanged: onChanged,
     autocorrect: false,
     cursorColor: primaryPurpleScale.shade700,
     cursorHeight: height20,
     cursorWidth: 1.5,
     controller: controller,
     style: textMd,
+    obscureText: obscureText,
     decoration: InputDecoration(
-        border: InputBorder.none,
-        errorBorder: OutlineInputBorder(
-            borderRadius: _borderRadius,
+        border: normalBorder,
+        errorBorder: normalBorder.copyWith(
             borderSide: focusedBorder.copyWith(color: errorRedScale.shade600)),
-        enabledBorder: InputBorder.none,
-        focusedBorder: OutlineInputBorder(
-            borderRadius: _borderRadius, borderSide: focusedBorder),
-        disabledBorder: InputBorder.none,
-        focusedErrorBorder: OutlineInputBorder(
-            borderRadius: _borderRadius,
+        enabledBorder: normalBorder,
+        focusedBorder: normalBorder.copyWith(borderSide: focusedBorder),
+        disabledBorder: normalBorder,
+        focusedErrorBorder: normalBorder.copyWith(
             borderSide: focusedBorder.copyWith(color: errorRedScale.shade700)),
         fillColor: Colors.white.withOpacity(focusNode.hasFocus ? 0.05 : 0.1),
         filled: true,
         constraints: const BoxConstraints(),
         contentPadding:
             EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height08),
+        hintText: hintText,
         hintStyle: textMd.copyWith(
           color: neutralGrayScale,
         ),
         helperMaxLines: 1,
         helperStyle: textXS.copyWith(color: neutralGrayScale),
         helperText: helperText,
-        error: _errorWidget(errorText)),
+        error: showErrorWidget ? _errorWidget(errorText) : null,
+        suffixIcon: suffixIcon),
   );
 }
 
@@ -76,6 +83,11 @@ Column customInputTextfield({
   String? helperText,
   String errorText = '',
   required String textLabel,
+  Widget? suffixIcon,
+  required bool showErrorWidget,
+  void Function(String)? onChangedTextfield,
+  bool obscureText = false,
+  String? hintText,
 }) {
   return Column(
     mainAxisSize: MainAxisSize.min,
@@ -90,11 +102,15 @@ Column customInputTextfield({
         height: height24 / 4,
       ),
       customTextfield(
-        focusNode: focusNode,
-        controller: controller,
-        errorText: errorText,
-        helperText: helperText,
-      ),
+          focusNode: focusNode,
+          controller: controller,
+          errorText: errorText,
+          helperText: helperText,
+          suffixIcon: suffixIcon,
+          showErrorWidget: showErrorWidget,
+          onChanged: onChangedTextfield,
+          obscureText: obscureText,
+          hintText: hintText),
     ],
   );
 }

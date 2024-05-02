@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:splash_view/source/presentation/presentation.dart';
 import 'package:splash_view/source/source.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -6,7 +7,9 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/auth/login_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  Future.delayed(const Duration(milliseconds: 200)).then((val) {
+    runApp(const MyApp());
+  }, onError: (error) {});
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +18,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
+    return GetMaterialApp(
+      locale: const Locale('en', 'UK'),
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -33,10 +41,14 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            background: Colors.transparent,
+            surfaceTint: Colors.transparent,
+            seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: SplashView(
+          duration: const Duration(seconds: 2),
           backgroundColor: Colors.black,
           backgroundImageDecoration: const BackgroundImageDecoration(
               image: AssetImage(
@@ -48,13 +60,18 @@ class MyApp extends StatelessWidget {
             fit: BoxFit.fitHeight,
             height: height30 * 2,
           ),
-          title: Text(
-            'Welcome to TTPAY! 👋',
-            style: textLg.copyWith(
-              fontWeight: FontWeight.w700,
+          title: Padding(
+            padding: EdgeInsets.only(top: height20),
+            child: Text(
+              'Welcome to TTPAY! 👋',
+              style: textLg.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-          done: Done(const LoginPage())),
+          done: Done(
+              animationDuration: const Duration(milliseconds: 300),
+              const LoginPage())),
     );
   }
 }
