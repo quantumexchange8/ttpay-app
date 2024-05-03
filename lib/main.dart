@@ -4,7 +4,7 @@ import 'package:splash_view/source/presentation/presentation.dart';
 import 'package:splash_view/source/source.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
-import 'package:ttpay/pages/auth/login_page.dart';
+import 'package:ttpay/pages/home/home_page.dart';
 
 void main() {
   Future.delayed(const Duration(milliseconds: 200)).then((val) {
@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: SplashView(
+          showStatusBar: true,
           duration: const Duration(seconds: 2),
           backgroundColor: Colors.black,
           backgroundImageDecoration: const BackgroundImageDecoration(
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
           ),
           done: Done(
               animationDuration: const Duration(milliseconds: 300),
-              const LoginPage())),
+              const HomePage())),
     );
   }
 }

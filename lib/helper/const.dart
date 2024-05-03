@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const Color backgroundColor = Colors.black;
 const List<Map<String, dynamic>> languageList = [
@@ -7,3 +8,8 @@ const List<Map<String, dynamic>> languageList = [
 ];
 const String emailPattern =
     r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*(\.[a-zA-Z]{2,})$';
+
+final NumberFormat amountFormatter = NumberFormat('#,##0.00', 'en_US');
+final NumberFormat amountFormatterWithoutDecimal =
+    NumberFormat('#,##0', 'en_US');
+final DateFormat rowDateFormat = DateFormat('dd MMM yyyy HH:mm:ss');
