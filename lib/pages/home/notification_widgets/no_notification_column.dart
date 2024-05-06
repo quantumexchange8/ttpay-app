@@ -4,7 +4,7 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 
 Column noNotificationColumn = Column(
-  mainAxisSize: MainAxisSize.min,
+  mainAxisAlignment: MainAxisAlignment.center,
   children: [
     Image.asset(
       'assets/images/no-notification.png',

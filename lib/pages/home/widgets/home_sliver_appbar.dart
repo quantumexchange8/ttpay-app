@@ -16,22 +16,25 @@ SliverAppBarBuilder homeSliverAppbar({
     leadingActions: const [],
     backgroundColorBar: Colors.transparent,
     backgroundColorAll: Colors.transparent,
-    initialBarHeight: 0,
+    initialBarHeight: height100 * 1.9,
+    contentBelowBar: false,
     barHeight: height10 * 8,
-    initialContentHeight: height100 * 1.1,
+    initialContentHeight: 0,
     contentBuilder:
         (context, expandRatio, contentHeight, centerPadding, overlapsContent) {
-      if (contentHeight > height100) {
+      if (contentHeight > height100 * 1.5) {
         return bigAppBar(
             expandRatio: expandRatio,
             netAmount: netAmount,
             grossAmount: grossAmount,
             feeAmount: feeAmount);
       } else {
-        return smallAppBar(
-            netAmount: netAmount,
-            grossAmount: grossAmount,
-            feeAmount: feeAmount);
+        return SafeArea(
+          child: smallAppBar(
+              netAmount: netAmount,
+              grossAmount: grossAmount,
+              feeAmount: feeAmount),
+        );
       }
     },
   );
@@ -45,6 +48,7 @@ Widget bigAppBar({
   required double expandRatio,
 }) {
   return Container(
+    height: height100 * 2.3,
     padding: EdgeInsets.symmetric(horizontal: width08 * 2),
     decoration: const ShapeDecoration(
       gradient: LinearGradient(
@@ -63,105 +67,105 @@ Widget bigAppBar({
         ),
       ),
     ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hello, CC Power Group! 👋',
-                  style: textSm.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: height08,
-                ),
-                Text(
-                  'Net Amount',
-                  style: textXS.copyWith(
-                    color: neutralGrayScale,
-                  ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '\$ ${amountFormatter.format(netAmount)} ',
-                        style: textXXL.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'USDT',
-                        style: textSm.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              width: width10 * 4.4,
-              height: height10 * 8.8,
-              padding: EdgeInsets.all(height08 / 2),
-              decoration: ShapeDecoration(
-                color: const Color(0x33030712),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              ),
-              child: Column(
+    child: SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  notificationContainer(unreadNoti),
-                  SizedBox(height: height08),
-                  Container(
-                    padding: EdgeInsets.all(height24 / 4),
-                    decoration: ShapeDecoration(
-                      color: Colors.white.withOpacity(0.05),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
+                  Text(
+                    'Hello, CC Power Group! 👋',
+                    style: textSm.copyWith(
+                      fontWeight: FontWeight.w600,
                     ),
-                    child: Image.asset(
-                      "assets/icon_image/merchant_pp.png",
-                      fit: BoxFit.fitHeight,
-                      height: height24,
+                  ),
+                  SizedBox(
+                    height: height08,
+                  ),
+                  Text(
+                    'Net Amount',
+                    style: textXS.copyWith(
+                      color: neutralGrayScale,
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '\$ ${amountFormatter.format(netAmount)} ',
+                          style: textXXL.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'USDT',
+                          style: textSm.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: height24 / 2,
-        ),
-        Row(
-          children: [
-            _dataColumnBig(
-                title: 'Gross Amount',
-                subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
-            SizedBox(
-              width: width10 * 2.7,
-            ),
-            _dataColumnBig(
-                title: 'Fee',
-                subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
-          ],
-        ),
-        SizedBox(
-          height: height10 * 2.8,
-        )
-      ],
+              Container(
+                width: width10 * 4.4,
+                height: height10 * 8.8,
+                padding: EdgeInsets.all(height08 / 2),
+                decoration: ShapeDecoration(
+                  color: const Color(0x33030712),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    notificationContainer(unreadNoti),
+                    SizedBox(height: height08),
+                    Container(
+                      padding: EdgeInsets.all(height24 / 4),
+                      decoration: ShapeDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                      ),
+                      child: Image.asset(
+                        "assets/icon_image/merchant_pp.png",
+                        fit: BoxFit.fitHeight,
+                        height: height24,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: height24 / 2,
+          ),
+          Row(
+            children: [
+              _dataColumnBig(
+                  title: 'Gross Amount',
+                  subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
+              SizedBox(
+                width: width10 * 2.7,
+              ),
+              _dataColumnBig(
+                  title: 'Fee',
+                  subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/helper/dimensions.dart';
-import 'package:ttpay/helper/dummy_data.dart';
+import 'package:ttpay/helper/dummyData/transactions_history.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/transaction.dart';
@@ -9,7 +9,7 @@ import 'package:ttpay/pages/home/widgets/home_sliver_appbar.dart';
 import 'package:ttpay/pages/home/widgets/no_transactions_found_column.dart';
 import 'package:ttpay/pages/home/widgets/summary_box_below_appbar.dart';
 import 'package:ttpay/pages/home/widgets/transaction_row.dart';
-import 'package:ttpay/pages/home/widgets/transaction_type_picker_row.dart';
+import 'package:ttpay/component/tab_picker_row.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width08 * 2),
-                  child: transactionTypePickerRow(
+                  child: tabPickerRow(
                       onTapTab: (tabName) {
                         setState(() {
                           selectedTransactionType = tabName;

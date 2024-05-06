@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -48,19 +49,21 @@ Container notificationRow({
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          notification.title,
-                          style: textSm.copyWith(
-                            fontWeight: FontWeight.w600,
+                        Expanded(
+                          child: Text(
+                            notification.title,
+                            style: textSm.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                         Text(
                           DateFormat('MMM dd').format(notification.createdAt),
                           textAlign: TextAlign.right,
                           style: textXXS,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

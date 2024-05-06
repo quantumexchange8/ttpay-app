@@ -4,7 +4,7 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 
-Widget transactionTypePickerRow(
+Widget tabPickerRow(
     {required List<String> tabNameList,
     required String selectedTab,
     required void Function(String tabName) onTapTab}) {

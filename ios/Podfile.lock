@@ -1,0 +1,34 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_tab_indicator (0.0.1):
+    - Flutter
+  - open_mail_app (0.0.1):
+    - Flutter
+  - url_launcher_ios (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_tab_indicator (from `.symlinks/plugins/flutter_tab_indicator/ios`)
+  - open_mail_app (from `.symlinks/plugins/open_mail_app/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_tab_indicator:
+    :path: ".symlinks/plugins/flutter_tab_indicator/ios"
+  open_mail_app:
+    :path: ".symlinks/plugins/open_mail_app/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_tab_indicator: 063756a7d76dd33dae263db0aa93e39e9ddb0181
+  open_mail_app: 794172f6a22cd16319d3ddaf45e945b2f74952b0
+  url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586
+
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+
+COCOAPODS: 1.14.3
