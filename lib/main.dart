@@ -4,7 +4,7 @@ import 'package:splash_view/source/presentation/presentation.dart';
 import 'package:splash_view/source/source.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
-import 'package:ttpay/pages/app_layout.dart';
+import 'package:ttpay/pages/transaction/transaction_page.dart';
 
 void main() {
   Future.delayed(const Duration(milliseconds: 200)).then((val) {
@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
           ),
           done: Done(
               animationDuration: const Duration(milliseconds: 300),
-              const AppLayout())),
+              const TransactionPage())),
     );
   }
 }

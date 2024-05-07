@@ -29,7 +29,7 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890125',
     'transaction_type': 'deposit',
     'status': 'success',
-    'amount': '200000'
+    'amount': '20000'
   },
   {
     'id': 5,

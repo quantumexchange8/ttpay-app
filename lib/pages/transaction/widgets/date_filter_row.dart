@@ -13,9 +13,9 @@ Widget dateFilterRow({
 
   return Row(
     children: [
-      GestureDetector(
-        onTap: onTapDatePicker,
-        child: Expanded(
+      Expanded(
+        child: GestureDetector(
+          onTap: onTapDatePicker,
           child: Container(
             height: height10 * 4,
             padding: EdgeInsets.symmetric(
@@ -26,7 +26,7 @@ Widget dateFilterRow({
             ),
             child: Row(
               children: [
-                Image.asset('assets/icon_image/Icon=calender.png'),
+                Image.asset('assets/icon_image/Icon=calendar.png'),
                 SizedBox(width: width24 / 2),
                 Text(
                   '${formatDatePicked.format(startDatePicked)} - ${formatDatePicked.format(lastDatePicked)}',

@@ -106,12 +106,9 @@ class _HomePageState extends State<HomePage> {
             itemCount: currentTransactions.length,
             itemBuilder: (context, index) {
               final transaction = currentTransactions[index];
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: width08 * 2),
-                child: transactionRow(
-                    transaction: transaction,
-                    isLast: isLast(index, currentTransactions)),
-              );
+              return transactionRow(
+                  transaction: transaction,
+                  isLast: isLast(index, currentTransactions));
             },
           )
         ],
