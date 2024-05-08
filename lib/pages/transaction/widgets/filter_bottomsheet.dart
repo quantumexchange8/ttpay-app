@@ -4,6 +4,7 @@ import 'package:another_xlider/models/tooltip/tooltip.dart';
 import 'package:another_xlider/models/trackbar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -157,7 +158,11 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
       });
     }
 
-    return Padding(
+    return backgroundContainer(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(24),
+        topRight: Radius.circular(24),
+      ),
       padding:
           EdgeInsets.symmetric(vertical: height24, horizontal: width08 * 2),
       child: Column(

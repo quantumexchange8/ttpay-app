@@ -1,0 +1,40 @@
+import 'package:ttpay/helper/dummyData/transactions_history.dart';
+
+const List<Map<String, dynamic>> groups = [
+  {
+    'id': 100001,
+    'name': 'Super Team',
+    'color_code': '#CB65FF',
+    'total_deposit_number': '138',
+    'total_gross_deposit_amount': '80000',
+    'total_net_deposit_number': '77392',
+    'total_withdrawal_number': '20',
+    'total_gross_withdrawal_amount': '60000',
+    'total_net_withdrawal_amount': '59988',
+    'transaction_list': dummyTransactions,
+  },
+  {
+    'id': 100002,
+    'name': 'Champion Team',
+    'color_code': '#FF5D2D',
+    'total_deposit_number': '138',
+    'total_gross_deposit_amount': '80000',
+    'total_net_deposit_number': '77392',
+    'total_withdrawal_number': '20',
+    'total_gross_withdrawal_amount': '60000',
+    'total_net_withdrawal_amount': '59988',
+    'transaction_list': dummyTransactions,
+  },
+  {
+    'id': 100003,
+    'name': 'Excellent Team',
+    'color_code': '#1B96FF',
+    'total_deposit_number': '138',
+    'total_gross_deposit_amount': '80000',
+    'total_net_deposit_number': '77392',
+    'total_withdrawal_number': '20',
+    'total_gross_withdrawal_amount': '60000',
+    'total_net_withdrawal_amount': '59988',
+    'transaction_list': dummyTransactions,
+  },
+];

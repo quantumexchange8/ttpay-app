@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:ttpay/models/transaction.dart';
+
 List<Group> listGroupFromListMap(List<Map<String, dynamic>> transactionList) {
   return List<Group>.from(transactionList.map((e) => Group.fromMap(e)));
 }
@@ -15,6 +17,7 @@ class Group {
   int totalWithdrawalNumber;
   double totalGrossWithdrawalAmount;
   double totalNetWithdrawalAmount;
+  List<Transaction> transactionList;
   Group({
     required this.id,
     required this.name,
@@ -25,6 +28,7 @@ class Group {
     required this.totalWithdrawalNumber,
     required this.totalGrossWithdrawalAmount,
     required this.totalNetWithdrawalAmount,
+    required this.transactionList,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,23 +42,28 @@ class Group {
       'total_withdrawal_number': totalWithdrawalNumber,
       'total_gross_withdrawal_amount': totalGrossWithdrawalAmount,
       'total_net_withdrawal_amount': totalNetWithdrawalAmount,
+      'transaction_list': transactionList.map((e) => e.toMap()).toList(),
     };
   }
 
   factory Group.fromMap(Map<String, dynamic> map) {
+    List transactionList = map['transaction_list'];
+
     return Group(
-      id: map['id'] as int,
-      name: map['name'] as String,
-      colorCode: map['color_code'] as String,
-      totalDepositNumber: int.parse(map['total_deposit_number']),
-      totalGrossDepositAmount: double.parse(map['total_gross_deposit_amount']),
-      totalNetDepositAmount: double.parse(map['total_net_deposit_amount']),
-      totalWithdrawalNumber: int.parse(map['total_withdrawal_number']),
-      totalGrossWithdrawalAmount:
-          double.parse(map['total_gross_withdrawal_amount']),
-      totalNetWithdrawalAmount:
-          double.parse(map['total_net_withdrawal_amount']),
-    );
+        id: map['id'] as int,
+        name: map['name'] as String,
+        colorCode: map['color_code'] as String,
+        totalDepositNumber: int.parse(map['total_deposit_number']),
+        totalGrossDepositAmount:
+            double.parse(map['total_gross_deposit_amount']),
+        totalNetDepositAmount: double.parse(map['total_net_deposit_amount']),
+        totalWithdrawalNumber: int.parse(map['total_withdrawal_number']),
+        totalGrossWithdrawalAmount:
+            double.parse(map['total_gross_withdrawal_amount']),
+        totalNetWithdrawalAmount:
+            double.parse(map['total_net_withdrawal_amount']),
+        transactionList:
+            transactionList.map((e) => Transaction.fromMap(e)).toList());
   }
 
   String toJson() => json.encode(toMap());

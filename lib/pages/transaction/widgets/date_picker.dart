@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -126,7 +127,11 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return backgroundContainer(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(24),
+        topRight: Radius.circular(24),
+      ),
       padding:
           EdgeInsets.symmetric(vertical: height24, horizontal: width08 * 2),
       child: Column(

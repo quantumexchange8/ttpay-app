@@ -5,7 +5,22 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890122',
     'transaction_type': 'deposit',
     'status': 'pending',
-    'amount': '8000'
+    'amount': '8000',
+    'fee': '8.88',
+    'net_amount': '7991.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description': null,
+    'approval_date': null,
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 2,
@@ -13,7 +28,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890123',
     'transaction_type': 'withdrawal',
     'status': 'success',
-    'amount': '1000'
+    'amount': '1000',
+    'fee': '8.88',
+    'net_amount': '991.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-04 08:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 3,
@@ -21,7 +52,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890124',
     'transaction_type': 'deposit',
     'status': 'success',
-    'amount': '500'
+    'amount': '500',
+    'fee': '8.88',
+    'net_amount': '491.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-04 11:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 4,
@@ -29,7 +76,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890125',
     'transaction_type': 'deposit',
     'status': 'success',
-    'amount': '20000'
+    'amount': '20000',
+    'fee': '8.88',
+    'net_amount': '19991.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-02 08:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 5,
@@ -37,7 +100,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890126',
     'transaction_type': 'withdrawal',
     'status': 'rejected',
-    'amount': '2000'
+    'amount': '2000',
+    'fee': '8.88',
+    'net_amount': '1991.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-02 11:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 6,
@@ -45,7 +124,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890127',
     'transaction_type': 'deposit',
     'status': 'success',
-    'amount': '2000'
+    'amount': '2000',
+    'fee': '8.88',
+    'net_amount': '1991.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-02 13:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 7,
@@ -53,7 +148,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890128',
     'transaction_type': 'withdrawal',
     'status': 'freezing',
-    'amount': '100'
+    'amount': '100',
+    'fee': '8.88',
+    'net_amount': '91.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-03 12:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 8,
@@ -61,7 +172,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890128',
     'transaction_type': 'withdrawal',
     'status': 'success',
-    'amount': '100'
+    'amount': '100',
+    'fee': '8.88',
+    'net_amount': '91.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-03 14:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 9,
@@ -69,7 +196,23 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890128',
     'transaction_type': 'deposit',
     'status': 'success',
-    'amount': '1000'
+    'amount': '1000',
+    'fee': '8.88',
+    'net_amount': '991.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-03 15:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   },
   {
     'id': 10,
@@ -77,6 +220,22 @@ const List<Map<String, dynamic>> dummyTransactions = [
     'transaction_number': 'TXN7890128',
     'transaction_type': 'withdrawal',
     'status': 'success',
-    'amount': '3000'
+    'amount': '3000',
+    'fee': '8.88',
+    'net_amount': '2991.12',
+    'txID': '93970278970797',
+    'sent_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'receiving_address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+    'description':
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    'approval_date': '2024-05-01 08:00:00',
+    'user': {
+      'id': 345,
+      'name': 'Law Zai Yee',
+      'email': 'lawzaiyee@gmail.com',
+      'profile_photo': null,
+      'profile_id': 'ID334673423',
+      'phone_number': '012334343'
+    }
   }
 ];

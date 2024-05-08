@@ -10,6 +10,10 @@ Color convertColorCode(String colorCode) {
   return Color(int.parse('0xFF$formattedCode'));
 }
 
+String colorToHex(Color color) {
+  return '#${color.red.toRadixString(16).padLeft(2, '0')}${color.green.toRadixString(16).padLeft(2, '0')}${color.blue.toRadixString(16).padLeft(2, '0')}';
+}
+
 int determinelastMonthYear() {
   if (DateTime.now().month == 1) {
     return DateTime.now().year - 1;
@@ -44,4 +48,18 @@ int determinelastMonthLastDay() {
   } else {
     return 31;
   }
+}
+
+Future<T?> customShowModalBottomSheet<T>(
+    {required BuildContext context,
+    required Widget Function(BuildContext context) builder}) async {
+  return await showModalBottomSheet(
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+    isScrollControlled: true,
+    context: context,
+    backgroundColor: Colors.black,
+    builder: builder,
+  );
 }

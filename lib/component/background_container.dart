@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:ttpay/helper/const.dart';
 
 Container backgroundContainer(
-    {EdgeInsetsGeometry? padding, required Widget child}) {
+    {EdgeInsetsGeometry? padding,
+    BorderRadiusGeometry? borderRadius,
+    required Widget child}) {
   return Container(
     padding: padding,
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
         color: backgroundColor,
-        image: DecorationImage(
+        borderRadius: borderRadius,
+        image: const DecorationImage(
             image: AssetImage('assets/images/Background.png'),
             fit: BoxFit.cover)),
     child: child,

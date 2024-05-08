@@ -7,6 +7,7 @@ import 'package:ttpay/helper/dummyData/transactions_history.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/models/transaction.dart';
 import 'package:ttpay/pages/home/widgets/transaction_row.dart';
+import 'package:ttpay/pages/transaction/transaction_detail_page.dart';
 import 'package:ttpay/pages/transaction/widgets/date_picker.dart';
 import 'package:ttpay/pages/transaction/widgets/filter_bottomsheet.dart';
 import 'package:ttpay/pages/transaction/widgets/transaction_top_bar.dart';
@@ -109,11 +110,9 @@ class _TransactionPageState extends State<TransactionPage> {
       });
     }
 
-    void onTapDatePicker() {
-      showModalBottomSheet(
-        isScrollControlled: true,
+    void onTapDatePicker() async {
+      await customShowModalBottomSheet(
         context: context,
-        backgroundColor: Colors.black.withOpacity(0.9),
         builder: (context) => DatePickerBottomsheet(
           firstDatePicked: startDatePicked,
           lastDatePicked: lastDatePicked,
@@ -128,11 +127,9 @@ class _TransactionPageState extends State<TransactionPage> {
       });
     }
 
-    void onTapFilter() {
-      showModalBottomSheet(
-        isScrollControlled: true,
+    void onTapFilter() async {
+      await customShowModalBottomSheet(
         context: context,
-        backgroundColor: Colors.black.withOpacity(0.9),
         builder: (context) => FilterBottomsheet(
           selectedStatus: selectedStatus,
           maxAmount: maxAmount,
@@ -182,10 +179,19 @@ class _TransactionPageState extends State<TransactionPage> {
                       }
                     });
                   },
-                  child: transactionRow(
-                      isPinned: isPinned,
-                      transaction: transaction,
-                      isLast: isLast(index, currentTransaction)),
+                  child: InkWell(
+                    onTap: () async {
+                      await customShowModalBottomSheet(
+                        context: context,
+                        builder: (context) =>
+                            TransactionDetailPage(transaction: transaction),
+                      );
+                    },
+                    child: transactionRow(
+                        isPinned: isPinned,
+                        transaction: transaction,
+                        isLast: isLast(index, currentTransaction)),
+                  ),
                 );
               },
             )

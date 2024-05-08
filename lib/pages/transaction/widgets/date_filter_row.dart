@@ -18,8 +18,7 @@ Widget dateFilterRow({
           onTap: onTapDatePicker,
           child: Container(
             height: height10 * 4,
-            padding: EdgeInsets.symmetric(
-                horizontal: width08 * 2, vertical: height08),
+            padding: EdgeInsets.fromLTRB(width08 * 2, height08, 0, height08),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.1),
               borderRadius: BorderRadius.circular(50),
@@ -28,9 +27,11 @@ Widget dateFilterRow({
               children: [
                 Image.asset('assets/icon_image/Icon=calendar.png'),
                 SizedBox(width: width24 / 2),
-                Text(
-                  '${formatDatePicked.format(startDatePicked)} - ${formatDatePicked.format(lastDatePicked)}',
-                  style: textMd,
+                Expanded(
+                  child: Text(
+                    '${formatDatePicked.format(startDatePicked)} - ${formatDatePicked.format(lastDatePicked)}',
+                    style: textMd,
+                  ),
                 ),
               ],
             ),
