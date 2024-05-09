@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
@@ -78,6 +80,7 @@ Widget _errorWidget(String errorText) => Row(
     );
 
 Column customInputTextfield({
+  bool isRequired = false,
   TextEditingController? controller,
   required FocusNode focusNode,
   String? helperText,
@@ -93,10 +96,25 @@ Column customInputTextfield({
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(
-        textLabel,
-        style: textSm.copyWith(
-            color: neutralGrayScale.shade300, fontWeight: FontWeight.w500),
+      RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: 'USDT Address ',
+              style: textSm.copyWith(
+                  color: neutralGrayScale.shade300,
+                  fontWeight: FontWeight.w500),
+            ),
+            if (isRequired)
+              TextSpan(
+                text: '*',
+                style: textSm.copyWith(
+                  color: errorRedScale.shade600,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+          ],
+        ),
       ),
       SizedBox(
         height: height24 / 4,

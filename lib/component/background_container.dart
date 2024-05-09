@@ -4,15 +4,15 @@ import 'package:ttpay/helper/const.dart';
 Container backgroundContainer(
     {EdgeInsetsGeometry? padding,
     BorderRadiusGeometry? borderRadius,
+    BoxFit fit = BoxFit.cover,
     required Widget child}) {
   return Container(
     padding: padding,
     decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: borderRadius,
-        image: const DecorationImage(
-            image: AssetImage('assets/images/Background.png'),
-            fit: BoxFit.cover)),
+        image: DecorationImage(
+            image: const AssetImage('assets/images/Background.png'), fit: fit)),
     child: child,
   );
 }

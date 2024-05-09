@@ -82,7 +82,7 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
           SizedBox(height: height24),
           ctaButton(
               onPressed: () {
-                if (groupNameErrorText != null) {
+                if (_groupNameController.text.isNotEmpty) {
                   if (selectedColor != null) {
                     Navigator.pop(
                         context,
@@ -99,6 +99,8 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
                             transactionList: []));
                   } else {
                     setState(() {
+                      groupNameErrorText =
+                          groupNameValidator(_groupNameController.text);
                       showRedBorderColor = true;
                     });
                   }
@@ -128,13 +130,9 @@ Container groupColorContainer(
         color: color,
         shape: BoxShape.circle,
         border: isPicked
-            ? Border.all(
-                color: primaryPurpleScale.shade700,
-              )
+            ? Border.all(color: primaryPurpleScale.shade700, width: 3)
             : showRedColorBorder
-                ? Border.all(
-                    color: errorRedScale.shade600,
-                  )
+                ? Border.all(color: errorRedScale.shade600, width: 3)
                 : null),
   );
 }
@@ -155,11 +153,13 @@ Column selectGroupColorColumn(
           fontWeight: FontWeight.w500,
         ),
       ),
+      SizedBox(
+        height: height24 / 4,
+      ),
       GridView(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisExtent: height10 * 9.2,
             crossAxisCount: 6,
             crossAxisSpacing: width08 * 2,
             mainAxisSpacing: height24 / 2),

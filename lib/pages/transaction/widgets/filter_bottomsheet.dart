@@ -5,6 +5,7 @@ import 'package:another_xlider/models/trackbar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ttpay/component/background_container.dart';
+import 'package:ttpay/component/checkbox.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -22,20 +23,8 @@ Row statusRow(String status,
         child: SizedBox(
           width: height24,
           height: height24,
-          child: Checkbox(
-            value: isCheck,
-            checkColor: Colors.white,
-            fillColor: MaterialStateColor.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
-                return primaryPurpleScale.shade700;
-              } else {
-                return Colors.white.withOpacity(0.1);
-              }
-            }),
-            side: BorderSide.none,
-            shape: CircleBorder(),
-            //  focusColor: ,
-            //  hoverColor: ,
+          child: customCheckbox(
+            isCheck: isCheck,
             onChanged: onChanged,
           ),
         ),

@@ -8,7 +8,8 @@ Column emptyImageColumn(
     required String title,
     required String description}) {
   return Column(
-    mainAxisSize: MainAxisSize.min,
+    mainAxisSize: MainAxisSize.max,
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Image.asset(
         imageAddress,
@@ -25,7 +26,7 @@ Column emptyImageColumn(
       ),
       SizedBox(height: height08),
       Text(
-        title,
+        description,
         textAlign: TextAlign.center,
         style: textSm.copyWith(
           color: neutralGrayScale,

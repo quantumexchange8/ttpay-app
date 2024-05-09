@@ -5,8 +5,12 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/group.dart';
+import 'package:ttpay/pages/group/widgets/group_action.dart';
 
-Container groupsRow({required Group group, void Function()? onTapMore}) {
+Container groupsRow(
+    {required Group group,
+    void Function()? onTapEdit,
+    void Function()? onTapDelete}) {
   return Container(
     width: double.infinity,
     padding:
@@ -39,13 +43,9 @@ Container groupsRow({required Group group, void Function()? onTapMore}) {
                 ),
               ),
             ),
-            InkWell(
-              onTap: onTapMore,
-              child: Image.asset(
-                'assets/icon_image/more_icon.png',
-                height: height24,
-                fit: BoxFit.fitHeight,
-              ),
+            moreButton(
+              onTapEdit: onTapEdit,
+              onTapDelete: onTapDelete,
             ),
           ],
         ),
