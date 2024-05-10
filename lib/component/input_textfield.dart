@@ -16,7 +16,8 @@ const BorderSide focusedBorder = BorderSide(
 );
 
 TextFormField customTextfield(
-    {required bool showErrorWidget,
+    {bool autofocus = false,
+    required bool showErrorWidget,
     TextEditingController? controller,
     required FocusNode focusNode,
     String? helperText,
@@ -26,6 +27,7 @@ TextFormField customTextfield(
     void Function(String)? onChanged,
     String? hintText}) {
   return TextFormField(
+    autofocus: autofocus,
     focusNode: focusNode,
     onChanged: onChanged,
     autocorrect: false,

@@ -9,7 +9,7 @@ import 'package:ttpay/helper/text_style.dart';
 
 Container withdrawalAmountContainer(
     {required TextEditingController controller,
-    num? maxValue,
+    required double minimumAmount,
     void Function(String amount)? onChangedAmount}) {
   return Container(
     width: double.infinity,
@@ -77,7 +77,6 @@ Container withdrawalAmountContainer(
                       inputFormatters: [
                         CurrencyTextInputFormatter.currency(
                           symbol: '',
-                          maxValue: maxValue,
                         )
                       ],
                       onChanged: onChangedAmount,
@@ -99,7 +98,7 @@ Container withdrawalAmountContainer(
           ),
         ),
         Text(
-          'Min withdrawal amount: \$ 100 USDT',
+          'Min withdrawal amount: \$ ${minimumAmount.toInt()} USDT',
           textAlign: TextAlign.center,
           style: textXS.copyWith(
             color: neutralGrayScale,

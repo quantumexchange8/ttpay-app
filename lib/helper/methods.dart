@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:ttpay/component/top_snackbar.dart';
 
 bool isLast(int currentIndex, List setOfList) {
   return currentIndex == (setOfList.length - 1);
@@ -62,4 +64,16 @@ Future<T?> customShowModalBottomSheet<T>(
     backgroundColor: Colors.black,
     builder: builder,
   );
+}
+
+Future<void> copyToClipboard(BuildContext context, String text) async {
+  try {
+    await Clipboard.setData(ClipboardData(text: text)).then((value) {
+      showToastNotification(context, title: 'Text Copied To Clipboard');
+    });
+  } on Exception catch (e) {
+    // ignore: use_build_context_synchronously
+    showToastNotification(context,
+        type: 'error', title: 'Error', description: e.toString());
+  }
 }

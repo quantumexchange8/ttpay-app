@@ -25,37 +25,58 @@ class WithdrawalRequestSentSuccessfulPage extends StatelessWidget {
 
     return Scaffold(
       body: backgroundContainer(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding:
+              EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
           child: Column(
             children: [
               SizedBox(
                 height: height30 * 2,
               ),
-              Image.asset(
-                'assets/icon_image/featured_success_icon.png',
-                width: height30 * 2,
-                height: height30 * 2,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: height24),
-              Text(
-                'Withdrawal Request Sent Successful!',
-                textAlign: TextAlign.center,
-                style: textMd.copyWith(
-                  fontWeight: FontWeight.w600,
+              SizedBox(
+                height: height100 * 2,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Image.asset(
+                        'assets/icon_image/featured_success_icon.png',
+                        width: height30 * 5,
+                        height: height30 * 5,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Withdrawal Request Sent Successful!',
+                            textAlign: TextAlign.center,
+                            style: textMd.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: height08),
+                          Text(
+                            'Your withdrawal request will be processed within 24 hours. Please wait patiently.',
+                            textAlign: TextAlign.center,
+                            style: textSm,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              SizedBox(height: height08),
-              Text(
-                'Your withdrawal request will be processed within 24 hours. Please wait patiently.',
-                textAlign: TextAlign.center,
-                style: textSm,
               ),
               SizedBox(height: height24),
               detailsContainer(withdrawalRequestDetails),
               const Expanded(child: SizedBox()),
               ctaButton(
-                  onPressed: onPressedDone, isGradient: true, text: 'Done')
+                  onPressed: onPressedDone, isGradient: true, text: 'Done'),
+              SizedBox(
+                height: height24,
+              )
             ],
           )),
     );

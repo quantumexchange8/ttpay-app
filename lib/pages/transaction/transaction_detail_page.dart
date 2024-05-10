@@ -79,11 +79,11 @@ class TransactionDetailPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height20),
-            child: _containerOnlyTopBorder(
+            child: containerOnlyTopBorder(
               child: transactionInfoColumn(userData),
             ),
           ),
-          _containerOnlyTopBorder(
+          containerOnlyTopBorder(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,52 +105,21 @@ class TransactionDetailPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height20),
-            child: _containerOnlyTopBorder(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: addressData.entries
-                    .mapIndexed((i, e) => Padding(
-                          padding: EdgeInsets.only(
-                              bottom: isLast(i, addressData.entries.toList())
-                                  ? 0
-                                  : height08),
-                          child: addressColumn(key: e.key, value: e.value),
-                        ))
-                    .toList(),
-              ),
-            ),
+            child: addressContainer(
+                onTapCopy: (address) async {
+                  copyToClipboard(context, address);
+                },
+                addressData: addressData),
           ),
           if (transaction.description != null)
-            _containerOnlyTopBorder(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Description',
-                    style: textXS.copyWith(
-                      color: neutralGrayScale,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: height08 / 2),
-                  Text(
-                    transaction.description!,
-                    style: textSm,
-                  ),
-                ],
-              ),
-            ),
+            descriptionContainer(transaction.description!),
         ],
       ),
     );
   }
 }
 
-Container _containerOnlyTopBorder({Widget? child}) {
+Container containerOnlyTopBorder({Widget? child}) {
   return Container(
     width: double.infinity,
     padding: EdgeInsets.only(top: height24 / 2),
@@ -160,6 +129,55 @@ Container _containerOnlyTopBorder({Widget? child}) {
       ),
     ),
     child: child,
+  );
+}
+
+Container addressContainer(
+    {required void Function(String address) onTapCopy,
+    required Map<String, dynamic> addressData}) {
+  return containerOnlyTopBorder(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: addressData.entries
+          .mapIndexed((i, e) => Padding(
+                padding: EdgeInsets.only(
+                    bottom:
+                        isLast(i, addressData.entries.toList()) ? 0 : height08),
+                child: addressColumn(
+                    onTapCopy: () {
+                      onTapCopy(e.value);
+                    },
+                    key: e.key,
+                    value: e.value),
+              ))
+          .toList(),
+    ),
+  );
+}
+
+Container descriptionContainer(String description) {
+  return containerOnlyTopBorder(
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Description',
+          style: textXS.copyWith(
+            color: neutralGrayScale,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: height08 / 2),
+        Text(
+          description,
+          style: textSm,
+        ),
+      ],
+    ),
   );
 }
 
@@ -213,6 +231,7 @@ Row transactionInfoRow({
 }
 
 Column addressColumn({
+  void Function()? onTapCopy,
   required String key,
   required String value,
 }) {
@@ -238,12 +257,10 @@ Column addressColumn({
           ),
           SizedBox(width: width08),
           InkWell(
-            onTap: () {
-              Clipboard.setData(ClipboardData(text: value));
-            },
+            onTap: onTapCopy,
             child: Image.asset(
               'assets/icon_image/copy_icon.png',
-              height: 16,
+              height: height08 * 2,
               fit: BoxFit.fitHeight,
             ),
           ),

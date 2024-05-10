@@ -14,7 +14,7 @@ class NotificationDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: simpleAppBar(null),
+      appBar: simpleAppBar(),
       body: backgroundContainer(
           child: ListView(
         padding:

@@ -20,7 +20,7 @@ Checkbox customCheckbox({
       }
     }),
     side: BorderSide.none,
-    shape: CircleBorder(),
+    shape: const CircleBorder(),
     //  focusColor: ,
     //  hoverColor: ,
     onChanged: isDisable ? null : onChanged,

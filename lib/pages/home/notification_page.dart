@@ -16,7 +16,7 @@ class NotificationPage extends StatelessWidget {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: simpleAppBar('Notifications'),
+      appBar: simpleAppBar(title: 'Notifications'),
       body: backgroundContainer(
         child: notificationsList.isNotEmpty
             ? ListView.builder(

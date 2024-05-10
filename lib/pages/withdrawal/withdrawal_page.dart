@@ -3,13 +3,19 @@ import 'package:flutter/widgets.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
+import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
 import 'package:ttpay/component/unfocus_gesturedetector.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
+import 'package:ttpay/helper/dummyData/transactions_history.dart';
+import 'package:ttpay/models/transaction.dart';
+import 'package:ttpay/pages/withdrawal/enter_account_password_page.dart';
 import 'package:ttpay/pages/withdrawal/widgets/available_balance_column.dart';
 import 'package:ttpay/pages/withdrawal/widgets/full_withdrawal_textbutton.dart';
+import 'package:ttpay/pages/withdrawal/widgets/risk_disclaimer_dialog.dart';
 import 'package:ttpay/pages/withdrawal/widgets/withdrawal_amount_container.dart';
+import 'package:ttpay/pages/withdrawal/withdrawal_history_page.dart';
 
 class WithdrawalPage extends StatefulWidget {
   const WithdrawalPage({super.key});
@@ -40,7 +46,20 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
 
   @override
   Widget build(BuildContext context) {
-    void onPressedHistoryButton() {}
+    double minimumAmount = 100;
+
+    void onPressedHistoryButton() {
+      List<Transaction> withdrawalList =
+          listTransactionFromListMap(dummyTransactions)
+              .where((element) => element.transactionType == 'withdrawal')
+              .toList();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                WithdrawalHistoryPage(withdrawalTransaction: withdrawalList),
+          ));
+    }
 
     void onChangedAmount(String amount) {
       setState(() {
@@ -63,7 +82,37 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
       });
     }
 
-    void onPressedProceed() {}
+    void onPressedProceed() async {
+      double currentAmount =
+          double.parse(getUnformattedAmount(_amountController.text));
+      if (currentAmount < minimumAmount) {
+        showToastNotification(context,
+            type: 'warning',
+            title: 'Minimum Amount Required!',
+            description:
+                'The minimum withdrawal amount must be \$ ${minimumAmount.toInt()} USDT');
+        return;
+      }
+
+      if (currentAmount > availableNetBalance) {
+        showToastNotification(context,
+            type: 'warning', title: 'Insufficient Balance');
+        return;
+      }
+
+      await showDialog(
+        context: context,
+        builder: (context) => const RiskDisclaimerDialog(),
+      ).then((value) {
+        if (value != null && value) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const EnterAccountPasswordPage(),
+              ));
+        }
+      });
+    }
 
     return unfocusGestureDetector(
       context,
@@ -85,17 +134,17 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
             padding: EdgeInsets.symmetric(
                 horizontal: width08 * 2, vertical: height24 / 2),
             child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
                   availableBalanceColumn(availableNetBalance),
                   SizedBox(
                     height: height24,
                   ),
                   withdrawalAmountContainer(
-                      controller: _amountController,
-                      onChangedAmount: onChangedAmount,
-                      maxValue: availableNetBalance),
+                    controller: _amountController,
+                    minimumAmount: minimumAmount,
+                    onChangedAmount: onChangedAmount,
+                  ),
                   SizedBox(
                     height: height08,
                   ),

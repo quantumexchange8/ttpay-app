@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+List<User> listUserFromListMap(List<Map<String, dynamic>> userList) {
+  return List<User>.from(userList.map((e) => User.fromMap(e)));
+}
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class User {
   int id;
