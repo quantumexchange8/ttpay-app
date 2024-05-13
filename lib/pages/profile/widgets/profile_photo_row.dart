@@ -4,7 +4,7 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 
 Row profilePhotoRow({
-  required String? profilePhotoAddress,
+  required dynamic profilePhotoAddress,
   required String profileName,
   required String profileId,
 }) {

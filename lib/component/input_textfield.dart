@@ -55,7 +55,7 @@ TextFormField customTextfield(
         hintStyle: textMd.copyWith(
           color: neutralGrayScale,
         ),
-        helperMaxLines: 1,
+        helperMaxLines: 3,
         helperStyle: textXS.copyWith(color: neutralGrayScale),
         helperText: helperText,
         error: showErrorWidget ? _errorWidget(errorText) : null,
@@ -64,7 +64,6 @@ TextFormField customTextfield(
 }
 
 Widget _errorWidget(String errorText) => Row(
-      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           Icons.error_outline,
@@ -74,9 +73,12 @@ Widget _errorWidget(String errorText) => Row(
         SizedBox(
           width: width08 / 2,
         ),
-        Text(
-          errorText,
-          style: textXS.copyWith(color: errorRedScale.shade600),
+        Expanded(
+          child: Text(
+            errorText,
+            style: textXS.copyWith(color: errorRedScale.shade600),
+            overflow: TextOverflow.ellipsis,
+          ),
         )
       ],
     );
@@ -102,7 +104,7 @@ Column customInputTextfield({
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'USDT Address ',
+              text: '$textLabel ',
               style: textSm.copyWith(
                   color: neutralGrayScale.shade300,
                   fontWeight: FontWeight.w500),

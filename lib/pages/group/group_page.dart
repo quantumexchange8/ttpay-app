@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/empty_image_column.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
+import 'package:ttpay/component/warning_dialog.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/dummyData/groups.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/models/group.dart';
 import 'package:ttpay/pages/group/group_detail_page.dart';
-import 'package:ttpay/pages/group/widgets/delete_group_warning_dialog.dart';
 import 'package:ttpay/pages/group/widgets/groups_row.dart';
 import 'package:ttpay/pages/group/widgets/new_group_bottomsheet.dart';
 
@@ -39,6 +39,22 @@ class _GroupPageState extends State<GroupPage> {
         if (group != null) {
           setState(() {
             currentGroupList.add(group);
+          });
+        }
+      });
+    }
+
+    void onTapEdit() {}
+
+    void onTapDeleteGroup(Group group) async {
+      await showWarningDialog(
+              context: context,
+              title: 'Are you sure you want to delete ${group.name}',
+              redButtonText: 'Delete')
+          .then((yes) {
+        if (yes != null && yes) {
+          setState(() {
+            currentGroupList.remove(group);
           });
         }
       });
@@ -76,16 +92,9 @@ class _GroupPageState extends State<GroupPage> {
                             ));
                       },
                       child: groupsRow(
+                          onTapEdit: onTapEdit,
                           onTapDelete: () async {
-                            await showGroupDeleteWarningDialog(
-                                    context: context, groupName: group.name)
-                                .then((canDelete) {
-                              if (canDelete != null && canDelete) {
-                                setState(() {
-                                  currentGroupList.remove(group);
-                                });
-                              }
-                            });
+                            onTapDeleteGroup(group);
                           },
                           group: group),
                     );

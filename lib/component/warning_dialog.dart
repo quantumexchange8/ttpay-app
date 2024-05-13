@@ -5,12 +5,14 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 
-Future<T?> showGroupDeleteWarningDialog<T>(
-    {required BuildContext context, required String groupName}) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      return Dialog(
+Future<T?> showWarningDialog<T>({
+  required BuildContext context,
+  required String title,
+  required String redButtonText,
+}) =>
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
         child: backgroundContainer(
           borderRadius: BorderRadius.circular(24),
           child: Container(
@@ -41,7 +43,7 @@ Future<T?> showGroupDeleteWarningDialog<T>(
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: height20),
                           child: Text(
-                            'Are you sure you want to delete $groupName?',
+                            title,
                             textAlign: TextAlign.center,
                             style: textSm.copyWith(
                               fontWeight: FontWeight.w700,
@@ -68,14 +70,12 @@ Future<T?> showGroupDeleteWarningDialog<T>(
                               Navigator.pop(context, true);
                             },
                             bgColor: errorRedScale.shade600,
-                            text: 'Delete')),
+                            text: redButtonText)),
                   ],
                 ),
               ],
             ),
           ),
         ),
-      );
-    },
-  );
-}
+      ),
+    );

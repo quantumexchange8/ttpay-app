@@ -7,6 +7,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:ttpay/helper/validator.dart';
 import 'package:ttpay/pages/auth/forgot_password_page.dart';
 import 'package:ttpay/pages/auth/login_widgets/title_column.dart';
 import 'package:ttpay/pages/auth/widgets.dart';
@@ -29,22 +30,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    String? idValidator(String? idNumber) {
-      if (idNumber == null || idNumber.isEmpty) {
-        return 'Id number is required';
-      } else {
-        return null;
-      }
-    }
-
-    String? passwordValidator(String? password) {
-      if (password == null || password.isEmpty) {
-        return 'Password is required';
-      } else {
-        return null;
-      }
-    }
-
     void login() {}
 
     void forgotPassword() {
@@ -100,25 +85,13 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           },
                           errorText: passwordValidationErrorText ?? '',
-                          suffixIcon: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                0, height24 / 2, width20, height24 / 2),
-                            child: GestureDetector(
+                          suffixIcon: eyeObscureIcon(
                               onTap: () {
                                 setState(() {
                                   _obscureText = !_obscureText;
                                 });
                               },
-                              child: _obscureText
-                                  ? Image.asset(
-                                      'assets/login_icon_image/eye_closed.png',
-                                      height: height08 * 2,
-                                    )
-                                  : Icon(Icons.visibility,
-                                      color: neutralGrayScale.shade400,
-                                      size: height20),
-                            ),
-                          ),
+                              obscureText: _obscureText),
                           obscureText: _obscureText),
                     ],
                   ),
@@ -147,4 +120,20 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+Widget eyeObscureIcon({void Function()? onTap, required bool obscureText}) {
+  return Padding(
+    padding: EdgeInsets.fromLTRB(0, height24 / 2, width20, height24 / 2),
+    child: InkWell(
+      onTap: onTap,
+      child: obscureText
+          ? Image.asset(
+              'assets/login_icon_image/eye_closed.png',
+              height: height08 * 2,
+            )
+          : Icon(Icons.visibility,
+              color: neutralGrayScale.shade400, size: height20),
+    ),
+  );
 }

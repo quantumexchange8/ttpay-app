@@ -145,11 +145,11 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
     }
 
     return Scaffold(
-      appBar: profilePhotoAppbar,
+      appBar: profilePhotoAppbar(context),
+      extendBodyBehindAppBar: true,
       body: backgroundContainer(
           padding: EdgeInsets.symmetric(vertical: height24),
-          child: SizedBox(
-            width: screenWidth,
+          child: SafeArea(
             child: Column(
               children: [
                 SizedBox(
@@ -157,7 +157,10 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
                   width: screenWidth,
                   child: Stack(
                     children: [
-                      Container(),
+                      SizedBox(
+                          height: width100 * 4,
+                          width: screenWidth,
+                          child: CameraPreview(_cameraController)),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(

@@ -5,6 +5,7 @@ import 'package:splash_view/source/source.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/group/group_page.dart';
+import 'package:ttpay/pages/profile/profile_page.dart';
 import 'package:ttpay/pages/withdrawal/withdrawal_page.dart';
 
 void main() {
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
           ),
           done: Done(
               animationDuration: const Duration(milliseconds: 300),
-              const WithdrawalPage())),
+              const ProfilePage())),
     );
   }
 }

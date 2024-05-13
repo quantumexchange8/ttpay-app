@@ -1,20 +1,37 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ttpay/helper/dimensions.dart';
 
 Container profileImageContainer(
-    {required String? accountPhoto, required double size}) {
-  bool havePhoto = accountPhoto != null && accountPhoto.isNotEmpty;
+    {required dynamic accountPhoto, required double size}) {
+  DecorationImage? decoImage;
+  bool havePhoto = false;
+  if (accountPhoto != null) {
+    if (accountPhoto is String) {
+      if (accountPhoto.isNotEmpty) {
+        havePhoto = true;
+        decoImage = DecorationImage(
+          image: NetworkImage(accountPhoto),
+          fit: BoxFit.cover,
+        );
+      }
+    }
+    if (accountPhoto is File) {
+      havePhoto = true;
+      decoImage = DecorationImage(
+        image: FileImage(accountPhoto),
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
   return Container(
     width: size,
     height: size,
     padding: EdgeInsets.all(height08 / 2),
     decoration: BoxDecoration(
-      image: havePhoto
-          ? DecorationImage(
-              image: NetworkImage(accountPhoto),
-              fit: BoxFit.contain,
-            )
-          : null,
+      image: decoImage,
       shape: BoxShape.circle,
     ),
     child:
