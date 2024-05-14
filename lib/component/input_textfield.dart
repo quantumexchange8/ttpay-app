@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 
 final InputBorder normalBorder = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(100),
-);
+    borderRadius: BorderRadius.circular(100), borderSide: BorderSide.none);
 
 const BorderSide focusedBorder = BorderSide(
   width: 1,
@@ -25,6 +22,7 @@ TextFormField customTextfield(
     Widget? suffixIcon,
     bool obscureText = false,
     void Function(String)? onChanged,
+    void Function(String)? onFieldSubmitted,
     String? hintText}) {
   return TextFormField(
     autofocus: autofocus,
@@ -37,6 +35,7 @@ TextFormField customTextfield(
     controller: controller,
     style: textMd,
     obscureText: obscureText,
+    onFieldSubmitted: onFieldSubmitted,
     decoration: InputDecoration(
         border: normalBorder,
         errorBorder: normalBorder.copyWith(
@@ -93,6 +92,7 @@ Column customInputTextfield({
   Widget? suffixIcon,
   required bool showErrorWidget,
   void Function(String)? onChangedTextfield,
+  void Function(String)? onFieldSubmitted,
   bool obscureText = false,
   String? hintText,
 }) {
@@ -131,6 +131,7 @@ Column customInputTextfield({
           suffixIcon: suffixIcon,
           showErrorWidget: showErrorWidget,
           onChanged: onChangedTextfield,
+          onFieldSubmitted: onFieldSubmitted,
           obscureText: obscureText,
           hintText: hintText),
     ],

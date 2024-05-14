@@ -48,7 +48,7 @@ Widget bottomNavigationBar({
 
   return SnakeNavigationBar.gradient(
     backgroundGradient: const RadialGradient(
-        colors: [Colors.black, Color(0xFFB5A6FF)], radius: 10),
+        colors: [Colors.black, Color(0xFFB5A6FF)], radius: 15),
     snakeViewGradient: buttonGradient,
     behaviour: SnakeBarBehaviour.floating,
     currentIndex: currentIndex,
@@ -57,8 +57,8 @@ Widget bottomNavigationBar({
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100),
         side: BorderSide(color: primaryPurpleScale.shade300)),
-    padding:
-        EdgeInsets.symmetric(vertical: height24 / 2, horizontal: width08 * 2),
+    padding: EdgeInsets.fromLTRB(
+        width08 * 4, height24 / 2, width08 / 2, height24 / 2),
     snakeShape: SnakeShape.circle,
     items: items
         .map((e) => BottomNavigationBarItem(

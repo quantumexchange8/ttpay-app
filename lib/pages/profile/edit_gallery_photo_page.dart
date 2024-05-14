@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gallery_picker/gallery_picker.dart';
@@ -52,21 +53,29 @@ class _EditGalleryPhotoPageState extends State<EditGalleryPhotoPage> {
   @override
   Widget build(BuildContext context) {
     void onPressedDone() async {
-      final Directory tempDir = await getTemporaryDirectory();
+      try {
+        final Directory tempDir = await getTemporaryDirectory();
 
-      await zoomController.getCurrentCropImageBytes().then((value) {
-        File file = File(
-            '${tempDir.path}/${DateFormat('ddMMyy').format(DateTime.now())}.png');
-        file.writeAsBytesSync(value);
-        Navigator.pop(context, file);
-      });
+        await zoomController.getCurrentCropImageBytes().then((value) {
+          File file = File(
+              '${tempDir.path}/${DateFormat('ddMMyy').format(DateTime.now())}${Random(1000)}.png');
+          file.writeAsBytesSync(value);
+          Navigator.pop(context);
+          Navigator.pop(context, file);
+        });
+      } on Exception catch (e) {
+        print(e.toString());
+        showToastNotification(context,
+            type: 'error', title: 'Error', description: e.toString());
+        return;
+      }
     }
 
     void onChooseAnotherPhoto() async {
       try {
-        final imageFiles =
-            await GalleryPicker.pickMedia(context: context, singleMedia: true);
-        final imageFile = imageFiles?.first.file;
+        final imageFiles = await GalleryPicker.pickMedia(
+            context: context, startWithRecent: true, singleMedia: true);
+        final imageFile = await imageFiles?.first.getFile();
         if (imageFile != null) {
           var decodedImage =
               await decodeImageFromList(await imageFile.readAsBytes());

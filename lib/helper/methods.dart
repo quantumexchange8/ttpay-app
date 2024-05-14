@@ -44,12 +44,16 @@ bool isThirtyDaysMonth(int month) {
   }
 }
 
-int determinelastMonthLastDay() {
-  if (isThirtyDaysMonth(determinelastMonth())) {
+int determineTotalDaysOfMonth(int month) {
+  if (isThirtyDaysMonth(month)) {
     return 30;
   } else {
     return 31;
   }
+}
+
+int determinelastMonthLastDay() {
+  return determineTotalDaysOfMonth(determinelastMonth());
 }
 
 Future<T?> customShowModalBottomSheet<T>(

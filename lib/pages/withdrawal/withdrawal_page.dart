@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
 import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
-import 'package:ttpay/component/unfocus_gesturedetector.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/dummyData/transactions_history.dart';
@@ -25,6 +22,8 @@ class WithdrawalPage extends StatefulWidget {
 }
 
 class _WithdrawalPageState extends State<WithdrawalPage> {
+  final TextEditingController _usdtAddressController = TextEditingController();
+  String? usdtErrorText;
   static const double availableNetBalance = 80828.93;
   final FocusNode _usdtAddressFocusNode = FocusNode();
   final TextEditingController _amountController = TextEditingController(
@@ -42,6 +41,13 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
 
   String getUnformattedAmount(String formattedAmount) {
     return formattedAmount.replaceAll(RegExp(r','), '');
+  }
+
+  @override
+  void dispose() {
+    _usdtAddressController.dispose();
+    _usdtAddressFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -100,6 +106,17 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
         return;
       }
 
+      if (_usdtAddressController.text.isEmpty) {
+        setState(() {
+          usdtErrorText = 'Address is required';
+        });
+        return;
+      } else {
+        setState(() {
+          usdtErrorText = null;
+        });
+      }
+
       await showDialog(
         context: context,
         builder: (context) => const RiskDisclaimerDialog(),
@@ -114,65 +131,70 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
       });
     }
 
-    return unfocusGestureDetector(
-      context,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: twoSimpleAppbar(
-            onPressedButton: onPressedHistoryButton,
-            leftButtonIcon: Padding(
-              padding: EdgeInsets.only(right: width24 / 4),
-              child: Image.asset(
-                'assets/icon_image/Icon=clock.png',
-                height: height08 * 2,
-                fit: BoxFit.fitHeight,
-              ),
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding:
+                EdgeInsets.fromLTRB(width08 * 2, 0, width08 * 2, height24 / 2),
+            child: twoSimpleAppbar(
+                onPressedButton: onPressedHistoryButton,
+                leftButtonIcon: Padding(
+                  padding: EdgeInsets.only(right: width24 / 4),
+                  child: Image.asset(
+                    'assets/icon_image/Icon=clock.png',
+                    height: height08 * 2,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+                title: 'Withdrawal',
+                buttonText: 'History'),
+          ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width08 * 2, vertical: height24 / 2),
+              children: [
+                availableBalanceColumn(availableNetBalance),
+                SizedBox(
+                  height: height24,
+                ),
+                withdrawalAmountContainer(
+                  controller: _amountController,
+                  minimumAmount: minimumAmount,
+                  onChangedAmount: onChangedAmount,
+                ),
+                SizedBox(
+                  height: height08,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: fullWithdrawalTextButton(
+                      onPressed: onPressedFullWithdrawal, isFull: isFull),
+                ),
+                SizedBox(
+                  height: height24,
+                ),
+                customInputTextfield(
+                    isRequired: true,
+                    errorText: usdtErrorText ?? '',
+                    controller: _usdtAddressController,
+                    focusNode: _usdtAddressFocusNode,
+                    textLabel: 'USDT Address',
+                    hintText: 'Paste your USDT address here',
+                    showErrorWidget: usdtErrorText != null),
+                SizedBox(
+                  height: height10 * 4.8,
+                ),
+                ctaButton(
+                  onPressed: onPressedProceed,
+                  isGradient: true,
+                  text: 'Proceed',
+                )
+              ],
             ),
-            title: 'Withdrawal',
-            buttonText: 'History'),
-        body: backgroundContainer(
-            padding: EdgeInsets.symmetric(
-                horizontal: width08 * 2, vertical: height24 / 2),
-            child: SafeArea(
-              child: ListView(
-                children: [
-                  availableBalanceColumn(availableNetBalance),
-                  SizedBox(
-                    height: height24,
-                  ),
-                  withdrawalAmountContainer(
-                    controller: _amountController,
-                    minimumAmount: minimumAmount,
-                    onChangedAmount: onChangedAmount,
-                  ),
-                  SizedBox(
-                    height: height08,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: fullWithdrawalTextButton(
-                        onPressed: onPressedFullWithdrawal, isFull: isFull),
-                  ),
-                  SizedBox(
-                    height: height24,
-                  ),
-                  customInputTextfield(
-                      isRequired: true,
-                      focusNode: _usdtAddressFocusNode,
-                      textLabel: 'USDT Address',
-                      hintText: 'Paste your USDT address here',
-                      showErrorWidget: false),
-                  SizedBox(
-                    height: height10 * 4.8,
-                  ),
-                  ctaButton(
-                    onPressed: onPressedProceed,
-                    isGradient: true,
-                    text: 'Proceed',
-                  )
-                ],
-              ),
-            )),
+          ),
+        ],
       ),
     );
   }

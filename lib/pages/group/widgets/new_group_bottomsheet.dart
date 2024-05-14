@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
+import 'package:ttpay/component/unfocus_gesturedetector.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
@@ -48,71 +49,75 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
       }
     }
 
-    return backgroundContainer(
-      padding:
-          EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(24),
-        topRight: Radius.circular(24),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          topBottomsheet(context, 'New Group'),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: height24),
-            child: customInputTextfield(
-              focusNode: _groupNameFocusNode,
-              textLabel: 'Group Name',
-              controller: _groupNameController,
-              showErrorWidget: groupNameErrorText != null,
-              errorText: groupNameErrorText ?? '',
+    return unfocusGestureDetector(
+      context,
+      child: backgroundContainer(
+        padding:
+            EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            topBottomsheet(context, 'New Group'),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: height24),
+              child: customInputTextfield(
+                focusNode: _groupNameFocusNode,
+                textLabel: 'Group Name',
+                controller: _groupNameController,
+                showErrorWidget: groupNameErrorText != null,
+                errorText: groupNameErrorText ?? '',
+              ),
             ),
-          ),
-          selectGroupColorColumn(
-              onTapColor: (color) {
-                setState(() {
-                  selectedColor = color;
-                  showRedBorderColor = false;
-                });
-              },
-              showRedColorBorder: showRedBorderColor,
-              colorList: colorList,
-              selectedColor: selectedColor),
-          SizedBox(height: height24),
-          ctaButton(
-              onPressed: () {
-                if (_groupNameController.text.isNotEmpty) {
-                  if (selectedColor != null) {
-                    Navigator.pop(
-                        context,
-                        Group(
-                            id: Random().nextInt(100000),
-                            name: _groupNameController.text,
-                            colorCode: colorToHex(selectedColor!),
-                            totalDepositNumber: 0,
-                            totalGrossDepositAmount: 0,
-                            totalNetDepositAmount: 0,
-                            totalWithdrawalNumber: 0,
-                            totalGrossWithdrawalAmount: 0,
-                            totalNetWithdrawalAmount: 0,
-                            transactionList: []));
+            selectGroupColorColumn(
+                onTapColor: (color) {
+                  setState(() {
+                    selectedColor = color;
+                    showRedBorderColor = false;
+                  });
+                },
+                showRedColorBorder: showRedBorderColor,
+                colorList: colorList,
+                selectedColor: selectedColor),
+            SizedBox(height: height24),
+            ctaButton(
+                onPressed: () {
+                  if (_groupNameController.text.isNotEmpty) {
+                    if (selectedColor != null) {
+                      Navigator.pop(
+                          context,
+                          Group(
+                              id: Random().nextInt(100000),
+                              name: _groupNameController.text,
+                              colorCode: colorToHex(selectedColor!),
+                              totalDepositNumber: 0,
+                              totalGrossDepositAmount: 0,
+                              totalNetDepositAmount: 0,
+                              totalWithdrawalNumber: 0,
+                              totalGrossWithdrawalAmount: 0,
+                              totalNetWithdrawalAmount: 0,
+                              transactionList: []));
+                    } else {
+                      setState(() {
+                        groupNameErrorText =
+                            groupNameValidator(_groupNameController.text);
+                        showRedBorderColor = true;
+                      });
+                    }
                   } else {
                     setState(() {
                       groupNameErrorText =
                           groupNameValidator(_groupNameController.text);
-                      showRedBorderColor = true;
                     });
                   }
-                } else {
-                  setState(() {
-                    groupNameErrorText =
-                        groupNameValidator(_groupNameController.text);
-                  });
-                }
-              },
-              text: 'Add')
-        ],
+                },
+                bgColor: primaryPurpleScale.shade700,
+                text: 'Add')
+          ],
+        ),
       ),
     );
   }

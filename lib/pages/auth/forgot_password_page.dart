@@ -51,7 +51,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             padding: EdgeInsets.symmetric(horizontal: width08 * 2),
             child: ListView(
               children: [
-                languageIconButton(context),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: height20),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: languageIconButton(context),
+                  ),
+                ),
                 titleColumn(
                     iconAddress: 'assets/login_icon_image/Lock.png',
                     title: 'Forgot password?',

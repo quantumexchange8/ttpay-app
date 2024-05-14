@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
 import 'package:ttpay/component/warning_dialog.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -82,6 +81,28 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     ];
 
+    void onTapAddAccount() {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(
+              topRightWidget: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.close,
+                  size: height24,
+                  color: Colors.white,
+                ),
+              ),
+              onLogin: () {
+                Navigator.pop(context);
+              },
+            ),
+          ));
+    }
+
     void onTapLogout() async {
       await showWarningDialog(
               context: context,
@@ -99,52 +120,61 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     }
 
-    return Scaffold(
-      appBar: twoSimpleAppbar(
-          title: 'My Profile',
-          onPressedButton: () {
-            customShowModalBottomSheet(
-              context: context,
-              builder: (context) => const EditProfilePhotoBottomsheet(),
-            ).then((file) {
-              setState(() {
-                profilePhoto = file;
-              });
-            });
-          },
-          leftButtonIcon: Padding(
-            padding: EdgeInsets.only(right: width08),
-            child: Image.asset(
-              'assets/icon_image/edit_icon.png',
-              height: height08 * 2,
-              fit: BoxFit.fitHeight,
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding:
+                EdgeInsets.fromLTRB(width08 * 2, 0, width08 * 2, height24 / 2),
+            child: twoSimpleAppbar(
+                title: 'My Profile',
+                onPressedButton: () {
+                  customShowModalBottomSheet(
+                    context: context,
+                    builder: (context) => const EditProfilePhotoBottomsheet(),
+                  ).then((file) {
+                    if (mounted) {
+                      setState(() {
+                        profilePhoto = file;
+                      });
+                    }
+                  });
+                },
+                leftButtonIcon: Padding(
+                  padding: EdgeInsets.only(right: width08),
+                  child: Image.asset(
+                    'assets/icon_image/edit_icon.png',
+                    height: height08 * 2,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+                buttonText: 'Profile Photo'),
+          ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                  horizontal: width08 * 2, vertical: height24 / 2),
+              children: [
+                profilePhotoRow(
+                    profilePhotoAddress: profilePhoto,
+                    profileName: profile.name,
+                    profileId: profile.profileId),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: height20),
+                  child: profileDetailsContainer(details),
+                ),
+                accountListContainer(
+                    onTapAddAccount: onTapAddAccount,
+                    userAccounts: userAccount),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: height20),
+                  child: settingListContainer(accountSettings: accountSettings),
+                ),
+                InkWell(onTap: onTapLogout, child: logoutContainer)
+              ],
             ),
           ),
-          buttonText: 'Profile Photo'),
-      extendBodyBehindAppBar: true,
-      body: backgroundContainer(
-        child: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.symmetric(
-                horizontal: width08 * 2, vertical: height24 / 2),
-            children: [
-              profilePhotoRow(
-                  profilePhotoAddress: profilePhoto,
-                  profileName: profile.name,
-                  profileId: profile.profileId),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: height20),
-                child: profileDetailsContainer(details),
-              ),
-              accountListContainer(userAccounts: userAccount),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: height20),
-                child: settingListContainer(accountSettings: accountSettings),
-              ),
-              InkWell(onTap: onTapLogout, child: logoutContainer)
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }

@@ -24,7 +24,6 @@ Future<void> editImageFromGallery({
         await mediaList.first.getFile().then((photo) async {
           await decodeImageFromList(await photo.readAsBytes())
               .then((decodedImage) {
-            Navigator.pop(context);
             Navigator.push(
                 context,
                 MaterialPageRoute(

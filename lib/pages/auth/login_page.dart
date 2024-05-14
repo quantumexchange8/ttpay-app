@@ -8,12 +8,15 @@ import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/helper/validator.dart';
+import 'package:ttpay/pages/app_layout.dart';
 import 'package:ttpay/pages/auth/forgot_password_page.dart';
 import 'package:ttpay/pages/auth/login_widgets/title_column.dart';
 import 'package:ttpay/pages/auth/widgets.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final Widget? topRightWidget;
+  final void Function()? onLogin;
+  const LoginPage({super.key, this.topRightWidget, this.onLogin});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -30,13 +33,19 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    void login() {}
-
     void forgotPassword() {
       Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => const ForgotPasswordPage(),
+          ));
+    }
+
+    void login() {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AppLayout(),
           ));
     }
 
@@ -48,7 +57,13 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.symmetric(horizontal: width08 * 2),
           child: ListView(
             children: [
-              languageIconButton(context),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: height20),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: widget.topRightWidget ?? languageIconButton(context),
+                ),
+              ),
               titleColumn(
                   iconAddress: 'assets/login_icon_image/ttpay-logo.png',
                   title: 'Merchant Portal',
@@ -98,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               ctaButton(
-                  onPressed: login,
+                  onPressed: widget.onLogin ?? login,
                   padding: EdgeInsets.symmetric(
                     horizontal: width20,
                     vertical: height08 * 2,

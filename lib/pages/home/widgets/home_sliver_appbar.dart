@@ -7,6 +7,8 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/home/widgets/notification_container.dart';
 
 SliverAppBarBuilder homeSliverAppbar({
+  void Function()? onTapProfile,
+  void Function()? onTapNoti,
   bool unreadNoti = false,
   required double netAmount,
   required double grossAmount,
@@ -24,6 +26,9 @@ SliverAppBarBuilder homeSliverAppbar({
         (context, expandRatio, contentHeight, centerPadding, overlapsContent) {
       if (contentHeight > height100 * 1.5) {
         return bigAppBar(
+            onTapProfile: onTapProfile,
+            onTapNoti: onTapNoti,
+            unreadNoti: unreadNoti,
             expandRatio: expandRatio,
             netAmount: netAmount,
             grossAmount: grossAmount,
@@ -31,6 +36,8 @@ SliverAppBarBuilder homeSliverAppbar({
       } else {
         return SafeArea(
           child: smallAppBar(
+              onTapNoti: onTapNoti,
+              unreadNoti: unreadNoti,
               netAmount: netAmount,
               grossAmount: grossAmount,
               feeAmount: feeAmount),
@@ -41,6 +48,8 @@ SliverAppBarBuilder homeSliverAppbar({
 }
 
 Widget bigAppBar({
+  void Function()? onTapNoti,
+  void Function()? onTapProfile,
   bool unreadNoti = false,
   required double netAmount,
   required double grossAmount,
@@ -48,7 +57,6 @@ Widget bigAppBar({
   required double expandRatio,
 }) {
   return Container(
-    height: height100 * 2.3,
     padding: EdgeInsets.symmetric(horizontal: width08 * 2),
     decoration: const ShapeDecoration(
       gradient: LinearGradient(
@@ -127,20 +135,25 @@ Widget bigAppBar({
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    notificationContainer(unreadNoti),
+                    InkWell(
+                        onTap: onTapNoti,
+                        child: notificationContainer(unreadNoti)),
                     SizedBox(height: height08),
-                    Container(
-                      padding: EdgeInsets.all(height24 / 4),
-                      decoration: ShapeDecoration(
-                        color: Colors.white.withOpacity(0.05),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                    InkWell(
+                      onTap: onTapProfile,
+                      child: Container(
+                        padding: EdgeInsets.all(height24 / 4),
+                        decoration: ShapeDecoration(
+                          color: Colors.white.withOpacity(0.05),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                         ),
-                      ),
-                      child: Image.asset(
-                        "assets/icon_image/merchant_pp.png",
-                        fit: BoxFit.fitHeight,
-                        height: height24,
+                        child: Image.asset(
+                          "assets/icon_image/merchant_pp.png",
+                          fit: BoxFit.fitHeight,
+                          height: height24,
+                        ),
                       ),
                     ),
                   ],
@@ -171,6 +184,7 @@ Widget bigAppBar({
 }
 
 Widget smallAppBar({
+  void Function()? onTapNoti,
   bool unreadNoti = false,
   required double netAmount,
   required double grossAmount,
@@ -180,7 +194,7 @@ Widget smallAppBar({
     padding:
         EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height10 * 1.4),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.05000000074505806),
+      color: Colors.white.withOpacity(0.05),
     ),
     child: Row(
       children: [
@@ -202,7 +216,7 @@ Widget smallAppBar({
             ],
           ),
         ),
-        notificationContainer(unreadNoti)
+        InkWell(onTap: onTapNoti, child: notificationContainer(unreadNoti))
       ],
     ),
   );

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
@@ -12,7 +13,7 @@ BottomSheet changeLanguageBottomsheet({
   return BottomSheet(
     onClosing: () {},
     enableDrag: false,
-    backgroundColor: neutralGrayScale.shade900,
+    backgroundColor: Colors.black,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(24),
@@ -20,51 +21,63 @@ BottomSheet changeLanguageBottomsheet({
       ),
     ),
     builder: (context) {
-      return Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Language',
-                  style: textMd.copyWith(fontWeight: FontWeight.w700),
-                ),
-                Icon(
-                  Icons.close,
-                  size: height20,
-                  color: neutralGrayScale.shade400,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: height24,
-            ),
-            ...languageList.mapIndexed((i, e) {
-              Locale locale = e['locale'];
-
-              return Column(
-                mainAxisSize: MainAxisSize.min,
+      return backgroundContainer(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+        child: Container(
+          padding:
+              EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+              ),
+              color: Colors.white.withOpacity(0.05)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Get.updateLocale(locale);
-                    },
-                    borderRadius: BorderRadius.circular(5),
-                    child: _languageRow(
-                        languageName: e['language_name'],
-                        isSelected:
-                            Get.locale?.countryCode == locale.countryCode),
+                  Text(
+                    'Language',
+                    style: textMd.copyWith(fontWeight: FontWeight.w700),
                   ),
-                  if (!isLast(i, languageList))
-                    Divider(color: neutralGrayScale.shade900),
+                  Icon(
+                    Icons.close,
+                    size: height20,
+                    color: neutralGrayScale.shade400,
+                  ),
                 ],
-              );
-            })
-          ],
+              ),
+              SizedBox(
+                height: height24,
+              ),
+              ...languageList.mapIndexed((i, e) {
+                Locale locale = e['locale'];
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Get.updateLocale(locale);
+                      },
+                      borderRadius: BorderRadius.circular(5),
+                      child: _languageRow(
+                          languageName: e['language_name'],
+                          isSelected:
+                              Get.locale?.countryCode == locale.countryCode),
+                    ),
+                    if (!isLast(i, languageList))
+                      Divider(color: neutralGrayScale.shade900),
+                  ],
+                );
+              })
+            ],
+          ),
         ),
       );
     },

@@ -287,7 +287,7 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
             height: height24,
           ),
           bottomSheetBelowButtonRow(
-            onPressedApply: () {
+            onPressedReset: () {
               setState(() {
                 firstDatePicked =
                     DateTime(DateTime.now().year, DateTime.now().month, 1);
@@ -295,7 +295,7 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
                 pickedDateList = [firstDatePicked, lastDatePicked];
               });
             },
-            onPressedReset: () {
+            onPressedApply: () {
               Navigator.pop(context, [firstDatePicked, lastDatePicked]);
             },
           )

@@ -21,7 +21,6 @@ class GroupDetailPage extends StatefulWidget {
 }
 
 class _GroupDetailPageState extends State<GroupDetailPage> {
-  final TextEditingController _searchController = TextEditingController();
   String selectedTab = 'All';
   DateTime startDatePicked =
       DateTime(DateTime.now().year, DateTime.now().month, 1);
@@ -56,44 +55,53 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    switch (selectedTab) {
-      case 'Deposit':
-        currentTransaction = widget.group.transactionList
-            .where((element) => element.transactionType == 'deposit')
-            .toList();
-      case 'Withdrawal':
-        currentTransaction = widget.group.transactionList
-            .where((element) => element.transactionType == 'withdrawal')
-            .toList();
-        break;
-      default:
-        currentTransaction = widget.group.transactionList;
+    //switch tab filter
+    if (selectedTab == 'All') {
+      currentTransaction = widget.group.transactionList;
+    } else {
+      currentTransaction = widget.group.transactionList
+          .where(
+              (element) => element.transactionType == selectedTab.toLowerCase())
+          .toList();
     }
 
-    for (var element in currentTransaction) {
-      if (pinnedTransaction.contains(element)) {
-        currentTransaction.remove(element);
-        currentTransaction.insert(0, element);
-      }
-    }
-
+    //status filter
     currentTransaction = currentTransaction
         .where((element) => selectedStatus.contains(element.status))
         .toList();
+
+    //amount range filter
     currentTransaction = currentTransaction
         .where((element) =>
             element.amount >= startAmount && element.amount <= endAmount)
         .toList();
 
-    if (_searchController.text.isNotEmpty) {
-      currentTransaction = currentTransaction
-          .where(
-            (element) => element.transactionNumber
-                .toLowerCase()
-                .contains(_searchController.text.toLowerCase()),
-          )
-          .toList();
+    //filter date
+    currentTransaction = currentTransaction
+        .where((element) =>
+            element.createdAt.isAfter(
+                startDatePicked.subtract(const Duration(seconds: 1))) &&
+            element.createdAt
+                .isBefore(lastDatePicked.add(const Duration(seconds: 1))))
+        .toList();
+
+    //sort latest date first
+    if (currentTransaction.length > 1) {
+      currentTransaction.sort(
+        (a, b) => b.createdAt.compareTo(a.createdAt),
+      );
     }
+
+    if (pinnedTransaction.length > 1) {
+      pinnedTransaction.sort(
+        (a, b) => b.createdAt.compareTo(a.createdAt),
+      );
+    }
+
+    //pinned first
+    currentTransaction
+        .removeWhere((element) => pinnedTransaction.contains(element));
+    currentTransaction.insertAll(0, pinnedTransaction);
 
     void onTapTab(String tabName) {
       setState(() {
@@ -154,6 +162,8 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                 startDatePicked: startDatePicked,
                 lastDatePicked: lastDatePicked),
             SliverList.builder(
+              addAutomaticKeepAlives: false,
+              addRepaintBoundaries: false,
               itemCount: currentTransaction.length,
               itemBuilder: (context, index) {
                 final transaction = currentTransaction[index];

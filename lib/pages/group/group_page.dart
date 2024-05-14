@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/empty_image_column.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
 import 'package:ttpay/component/warning_dialog.dart';
@@ -60,52 +59,64 @@ class _GroupPageState extends State<GroupPage> {
       });
     }
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: twoSimpleAppbar(
-        buttonText: 'New Group',
-        onPressedButton: onPressedNewGroup,
-        leftButtonIcon: Padding(
-          padding: EdgeInsets.only(right: width24 / 4),
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-            size: height08 * 2,
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding:
+                EdgeInsets.fromLTRB(width08 * 2, 0, width08 * 2, height24 / 2),
+            child: twoSimpleAppbar(
+              buttonText: 'New Group',
+              onPressedButton: onPressedNewGroup,
+              leftButtonIcon: Padding(
+                padding: EdgeInsets.only(right: width24 / 4),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: height08 * 2,
+                ),
+              ),
+              title: 'Groups',
+            ),
           ),
-        ),
-        title: 'Groups',
-      ),
-      body: backgroundContainer(
-          child: currentGroupList.isNotEmpty
-              ? ListView.builder(
-                  itemCount: currentGroupList.length,
-                  itemBuilder: (context, index) {
-                    final group = currentGroupList[index];
+          currentGroupList.isNotEmpty
+              ? Expanded(
+                  child: ListView.builder(
+                    itemCount: currentGroupList.length,
+                    itemBuilder: (context, index) {
+                      final group = currentGroupList[index];
 
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  GroupDetailPage(group: group),
-                            ));
-                      },
-                      child: groupsRow(
-                          onTapEdit: onTapEdit,
-                          onTapDelete: () async {
-                            onTapDeleteGroup(group);
-                          },
-                          group: group),
-                    );
-                  },
-                  physics: const AlwaysScrollableScrollPhysics(),
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    GroupDetailPage(group: group),
+                              ));
+                        },
+                        child: groupsRow(
+                            onTapEdit: onTapEdit,
+                            onTapDelete: () async {
+                              onTapDeleteGroup(group);
+                            },
+                            group: group),
+                      );
+                    },
+                    physics: const AlwaysScrollableScrollPhysics(),
+                  ),
                 )
-              : emptyImageColumn(
-                  imageAddress: 'assets/images/empty.png',
-                  title: 'No Groups Created Yet!',
-                  description:
-                      'It seems like you haven\'t created any groups yet. Start by creating your first one now! 🌟')),
+              : Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: height30 * 2, horizontal: width08 * 2),
+                  child: emptyImageColumn(
+                      imageAddress: 'assets/images/empty.png',
+                      title: 'No Groups Created Yet!',
+                      description:
+                          'It seems like you haven\'t created any groups yet. Start by creating your first one now! 🌟'),
+                ),
+        ],
+      ),
     );
   }
 }

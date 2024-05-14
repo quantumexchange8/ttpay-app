@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/pinnable_list.dart';
-import 'package:ttpay/component/unfocus_gesturedetector.dart';
+import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/dummyData/transactions_history.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/models/transaction.dart';
+import 'package:ttpay/pages/home/widgets/no_transactions_found_column.dart';
 import 'package:ttpay/pages/home/widgets/transaction_row.dart';
 import 'package:ttpay/pages/transaction/transaction_detail_page.dart';
 import 'package:ttpay/pages/transaction/widgets/date_picker.dart';
@@ -24,7 +24,8 @@ class _TransactionPageState extends State<TransactionPage> {
   String selectedTab = 'All';
   DateTime startDatePicked =
       DateTime(DateTime.now().year, DateTime.now().month, 1);
-  DateTime lastDatePicked = DateTime.now();
+  DateTime lastDatePicked = DateTime(DateTime.now().year, DateTime.now().month,
+      determineTotalDaysOfMonth(DateTime.now().month));
   final allTransactions = listTransactionFromListMap(dummyTransactions);
   List<Transaction> currentTransaction = [];
   List<Transaction> pinnedTransaction = [];
@@ -55,44 +56,66 @@ class _TransactionPageState extends State<TransactionPage> {
 
   @override
   Widget build(BuildContext context) {
-    switch (selectedTab) {
-      case 'Deposit':
-        currentTransaction = allTransactions
-            .where((element) => element.transactionType == 'deposit')
-            .toList();
-      case 'Withdrawal':
-        currentTransaction = allTransactions
-            .where((element) => element.transactionType == 'withdrawal')
-            .toList();
-        break;
-      default:
-        currentTransaction = allTransactions;
+    //tab filter
+    if (selectedTab == 'All') {
+      currentTransaction = allTransactions;
+    } else {
+      currentTransaction = allTransactions
+          .where(
+              (element) => element.transactionType == selectedTab.toLowerCase())
+          .toList();
     }
 
-    for (var element in currentTransaction) {
-      if (pinnedTransaction.contains(element)) {
-        currentTransaction.remove(element);
-        currentTransaction.insert(0, element);
-      }
-    }
+    //filter date
+    currentTransaction = currentTransaction
+        .where((element) =>
+            element.createdAt.isAfter(
+                startDatePicked.subtract(const Duration(seconds: 1))) &&
+            element.createdAt
+                .isBefore(lastDatePicked.add(const Duration(seconds: 1))))
+        .toList();
 
+    //status filter
     currentTransaction = currentTransaction
         .where((element) => selectedStatus.contains(element.status))
         .toList();
+    //amount range filter
     currentTransaction = currentTransaction
         .where((element) =>
             element.amount >= startAmount && element.amount <= endAmount)
         .toList();
 
+    //search filter
     if (_searchController.text.isNotEmpty) {
-      currentTransaction = currentTransaction
-          .where(
-            (element) => element.transactionNumber
-                .toLowerCase()
-                .contains(_searchController.text.toLowerCase()),
-          )
-          .toList();
+      currentTransaction = currentTransaction.where(
+        (element) {
+          final searchText = _searchController.text.toLowerCase();
+
+          return element.transactionNumber.toLowerCase().contains(searchText) ||
+              element.userInfo.name.toLowerCase().contains(searchText) ||
+              element.userInfo.email.toLowerCase().contains(searchText);
+        },
+      ).toList();
     }
+
+    //sort latest date first
+    if (currentTransaction.length > 1) {
+      currentTransaction.sort(
+        (a, b) => b.createdAt.compareTo(a.createdAt),
+      );
+    }
+
+    if (pinnedTransaction.length > 1) {
+      pinnedTransaction.sort(
+        (a, b) => b.createdAt.compareTo(a.createdAt),
+      );
+    }
+
+    //pinned first
+    currentTransaction.removeWhere(
+      (element) => pinnedTransaction.contains(element),
+    );
+    currentTransaction.insertAll(0, pinnedTransaction);
 
     void onTapTab(String tabName) {
       setState(() {
@@ -148,56 +171,62 @@ class _TransactionPageState extends State<TransactionPage> {
       });
     }
 
-    return unfocusGestureDetector(
-      context,
-      child: Scaffold(
-        body: backgroundContainer(
-            child: CustomScrollView(
-          slivers: [
-            transactionTopBar(
-                selectedTab: selectedTab,
-                onTapTab: onTapTab,
-                onChangedSearch: onChangedSearch,
-                onTapDatePicker: onTapDatePicker,
-                onTapFilter: onTapFilter,
-                onTapClear: onTapClear,
-                searchController: _searchController,
-                startDatePicked: startDatePicked,
-                lastDatePicked: lastDatePicked),
-            SliverList.builder(
-              itemCount: currentTransaction.length,
-              itemBuilder: (context, index) {
-                final transaction = currentTransaction[index];
-                bool isPinned = pinnedTransaction.contains(transaction);
-                return pinnableList(
-                  onPressedPin: () {
-                    setState(() {
-                      if (isPinned) {
-                        pinnedTransaction.remove(transaction);
-                      } else {
-                        pinnedTransaction.add(transaction);
-                      }
-                    });
-                  },
-                  child: InkWell(
-                    onTap: () async {
-                      await customShowModalBottomSheet(
-                        context: context,
-                        builder: (context) =>
-                            TransactionDetailPage(transaction: transaction),
-                      );
+    return CustomScrollView(
+      slivers: [
+        transactionTopBar(
+            selectedTab: selectedTab,
+            onTapTab: onTapTab,
+            onChangedSearch: onChangedSearch,
+            onTapDatePicker: onTapDatePicker,
+            onTapFilter: onTapFilter,
+            onTapClear: onTapClear,
+            searchController: _searchController,
+            startDatePicked: startDatePicked,
+            lastDatePicked: lastDatePicked),
+        currentTransaction.isEmpty
+            ? SliverList(
+                delegate: SliverChildListDelegate.fixed([
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      vertical: height20 * 2, horizontal: width08 * 2),
+                  child: noTransactionsColumn,
+                )
+              ]))
+            : SliverList.builder(
+                addAutomaticKeepAlives: false,
+                addRepaintBoundaries: false,
+                itemCount: currentTransaction.length,
+                itemBuilder: (context, index) {
+                  final transaction = currentTransaction[index];
+                  bool isPinned = pinnedTransaction.contains(transaction);
+                  return pinnableList(
+                    onPressedPin: () {
+                      setState(() {
+                        if (isPinned) {
+                          pinnedTransaction.remove(transaction);
+                        } else {
+                          pinnedTransaction.add(transaction);
+                        }
+                      });
                     },
-                    child: transactionRow(
-                        isPinned: isPinned,
-                        transaction: transaction,
-                        isLast: isLast(index, currentTransaction)),
-                  ),
-                );
-              },
-            )
-          ],
-        )),
-      ),
+                    isPinned: isPinned,
+                    child: InkWell(
+                      onTap: () async {
+                        await customShowModalBottomSheet(
+                          context: context,
+                          builder: (context) =>
+                              TransactionDetailPage(transaction: transaction),
+                        );
+                      },
+                      child: transactionRow(
+                          isPinned: isPinned,
+                          transaction: transaction,
+                          isLast: isLast(index, currentTransaction)),
+                    ),
+                  );
+                },
+              )
+      ],
     );
   }
 }

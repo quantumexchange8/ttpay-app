@@ -7,7 +7,9 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:slideable/slideable.dart';
 
 Slideable pinnableList(
-        {required void Function() onPressedPin, required Widget child}) =>
+        {required void Function() onPressedPin,
+        bool isPinned = false,
+        required Widget child}) =>
     Slideable(
       items: [
         ActionItems(
@@ -17,12 +19,15 @@ Slideable pinnableList(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/icon_image/Icon=pin.png',
+                isPinned
+                    ? 'assets/icon_image/Icon=unpin.png'
+                    : 'assets/icon_image/Icon=pin.png',
                 height: height24,
                 fit: BoxFit.fitHeight,
               ),
               SizedBox(height: height08 / 2),
-              Text('Pin', textAlign: TextAlign.center, style: textXS),
+              Text(isPinned ? 'Unpin' : 'Pin',
+                  textAlign: TextAlign.center, style: textXS),
             ],
           ),
         )

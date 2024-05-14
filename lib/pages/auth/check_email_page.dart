@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
@@ -22,7 +21,7 @@ class CheckEmailPage extends StatelessWidget {
         await OpenMailApp.openMailApp().then((result) {
           if (!result.didOpen && !result.canOpen) {
             showToastNotification(context,
-                type: 'error', title: 'Email app not found');
+                type: 'error', title: 'No mail apps installed');
 
             // iOS: if multiple mail apps found, show dialog to select.
             // There is no native intent/default app system in iOS so
@@ -55,7 +54,13 @@ class CheckEmailPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: width08 * 2),
           child: ListView(
             children: [
-              languageIconButton(context),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: height20),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: languageIconButton(context),
+                ),
+              ),
               titleColumn(
                   iconAddress: 'assets/login_icon_image/Messages.png',
                   title: 'Check your email',
