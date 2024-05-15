@@ -54,12 +54,16 @@ class EditProfilePhotoBottomsheet extends StatelessWidget {
       {
         'on_tap': () async {
           await availableCameras().then((cameras) {
-            Navigator.pop(context);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TakePhotoPage(cameras: cameras),
-                ));
+            if (cameras.isNotEmpty) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TakePhotoPage(cameras: cameras),
+                  ));
+            } else {
+              showToastNotification(context,
+                  type: 'error', title: 'No camera found');
+            }
           });
         },
         'icon_address': 'assets/icon_image/Icon=camera.png',

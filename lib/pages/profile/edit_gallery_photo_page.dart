@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:math';
-
+import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
 import 'package:gallery_picker/gallery_picker.dart';
 import 'package:intl/intl.dart';
@@ -56,12 +56,20 @@ class _EditGalleryPhotoPageState extends State<EditGalleryPhotoPage> {
       try {
         final Directory tempDir = await getTemporaryDirectory();
 
-        await zoomController.getCurrentCropImageBytes().then((value) {
-          File file = File(
-              '${tempDir.path}/${DateFormat('ddMMyy').format(DateTime.now())}${Random(1000)}.png');
-          file.writeAsBytesSync(value);
-          Navigator.pop(context);
-          Navigator.pop(context, file);
+        await getCurrentCropImageBytes(zoomController).then((cropBytes) {
+          if (cropBytes != null) {
+            File file = File(
+                '${tempDir.path}/IMG${DateFormat('yyMMddHHmmss').format(DateTime.now())}.png');
+            file.writeAsBytesSync(cropBytes);
+            Navigator.pop(context);
+            Navigator.pop(context, file);
+          } else {
+            showToastNotification(
+              context,
+              type: 'error',
+              title: 'Image format is not supported',
+            );
+          }
         });
       } on Exception catch (e) {
         print(e.toString());
@@ -123,5 +131,28 @@ class _EditGalleryPhotoPageState extends State<EditGalleryPhotoPage> {
             ),
           )),
     );
+  }
+}
+
+Future<Uint8List?> getCurrentCropImageBytes(
+    ZoomableImageCropperController zoomController) async {
+  final bytes = await zoomController.image.file.readAsBytes();
+  img.Image? image = img.decodeImage(bytes);
+  final transformations = zoomController.mediaTransformer
+      .getImageTransformations(zoomController.transformationController);
+  final x = transformations.cropPosition.left.toInt();
+  final y = transformations.cropPosition.top.toInt();
+  final height = transformations.height.toInt();
+  final width = transformations.width.toInt();
+
+  if (image != null) {
+    img.Image cropped =
+        img.copyCrop(image, x: x, y: y, height: height, width: width);
+
+    final encoder = img.JpegEncoder();
+
+    return encoder.encode(cropped);
+  } else {
+    return null;
   }
 }

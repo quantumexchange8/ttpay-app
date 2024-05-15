@@ -125,21 +125,23 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
       }
     }
 
-    void onTapCapture() {
-      takePicture().then((XFile? file) async {
+    void onTapCapture() async {
+      await takePicture().then((XFile? file) async {
         if (file != null) {
           FileImage saveFile = FileImage(File(file.path));
-          var decodedImage =
-              await decodeImageFromList(await file.readAsBytes());
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EditGalleryPhotoPage(
-                    image: saveFile,
-                    aspectRatio: (decodedImage.width / decodedImage.height),
-                    imageWidth: decodedImage.width,
-                    imageHeight: decodedImage.height),
-              ));
+
+          await decodeImageFromList(await file.readAsBytes())
+              .then((decodedImage) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditGalleryPhotoPage(
+                      image: saveFile,
+                      aspectRatio: (decodedImage.width / decodedImage.height),
+                      imageWidth: decodedImage.width,
+                      imageHeight: decodedImage.height),
+                ));
+          });
         }
       });
     }

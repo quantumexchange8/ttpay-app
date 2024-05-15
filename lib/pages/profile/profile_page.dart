@@ -133,10 +133,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     context: context,
                     builder: (context) => const EditProfilePhotoBottomsheet(),
                   ).then((file) {
-                    if (mounted) {
-                      setState(() {
-                        profilePhoto = file;
-                      });
+                    if (file != null) {
+                      if (mounted) {
+                        setState(() {
+                          profilePhoto = file;
+                        });
+                      }
                     }
                   });
                 },
