@@ -9,20 +9,25 @@ Widget searchBar({
   void Function()? onTapClear,
 }) {
   return SearchBar(
+    textInputAction: TextInputAction.search,
+    onSubmitted: onChanged,
     leading: Padding(
-      padding: EdgeInsets.all(height24 / 2),
+      padding: EdgeInsets.symmetric(
+        vertical: height10,
+      ),
       child: Image.asset('assets/icon_image/grey_search_icon.png'),
     ),
     backgroundColor: MaterialStatePropertyAll(Colors.white.withOpacity(0.1)),
     constraints: BoxConstraints(
       minWidth: width100 * 3,
-      minHeight: height10 * 4,
       maxHeight: height10 * 4,
     ),
     controller: controller,
     hintText: 'Search',
     hintStyle: MaterialStatePropertyAll(
-      textMd.copyWith(color: neutralGrayScale),
+      textMd.copyWith(
+        color: neutralGrayScale,
+      ),
     ),
     onChanged: onChanged,
     shape: MaterialStateProperty.resolveWith((states) {
@@ -47,7 +52,7 @@ Widget searchBar({
         GestureDetector(
           onTap: onTapClear,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.symmetric(vertical: height10),
             child: Image.asset('assets/icon_image/clear_icon.png'),
           ),
         )

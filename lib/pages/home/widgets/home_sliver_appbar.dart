@@ -177,6 +177,9 @@ Widget bigAppBar({
                   subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
             ],
           ),
+          SizedBox(
+            height: height24,
+          )
         ],
       ),
     ),

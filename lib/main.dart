@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       locale: const Locale('en', 'UK'),
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'TTPAY',
       navigatorObservers: [ClearFocusOnPop()],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
