@@ -1,5 +1,11 @@
 import 'dart:convert';
 
+List<NotificationClass> listNotificationFromJson(String json) {
+  List data = jsonDecode(json);
+  return List<NotificationClass>.from(
+      data.map((e) => NotificationClass.fromMap(e)));
+}
+
 List<NotificationClass> listNotificationClassFromListMap(
     List<Map<String, dynamic>> notificationClassList) {
   return List<NotificationClass>.from(

@@ -2,6 +2,11 @@ import 'dart:convert';
 
 import 'package:ttpay/models/transaction.dart';
 
+List<Group> listGroupFromJson(String json) {
+  List data = jsonDecode(json);
+  return List<Group>.from(data.map((e) => Group.fromMap(e)));
+}
+
 List<Group> listGroupFromListMap(List<Map<String, dynamic>> transactionList) {
   return List<Group>.from(transactionList.map((e) => Group.fromMap(e)));
 }
