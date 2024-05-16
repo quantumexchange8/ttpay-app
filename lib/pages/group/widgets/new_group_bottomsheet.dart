@@ -52,8 +52,8 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
     return unfocusGestureDetector(
       context,
       child: backgroundContainer(
-        padding:
-            EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
+        padding: EdgeInsets.fromLTRB(width08 * 2, height24, width08 * 2,
+            MediaQuery.of(context).viewInsets.bottom),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -115,7 +115,10 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
                   }
                 },
                 bgColor: primaryPurpleScale.shade700,
-                text: 'Add')
+                text: 'Add'),
+            SizedBox(
+              height: height24,
+            )
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -115,31 +116,55 @@ Column groupRow({
   );
 }
 
-BottomSheet pinUnderBottomsheet({
-  required List<Group> groupList,
-}) {
-  return BottomSheet(
-    enableDrag: false,
-    onClosing: () {},
-    builder: (context) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          topBottomsheet(context, 'Pin Under'),
-          SizedBox(
-            height: height24,
+class PinUnderBottomsheet extends StatelessWidget {
+  final List<Group> groupList;
+  final void Function()? onPressedCreateGroup;
+  final void Function(Group group) onTapGroup;
+  const PinUnderBottomsheet(
+      {super.key,
+      required this.groupList,
+      this.onPressedCreateGroup,
+      required this.onTapGroup});
+
+  @override
+  Widget build(BuildContext context) {
+    return backgroundContainer(
+      borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+      child: Container(
+        padding:
+            EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.05),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              topBottomsheet(context, 'Pin Under'),
+              SizedBox(
+                height: height24,
+              ),
+              if (groupList.isNotEmpty)
+                ...groupList.mapIndexed((i, group) => InkWell(
+                      onTap: () {
+                        onTapGroup(group);
+                      },
+                      child: groupRow(
+                          isLast: isLast(i, groupList),
+                          groupColor: convertColorCode(group.colorCode),
+                          groupName: group.name),
+                    )),
+              if (groupList.isEmpty)
+                noGroupsCreatedColumn(
+                  onPressedCreateGroup: onPressedCreateGroup,
+                )
+            ],
           ),
-          if (groupList.isNotEmpty)
-            ...groupList.mapIndexed((i, group) => groupRow(
-                isLast: isLast(i, groupList),
-                groupColor: convertColorCode(group.colorCode),
-                groupName: group.name)),
-          if (groupList.isEmpty)
-            noGroupsCreatedColumn(
-              onPressedCreateGroup: () {},
-            )
-        ],
-      );
-    },
-  );
+        ),
+      ),
+    );
+  }
 }

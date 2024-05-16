@@ -43,6 +43,7 @@ class _AppLayoutState extends State<AppLayout> {
             const ProfilePage()
           ]),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton:
             bottomNavigationBar(onTap: onChangeTab, currentIndex: currentIndex),
       ),

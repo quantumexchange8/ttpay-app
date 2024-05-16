@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -8,8 +9,8 @@ Widget bottomNavigationBar({
   void Function(int)? onTap,
 }) {
   LinearGradient buttonGradient = LinearGradient(
-    begin: const Alignment(-0.71, -0.71),
-    end: const Alignment(0.71, 0.71),
+    begin: const Alignment(-0.71, 0.71),
+    end: const Alignment(0.71, -0.71),
     colors: [
       const Color(0xFF210077),
       primaryPurpleScale.shade600,
@@ -46,23 +47,30 @@ Widget bottomNavigationBar({
     },
   ];
 
-  return SnakeNavigationBar.gradient(
-    backgroundGradient: const RadialGradient(
-        colors: [Colors.black, Color(0xFFB5A6FF)], radius: 15),
-    snakeViewGradient: buttonGradient,
-    behaviour: SnakeBarBehaviour.floating,
-    currentIndex: currentIndex,
-    height: height10 * 7.2,
-    onTap: onTap,
-    shape: RoundedRectangleBorder(
+  return Container(
+    decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage('assets/images/bottom_nav_background.png'),
+            fit: BoxFit.fill)),
+    child: SnakeNavigationBar.gradient(
+      backgroundGradient: const RadialGradient(
+        colors: [Colors.transparent, Colors.transparent],
+      ),
+      snakeViewGradient: buttonGradient,
+      behaviour: SnakeBarBehaviour.floating,
+      currentIndex: currentIndex,
+      height: height10 * 7.2,
+      onTap: onTap,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100),
-        side: BorderSide(color: primaryPurpleScale.shade300)),
-    padding: EdgeInsets.fromLTRB(
-        width08 * 4, height24 / 2, width08 / 2, height24 / 2),
-    snakeShape: SnakeShape.circle,
-    items: items
-        .map((e) => BottomNavigationBarItem(
-            icon: e['icon'], activeIcon: e['active_icon']))
-        .toList(),
+      ),
+      padding: EdgeInsets.fromLTRB(
+          width08 * 2, height24 / 2, width08 * 2, height24 / 2),
+      snakeShape: SnakeShape.circle,
+      items: items
+          .map((e) => BottomNavigationBarItem(
+              icon: e['icon'], activeIcon: e['active_icon']))
+          .toList(),
+    ),
   );
 }
