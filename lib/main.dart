@@ -1,17 +1,34 @@
+import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/route_manager.dart';
-import 'package:splash_view/source/presentation/presentation.dart';
-import 'package:splash_view/source/source.dart';
+import 'package:get/get.dart';
+import 'package:ttpay/controller/controller.dart';
+import 'package:ttpay/controller/group_controller.dart';
+import 'package:ttpay/controller/transaction_controller.dart';
+import 'package:ttpay/controller/user_controller.dart';
+import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/app_layout.dart';
+import 'package:ttpay/pages/auth/login_page.dart';
 
 void main() {
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('assets/font/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+
+  Get.put(TransactionController());
+  Get.put(GroupController());
+  Get.put(UserController());
+
   Future.delayed(const Duration(milliseconds: 200)).then((val) {
     runApp(const MyApp());
   }, onError: (error) {});
 }
+
+final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -22,7 +39,35 @@ class MyApp extends StatelessWidget {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
 
+    Future<dynamic> asyncNavigationCallback() async {
+      final getTransactionErrorText =
+          await transactionController.getAllTransaction();
+      if (getTransactionErrorText != null) {
+        _navigatorKey.currentState?.pushReplacementNamed('login');
+        return;
+      }
+      final getGroupsErrorText = await groupController.getAllGroup();
+      if (getGroupsErrorText != null) {
+        _navigatorKey.currentState?.pushReplacementNamed('login');
+        return;
+      }
+      final getUserErrorText = await userController.getUser();
+      if (getUserErrorText != null) {
+        _navigatorKey.currentState?.pushReplacementNamed('login');
+        return;
+      }
+      final getAccountListErrorText = await userController.getAllAccounts();
+      if (getAccountListErrorText != null) {
+        _navigatorKey.currentState?.pushReplacementNamed('login');
+        return;
+      }
+
+      _navigatorKey.currentState?.pushReplacementNamed('app_layout');
+      return;
+    }
+
     return GetMaterialApp(
+      navigatorKey: _navigatorKey,
       locale: const Locale('en', 'UK'),
       debugShowCheckedModeBanner: false,
       title: 'TTPAY',
@@ -31,35 +76,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             background: Colors.transparent,
             surfaceTint: Colors.transparent,
-            seedColor: Colors.deepPurple),
+            seedColor: primaryPurpleScale),
         useMaterial3: true,
       ),
-      home: SplashView(
-          showStatusBar: true,
-          duration: const Duration(seconds: 2),
-          backgroundColor: Colors.black,
-          backgroundImageDecoration: const BackgroundImageDecoration(
-              image: AssetImage(
-                'assets/images/Background.png',
-              ),
-              fit: BoxFit.fitHeight),
-          logo: Image.asset(
-            'assets/login_icon_image/ttpay-logo.png',
-            fit: BoxFit.fitHeight,
-            height: height30 * 2,
-          ),
-          title: Padding(
-            padding: EdgeInsets.only(top: height20),
-            child: Text(
-              'Welcome to TTPAY! 👋',
-              style: textLg.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          done: Done(
-              animationDuration: const Duration(milliseconds: 300),
-              const AppLayout())),
+      home: splashScreen(
+        asyncNavigationCallback: asyncNavigationCallback,
+      ),
+      routes: {
+        'login': (context) => const LoginPage(),
+        'app_layout': (context) => const AppLayout(),
+      },
     );
   }
 }
@@ -73,4 +99,33 @@ class ClearFocusOnPop extends NavigatorObserver {
       SystemChannels.textInput.invokeMethod('TextInput.hide');
     });
   }
+}
+
+Widget splashScreen({Future<dynamic> Function()? asyncNavigationCallback}) {
+  return FlutterSplashScreen.fadeIn(
+      asyncNavigationCallback: asyncNavigationCallback,
+      backgroundImage: Image.asset(
+        'assets/images/Background.png',
+        fit: BoxFit.fill,
+      ),
+      backgroundColor: Colors.black,
+      childWidget: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            'assets/login_icon_image/ttpay-logo.png',
+            fit: BoxFit.fitHeight,
+            height: height30 * 2,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: height20),
+            child: Text(
+              'Welcome to TTPAY! 👋',
+              style: textLg.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          )
+        ],
+      ));
 }
