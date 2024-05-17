@@ -9,6 +9,7 @@ import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/helper/dimensions.dart';
+import 'package:ttpay/pages/profile/widgets/custom_zoomable_image_container.dart';
 import 'package:ttpay/pages/profile/widgets/profile_photo_appbar.dart';
 import 'package:zoomable_image_cropper/zoomable_image_cropper.dart';
 
@@ -115,7 +116,7 @@ class _EditGalleryPhotoPageState extends State<EditGalleryPhotoPage> {
           child: SafeArea(
             child: Column(
               children: [
-                ZoomableImageCropper(controller: zoomController),
+                CustomZoomableCropper(controller: zoomController),
                 SizedBox(
                   height: height20 * 2,
                 ),
