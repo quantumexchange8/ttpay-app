@@ -13,3 +13,8 @@ final NumberFormat amountFormatter = NumberFormat('#,##0.00', 'en_US');
 final NumberFormat amountFormatterWithoutDecimal =
     NumberFormat('#,##0', 'en_US');
 final DateFormat rowDateFormat = DateFormat('dd MMM yyyy HH:mm:ss');
+
+const showNotificationStorageKey = 'show_notification';
+const biometricPermissionStorageKey = 'biometric_permission';
+const devicePasscodeStorageKey = 'device_passcode';
+const showPreviewStrorageKey = 'show_preview';
