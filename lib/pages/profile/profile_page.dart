@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
 import 'package:ttpay/component/warning_dialog.dart';
+import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/dummyData/accounts.dart';
 import 'package:ttpay/helper/methods.dart';
@@ -33,6 +35,7 @@ User profile = User.fromMap({
 });
 
 class _ProfilePageState extends State<ProfilePage> {
+  final storage = const FlutterSecureStorage();
   dynamic profilePhoto = profile.profilePhoto;
 
   @override
@@ -44,6 +47,27 @@ class _ProfilePageState extends State<ProfilePage> {
       'Email': profile.email,
       'Phone Number': profile.phoneNumber ?? '-'
     };
+    void onOpenSettingPage() async {
+      bool biometricPermission = bool.parse(
+          await storage.read(key: biometricPermissionStorageKey) ?? 'false');
+      bool devicePasscodePermission = bool.parse(
+          await storage.read(key: devicePasscodeStorageKey) ?? 'false');
+      bool showPreview = bool.parse(
+          await storage.read(key: showPreviewStrorageKey) ?? 'false');
+      bool notificationPermission = bool.parse(
+          await storage.read(key: showNotificationStorageKey) ?? 'false');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SettingPage(
+              biometricPermission: biometricPermission,
+              devicePasscodePermission: devicePasscodePermission,
+              notificationPermission: notificationPermission,
+              showPreviews: showPreview,
+            ),
+          ));
+    }
 
     List<Map<String, dynamic>> accountSettings = [
       {
@@ -58,13 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
         'name': 'Language',
       },
       {
-        'on_tap': () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SettingPage(),
-              ));
-        },
+        'on_tap': onOpenSettingPage,
         'icon_address': 'assets/icon_image/grey_setting_icon.png',
         'name': 'Setting',
       },
