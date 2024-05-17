@@ -17,12 +17,12 @@ Widget ctaButton({
       borderRadius: BorderRadius.circular(100),
       gradient: isGradient
           ? LinearGradient(
-              begin: const Alignment(-0.71, -0.71),
-              end: const Alignment(0.71, 0.71),
+              begin: const Alignment(2, -1),
+              end: const Alignment(-2, 1),
               colors: [
-                const Color(0xFF210077),
-                primaryPurpleScale.shade600,
                 primaryPurpleScale.shade400,
+                primaryPurpleScale.shade600,
+                const Color(0xFF210077),
               ],
             )
           : null,
