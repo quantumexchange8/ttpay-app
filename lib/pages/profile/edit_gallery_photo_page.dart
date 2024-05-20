@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
@@ -73,7 +75,6 @@ class _EditGalleryPhotoPageState extends State<EditGalleryPhotoPage> {
           }
         });
       } on Exception catch (e) {
-        print(e.toString());
         showToastNotification(context,
             type: 'error', title: 'Error', description: e.toString());
         return;

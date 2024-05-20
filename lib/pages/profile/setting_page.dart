@@ -32,7 +32,6 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.notificationPermission) {
       selectedSetting.add('allow_notifications');
@@ -72,6 +71,7 @@ class _SettingPageState extends State<SettingPage> {
       if (selectedSetting.contains('device_passcode')) {
         await storage.write(key: devicePasscodeStorageKey, value: 'true');
       }
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
     }
 

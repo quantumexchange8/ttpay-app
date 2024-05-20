@@ -38,6 +38,7 @@ class CheckEmailPage extends StatelessWidget {
           }
         });
       } on Exception catch (e) {
+        // ignore: use_build_context_synchronously
         showToastNotification(context,
             persist: true,
             type: 'error',

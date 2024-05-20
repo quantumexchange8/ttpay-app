@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:camera/camera.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +74,6 @@ class EditProfilePhotoBottomsheet extends StatelessWidget {
       {
         'on_tap': () async {
           await Permission.photos.status.then((status) async {
-            print(status.toString());
             if (status.isGranted) {
               await editImageFromGallery(context: context);
             } else {
