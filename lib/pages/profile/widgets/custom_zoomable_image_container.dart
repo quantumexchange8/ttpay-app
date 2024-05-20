@@ -10,8 +10,6 @@ class CustomZoomableImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(controller.aspectRatio.toString());
-
     double scale = 1;
     if (controller.aspectRatio < 2) {
       scale = 1.3;
