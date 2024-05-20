@@ -13,7 +13,7 @@ void showToastNotification(
   String? description,
   bool? persist,
 }) {
-  final shadowColor;
+  Color shadowColor;
   Widget icon;
 
   switch (type) {

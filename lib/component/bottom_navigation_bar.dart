@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -48,7 +47,7 @@ Widget bottomNavigationBar({
   ];
 
   return Container(
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/images/bottom_nav_background.png'),
             fit: BoxFit.fill)),
@@ -64,8 +63,10 @@ Widget bottomNavigationBar({
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100),
       ),
-      padding: EdgeInsets.fromLTRB(
-          width08 * 2, height24 / 2, width08 * 2, height24 / 2),
+      padding: EdgeInsets.symmetric(
+        horizontal: width08 * 2,
+        vertical: height24 / 2,
+      ),
       snakeShape: SnakeShape.circle,
       items: items
           .map((e) => BottomNavigationBarItem(

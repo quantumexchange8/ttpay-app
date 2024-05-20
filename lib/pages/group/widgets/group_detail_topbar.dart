@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sliver_app_bar_builder/sliver_app_bar_builder.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/tab_picker_row.dart';
