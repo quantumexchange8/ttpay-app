@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/controller/group_controller.dart';
+import 'package:ttpay/controller/notification_controller.dart';
 import 'package:ttpay/controller/transaction_controller.dart';
 import 'package:ttpay/controller/user_controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
@@ -22,6 +23,7 @@ void main() {
   Get.put(TransactionController());
   Get.put(GroupController());
   Get.put(UserController());
+  Get.put(NotificationController());
 
   Future.delayed(const Duration(milliseconds: 200)).then((val) {
     runApp(const MyApp());
@@ -58,6 +60,12 @@ class MyApp extends StatelessWidget {
       }
       final getAccountListErrorText = await userController.getAllAccounts();
       if (getAccountListErrorText != null) {
+        _navigatorKey.currentState?.pushReplacementNamed('login');
+        return;
+      }
+      final getNotificationsErrorText =
+          await notificationController.getAllNotifications();
+      if (getNotificationsErrorText != null) {
         _navigatorKey.currentState?.pushReplacementNamed('login');
         return;
       }

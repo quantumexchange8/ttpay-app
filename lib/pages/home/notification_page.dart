@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/simple_appbar.dart';
-import 'package:ttpay/helper/dummyData/notifications_history.dart';
-import 'package:ttpay/models/notification.dart';
+import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/pages/home/notification_detail_page.dart';
 import 'package:ttpay/pages/home/notification_widgets/no_notification_column.dart';
 import 'package:ttpay/pages/home/notification_widgets/notification_row.dart';
@@ -12,9 +12,6 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notificationsList =
-        listNotificationClassFromListMap(dummyNotifications);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: simpleAppBar(
@@ -23,25 +20,31 @@ class NotificationPage extends StatelessWidget {
           },
           title: 'Notifications'),
       body: backgroundContainer(
-        child: notificationsList.isNotEmpty
-            ? ListView.builder(
-                itemCount: notificationsList.length,
-                itemBuilder: (context, index) {
-                  final notification = notificationsList[index];
+        child: Obx(() {
+          final notificationsList = notificationController.notificationList;
 
-                  return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => NotificationDetailPage(
-                                  notification: notification),
-                            ));
-                      },
-                      child: notificationRow(notification: notification));
-                },
-              )
-            : noNotificationColumn,
+          return notificationsList.isNotEmpty
+              ? ListView.builder(
+                  itemCount: notificationsList.length,
+                  itemBuilder: (context, index) {
+                    final notification = notificationsList[index];
+
+                    return InkWell(
+                        onTap: () {
+                          notificationController.readNotification(notification);
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NotificationDetailPage(
+                                    notification: notification),
+                              ));
+                        },
+                        child: notificationRow(notification: notification));
+                  },
+                )
+              : noNotificationColumn;
+        }),
       ),
     );
   }
