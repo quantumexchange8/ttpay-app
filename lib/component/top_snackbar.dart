@@ -56,6 +56,7 @@ void showToastNotification(
 
   return SmartSnackBars.showCustomSnackBar(
     context: context,
+    distanceToTravel: 8,
     animateFrom: AnimateFrom.fromTop,
     duration: duration ?? const Duration(seconds: 1, milliseconds: 500),
     persist: persist,
@@ -63,12 +64,38 @@ void showToastNotification(
       decoration: BoxDecoration(
         color: neutralGrayScale.shade900,
         borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x33000000),
+            blurRadius: 10,
+            offset: Offset(0, 8),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Color(0x1E000000),
+            blurRadius: 30,
+            offset: Offset(0, 6),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Color(0x23000000),
+            blurRadius: 24,
+            offset: Offset(0, 16),
+            spreadRadius: 0,
+          )
+        ],
       ),
       child: Container(
         padding: EdgeInsets.symmetric(
             horizontal: width08 * 2, vertical: height24 / 2),
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [shadowColor, Colors.transparent]),
+          gradient: LinearGradient(begin: const Alignment(-2, 0), stops: const [
+            0.2,
+            1,
+          ], colors: [
+            shadowColor,
+            Colors.transparent
+          ]),
           borderRadius: BorderRadius.circular(24),
         ),
         child: Row(

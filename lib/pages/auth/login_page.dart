@@ -118,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     horizontal: width20,
                     vertical: height08 * 2,
                   ),
+                  haveShadow: true,
                   isGradient: true,
                   text: 'Log In'),
               SizedBox(

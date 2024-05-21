@@ -11,20 +11,31 @@ Widget ctaButton({
   bool isGradient = false,
   Widget? leftIcon,
   EdgeInsetsGeometry? padding,
+  bool haveShadow = false,
 }) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(100),
       gradient: isGradient
           ? LinearGradient(
-              begin: const Alignment(2, -1),
-              end: const Alignment(-2, 1),
+              begin: const Alignment(0.05, -2),
+              end: const Alignment(-0.05, 2),
               colors: [
                 primaryPurpleScale.shade400,
                 primaryPurpleScale.shade600,
                 const Color(0xFF210077),
               ],
             )
+          : null,
+      boxShadow: haveShadow
+          ? [
+              const BoxShadow(
+                color: Color(0x663A03AF),
+                blurRadius: 20,
+                offset: Offset(0, 8),
+                spreadRadius: 0,
+              )
+            ]
           : null,
     ),
     child: FilledButton(

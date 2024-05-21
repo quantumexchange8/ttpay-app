@@ -1,6 +1,7 @@
+import 'dart:ui';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/checkbox.dart';
 import 'package:ttpay/component/top_snackbar.dart';
@@ -47,8 +48,8 @@ class _RiskDisclaimerDialogState extends State<RiskDisclaimerDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       insetPadding: EdgeInsets.symmetric(horizontal: width24 / 2),
-      child: backgroundContainer(
-        borderRadius: BorderRadius.circular(24),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
         child: Container(
           padding:
               EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),

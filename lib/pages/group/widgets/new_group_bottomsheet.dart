@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
@@ -137,11 +138,19 @@ Container groupColorContainer(
     decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
-        border: isPicked
-            ? Border.all(color: primaryPurpleScale.shade700, width: 3)
-            : showRedColorBorder
-                ? Border.all(color: errorRedScale.shade600, width: 3)
-                : null),
+        border: showRedColorBorder
+            ? Border.all(color: errorRedScale.shade600, width: 3)
+            : null),
+    child: isPicked
+        ? Entry.scale(
+            visible: isPicked,
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+              size: height10 * 3,
+            ),
+          )
+        : null,
   );
 }
 
