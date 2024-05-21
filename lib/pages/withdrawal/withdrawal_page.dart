@@ -188,6 +188,10 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
                 ),
                 ctaButton(
                   onPressed: onPressedProceed,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width20,
+                    vertical: height08 * 2,
+                  ),
                   isGradient: true,
                   text: 'Proceed',
                 )
