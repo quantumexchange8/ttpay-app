@@ -91,16 +91,16 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
                       Navigator.pop(
                           context,
                           Group(
-                              id: Random().nextInt(100000),
-                              name: _groupNameController.text,
-                              colorCode: colorToHex(selectedColor!),
-                              totalDepositNumber: 0,
-                              totalGrossDepositAmount: 0,
-                              totalNetDepositAmount: 0,
-                              totalWithdrawalNumber: 0,
-                              totalGrossWithdrawalAmount: 0,
-                              totalNetWithdrawalAmount: 0,
-                              transactionList: []));
+                            id: Random().nextInt(100000),
+                            name: _groupNameController.text,
+                            colorCode: colorToHex(selectedColor!),
+                            totalDepositNumber: 0,
+                            totalGrossDepositAmount: 0,
+                            totalNetDepositAmount: 0,
+                            totalWithdrawalNumber: 0,
+                            totalGrossWithdrawalAmount: 0,
+                            totalNetWithdrawalAmount: 0,
+                          ));
                     } else {
                       setState(() {
                         groupNameErrorText =
