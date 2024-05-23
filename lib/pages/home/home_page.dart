@@ -78,8 +78,12 @@ class _HomePageState extends State<HomePage> {
             (element) => element.createdAt.month == DateTime.now().month,
           )
           .toList();
+      currentTransactions.sort(
+        (a, b) => b.createdAt.compareTo(a.createdAt),
+      );
 
       return CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         slivers: [
           homeSliverAppbar(
             onTapProfile: onTapProfile,
