@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:sliver_app_bar_builder/sliver_app_bar_builder.dart';
 import 'package:ttpay/helper/color_pallete.dart';
@@ -15,6 +17,7 @@ SliverAppBarBuilder homeSliverAppbar({
   required double feeAmount,
 }) {
   return SliverAppBarBuilder(
+    pinned: true,
     leadingActions: const [],
     backgroundColorBar: Colors.transparent,
     backgroundColorAll: Colors.transparent,
@@ -34,14 +37,12 @@ SliverAppBarBuilder homeSliverAppbar({
             grossAmount: grossAmount,
             feeAmount: feeAmount);
       } else {
-        return SafeArea(
-          child: smallAppBar(
-              onTapNoti: onTapNoti,
-              unreadNoti: unreadNoti,
-              netAmount: netAmount,
-              grossAmount: grossAmount,
-              feeAmount: feeAmount),
-        );
+        return smallAppBar(
+            onTapNoti: onTapNoti,
+            unreadNoti: unreadNoti,
+            netAmount: netAmount,
+            grossAmount: grossAmount,
+            feeAmount: feeAmount);
       }
     },
   );
@@ -60,8 +61,9 @@ Widget bigAppBar({
     padding: EdgeInsets.symmetric(horizontal: width08 * 2),
     decoration: const ShapeDecoration(
       gradient: LinearGradient(
-        begin: Alignment(-0.68, -0.73),
-        end: Alignment(0.68, 0.73),
+        begin: Alignment(-0.68, 0.73),
+        end: Alignment(1.2, -0.73),
+        stops: [0.1, 0.9, 1],
         colors: [
           Color(0xFF210077),
           Color(0xFF6214FF),
@@ -80,6 +82,9 @@ Widget bigAppBar({
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: height05,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -194,34 +199,39 @@ Widget smallAppBar({
   required double grossAmount,
   required double feeAmount,
 }) {
-  return Container(
-    padding:
-        EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height10 * 1.4),
-    decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.05),
-    ),
-    child: Row(
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              _dataColumnSmall(
-                  title: 'Net Amount',
-                  subtitle: '\$ ${amountFormatter.format(netAmount)}'),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width08 * 2),
-                child: _dataColumnSmall(
-                    title: 'Gross Amount',
-                    subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
-              ),
-              _dataColumnSmall(
-                  title: 'Fee',
-                  subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
-            ],
-          ),
+  return ClipRRect(
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+            width08 * 2, height10 * 5, width08 * 2, height10 * 1.4),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.05),
         ),
-        InkWell(onTap: onTapNoti, child: notificationContainer(unreadNoti))
-      ],
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  _dataColumnSmall(
+                      title: 'Net Amount',
+                      subtitle: '\$ ${amountFormatter.format(netAmount)}'),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width08 * 2),
+                    child: _dataColumnSmall(
+                        title: 'Gross Amount',
+                        subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
+                  ),
+                  _dataColumnSmall(
+                      title: 'Fee',
+                      subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
+                ],
+              ),
+            ),
+            InkWell(onTap: onTapNoti, child: notificationContainer(unreadNoti))
+          ],
+        ),
+      ),
     ),
   );
 }
