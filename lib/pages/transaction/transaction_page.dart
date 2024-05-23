@@ -117,6 +117,37 @@ class _TransactionPageState extends State<TransactionPage> {
       });
     }
 
+    Future<void> onPressedPin(bool isPinned, Transaction transaction) async {
+      if (isPinned) {
+        final newTransaction = transaction;
+        newTransaction.pinnedGroup = null;
+        transactionController.updateTransaction(
+            id: transaction.id, newTransaction: newTransaction);
+      } else {
+        await customShowModalBottomSheet(
+          context: context,
+          builder: (context) => PinUnderBottomsheet(
+            onPressedCreateGroup: () async {
+              await customShowModalBottomSheet(
+                context: context,
+                builder: (context) => const NewGroupBottomsheet(),
+              ).then((newGroup) {
+                groupController.addGroup(newGroup);
+              });
+            },
+            onTapGroup: (group) {
+              Transaction newTransaction = transaction;
+              newTransaction.pinnedGroup = group;
+              transactionController.updateTransaction(
+                  id: transaction.id, newTransaction: newTransaction);
+              Navigator.pop(context);
+            },
+            groupList: groupListData,
+          ),
+        );
+      }
+    }
+
     return Obx(() {
       groupListData = groupController.groupList;
       allTransactions = transactionController.transactionList;
@@ -215,32 +246,12 @@ class _TransactionPageState extends State<TransactionPage> {
                   itemCount: currentTransaction.length,
                   itemBuilder: (context, index) {
                     final transaction = currentTransaction[index];
+                    final isPinned = pinnedTransaction.contains(transaction);
                     return pinnableList(
                       onPressedPin: () async {
-                        await customShowModalBottomSheet(
-                          context: context,
-                          builder: (context) => PinUnderBottomsheet(
-                            onPressedCreateGroup: () async {
-                              await customShowModalBottomSheet(
-                                context: context,
-                                builder: (context) =>
-                                    const NewGroupBottomsheet(),
-                              ).then((newGroup) {
-                                groupController.addGroup(newGroup);
-                              });
-                            },
-                            onTapGroup: (group) {
-                              Transaction newTransaction = transaction;
-                              newTransaction.pinnedGroup = group;
-                              transactionController.updateTransaction(
-                                  id: transaction.id,
-                                  newTransaction: newTransaction);
-                              Navigator.pop(context);
-                            },
-                            groupList: groupListData,
-                          ),
-                        );
+                        await onPressedPin(isPinned, transaction);
                       },
+                      isPinned: isPinned,
                       child: InkWell(
                         onTap: () async {
                           await customShowModalBottomSheet(
@@ -250,7 +261,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           );
                         },
                         child: transactionRow(
-                            isPinned: pinnedTransaction.contains(transaction),
+                            isPinned: isPinned,
                             transaction: transaction,
                             isLast: isLast(index, currentTransaction)),
                       ),
