@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "com.example.ttpay",
+      "package_name": "com.ct.ttpay",
+      "sha256_cert_fingerprints":
+      ["B8:11:00:82:D3:B8:A5:6A:7A:11:23:69:01:D1:AF:17:4A:BB:0C:8E:29:2D:E3:42:C6:37:3D:0F:69:0E:8C:EE"]
+    }
+  }]

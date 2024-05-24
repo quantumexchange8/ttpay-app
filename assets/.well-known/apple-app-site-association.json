@@ -1,0 +1,25 @@
+{
+    "applinks": {
+      "apps": [],
+      "details": [
+        {
+          "appIDs": [
+            "6UGCBC3TN2.com.ct.ttpay"
+          ],
+          "paths": [
+            "*"
+          ],
+          "components": [
+            {
+              "/": "/*"
+            }
+          ]
+        }
+      ]
+    },
+    "webcredentials": {
+      "apps": [
+        "6UGCBC3TN2.com.ct.ttpay"
+      ]
+    }
+  }
