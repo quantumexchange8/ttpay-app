@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/controller/group_controller.dart';
 import 'package:ttpay/controller/notification_controller.dart';
@@ -36,26 +36,26 @@ void main() {
   }, onError: (error) {});
 }
 
-final routerConfig = GoRouter(initialLocation: '/initial', observers: [
-  ClearFocusOnPop()
-], routes: [
-  GoRoute(
-    path: '/app_layout',
-    builder: (context, state) => const AppLayout(),
-  ),
-  GoRoute(
-    path: '/login',
-    builder: (context, state) => const LoginPage(),
-  ),
-  GoRoute(
-    path: '/initial',
-    builder: (context, state) => splashScreen(
-      key: state.pageKey,
-      asyncNavigationCallback: () async =>
-          await asyncNavigationCallback(context),
-    ),
-  )
-]);
+// final routerConfig = GoRouter(initialLocation: '/initial', observers: [
+//   ClearFocusOnPop()
+// ], routes: [
+//   GoRoute(
+//     path: '/app_layout',
+//     builder: (context, state) => const AppLayout(),
+//   ),
+//   GoRoute(
+//     path: '/login',
+//     builder: (context, state) => const LoginPage(),
+//   ),
+//   GoRoute(
+//     path: '/initial',
+//     builder: (context, state) => splashScreen(
+//       key: state.pageKey,
+//       asyncNavigationCallback: () async =>
+//           await asyncNavigationCallback(context),
+//     ),
+//   )
+// ]);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -66,8 +66,23 @@ class MyApp extends StatelessWidget {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
 
-    return MaterialApp.router(
-      routerConfig: routerConfig,
+    return GetMaterialApp(
+      navigatorObservers: [ClearFocusOnPop()],
+      initialRoute: '/initial',
+      getPages: [
+        GetPage(
+          name: '/app_layout',
+          page: () => const AppLayout(),
+        ),
+        GetPage(
+          name: '/login',
+          page: () => const LoginPage(),
+        ),
+        GetPage(
+          name: '/initial',
+          page: () => splashScreen,
+        )
+      ],
       locale: const Locale('en', 'UK'),
       debugShowCheckedModeBanner: false,
       title: 'TTPAY',
@@ -93,66 +108,67 @@ class ClearFocusOnPop extends NavigatorObserver {
   }
 }
 
-Widget splashScreen(
-    {Future<dynamic> Function()? asyncNavigationCallback, Key? key}) {
-  return FlutterSplashScreen.fadeIn(
-      key: key,
-      asyncNavigationCallback: asyncNavigationCallback,
-      backgroundImage: Image.asset(
-        'assets/images/Background.png',
-        fit: BoxFit.fill,
-      ),
-      backgroundColor: Colors.black,
-      childWidget: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset(
-            'assets/login_icon_image/ttpay-logo.png',
-            fit: BoxFit.fitHeight,
-            height: height30 * 2,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: height20),
-            child: Text(
-              'Welcome to TTPAY! 👋',
-              style: textLg.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+Widget splashScreen = FlutterSplashScreen.fadeIn(
+    asyncNavigationCallback: asyncNavigationCallback,
+    backgroundImage: Image.asset(
+      'assets/images/Background.png',
+      fit: BoxFit.fill,
+    ),
+    backgroundColor: Colors.black,
+    childWidget: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(
+          'assets/login_icon_image/ttpay-logo.png',
+          fit: BoxFit.fitHeight,
+          height: height30 * 2,
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: height20),
+          child: Text(
+            'Welcome to TTPAY! 👋',
+            style: textLg.copyWith(
+              fontWeight: FontWeight.w700,
             ),
-          )
-        ],
-      ));
-}
+          ),
+        )
+      ],
+    ));
 
-Future<dynamic> asyncNavigationCallback(BuildContext context) async {
-  final getTransactionErrorText =
-      await transactionController.getAllTransaction();
-  if (getTransactionErrorText != null) {
-    context.go('/login');
-    return;
-  }
-  final getGroupsErrorText = await groupController.getAllGroup();
-  if (getGroupsErrorText != null) {
-    context.go('/login');
-    return;
-  }
-  final getUserErrorText = await userController.getUser();
-  if (getUserErrorText != null) {
-    context.go('/login');
-    return;
-  }
-  final getAccountListErrorText = await userController.getAllAccounts();
-  if (getAccountListErrorText != null) {
-    context.go('/login');
-    return;
-  }
-  final getNotificationsErrorText =
-      await notificationController.getAllNotifications();
-  if (getNotificationsErrorText != null) {
-    context.go('/login');
-    return;
-  }
+Future<dynamic> asyncNavigationCallback() async {
+  await Future.delayed(const Duration(milliseconds: 1500)).then((val) async {
+    final getTransactionErrorText =
+        await transactionController.getAllTransaction();
+    if (getTransactionErrorText != null) {
+      Get.offNamed('/login');
+      return;
+    }
+    final getGroupsErrorText = await groupController.getAllGroup();
+    if (getGroupsErrorText != null) {
+      Get.offNamed('/login');
+      return;
+    }
+    final getUserErrorText = await userController.getUser();
+    if (getUserErrorText != null) {
+      Get.offNamed('/login');
+      return;
+    }
+    final getAccountListErrorText = await userController.getAllAccounts();
+    if (getAccountListErrorText != null) {
+      Get.offNamed('/login');
+      return;
+    }
+    final getNotificationsErrorText =
+        await notificationController.getAllNotifications();
+    if (getNotificationsErrorText != null) {
+      Get.offNamed('/login');
+      return;
+    }
 
-  context.go('/app_layout');
-  return;
+    Get.offNamed('/app_layout');
+    return;
+  }, onError: (error) {
+    Get.offNamed('/login');
+    return;
+  });
 }
