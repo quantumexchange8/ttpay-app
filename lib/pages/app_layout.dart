@@ -31,7 +31,7 @@ class _AppLayoutState extends State<AppLayout> {
       context,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: true, extendBody: true,
         body: backgroundContainer(
           child: FadeIndexedStack(index: currentIndex, children: [
             HomePage(
@@ -43,9 +43,11 @@ class _AppLayoutState extends State<AppLayout> {
             const ProfilePage()
           ]),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton:
+        bottomNavigationBar:
             bottomNavigationBar(onTap: onChangeTab, currentIndex: currentIndex),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        // floatingActionButton:
+        //     bottomNavigationBar(onTap: onChangeTab, currentIndex: currentIndex),
       ),
     );
   }
