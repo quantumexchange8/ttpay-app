@@ -1,22 +1,13 @@
+import 'package:collection/collection.dart';
+import 'package:entry/entry.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 
 Widget bottomNavigationBar({
   required int currentIndex,
-  void Function(int)? onTap,
+  required void Function(int) onTap,
 }) {
-  LinearGradient buttonGradient = LinearGradient(
-    begin: const Alignment(-0.71, 0.71),
-    end: const Alignment(0.71, -0.71),
-    colors: [
-      const Color(0xFF210077),
-      primaryPurpleScale.shade600,
-      primaryPurpleScale.shade400,
-    ],
-  );
-
   Image iconImage(String icon) => Image.asset(
         icon,
         height: height24,
@@ -46,32 +37,64 @@ Widget bottomNavigationBar({
     },
   ];
 
-  return Container(
-    decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/images/bottom_nav_background.png'),
-            fit: BoxFit.fill)),
-    child: SnakeNavigationBar.gradient(
-      backgroundGradient: const RadialGradient(
-        colors: [Colors.transparent, Colors.transparent],
-      ),
-      snakeViewGradient: buttonGradient,
-      behaviour: SnakeBarBehaviour.floating,
-      currentIndex: currentIndex,
+  return Padding(
+    padding: EdgeInsets.fromLTRB(width08 * 2, 0, width08 * 2, height20),
+    child: Container(
       height: height10 * 7.2,
-      onTap: onTap,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-      ),
       padding: EdgeInsets.symmetric(
         horizontal: width08 * 2,
         vertical: height24 / 2,
       ),
-      snakeShape: SnakeShape.circle,
-      items: items
-          .map((e) => BottomNavigationBarItem(
-              icon: e['icon'], activeIcon: e['active_icon']))
-          .toList(),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/bottom_nav_background.png'),
+              fit: BoxFit.fill)),
+      child: Row(
+        children: items.mapIndexed((i, e) {
+          bool isActive = currentIndex == i;
+          return Expanded(
+            child: InkWell(
+              onTap: () {
+                onTap(i);
+              },
+              child: Stack(
+                children: [
+                  Entry.scale(visible: isActive, child: gradientContainer),
+                  Center(
+                    child: itemContainer(
+                        isActive: isActive,
+                        icon: e['icon'],
+                        activeIcon: e['active_icon']),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      ),
     ),
   );
 }
+
+Widget itemContainer({
+  required Widget icon,
+  required Widget activeIcon,
+  required bool isActive,
+}) {
+  return isActive ? activeIcon : icon;
+}
+
+Container gradientContainer = Container(
+  decoration: BoxDecoration(
+    gradient: LinearGradient(
+      begin: const Alignment(-0.71, 0.71),
+      end: const Alignment(0.71, -0.71),
+      colors: [
+        const Color(0xFF210077),
+        primaryPurpleScale.shade600,
+        primaryPurpleScale.shade400,
+      ],
+    ),
+    shape: BoxShape.circle,
+  ),
+);
