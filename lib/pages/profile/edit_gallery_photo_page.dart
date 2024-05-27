@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
 import 'package:gallery_picker/gallery_picker.dart';
@@ -138,20 +139,24 @@ class _EditGalleryPhotoPageState extends State<EditGalleryPhotoPage> {
 
 Future<Uint8List?> getCurrentCropImageBytes(
     ZoomableImageCropperController zoomController) async {
-  final bytes = await zoomController.image.file.readAsBytes();
-  img.Image? image = img.decodeImage(bytes);
+  final filePath = zoomController.image.file.path;
+  final bytes = await FlutterImageCompress.compressWithFile(filePath,
+      minHeight: zoomController.imageHeight,
+      minWidth: zoomController.imageWidth,
+      format: CompressFormat.png);
+
+  img.Image? image = bytes == null ? null : img.decodeImage(bytes);
   final transformations = zoomController.mediaTransformer
       .getImageTransformations(zoomController.transformationController);
   final x = transformations.cropPosition.left.toInt();
   final y = transformations.cropPosition.top.toInt();
   final height = transformations.height.toInt();
   final width = transformations.width.toInt();
+  final encoder = img.PngEncoder();
 
   if (image != null) {
     img.Image cropped =
         img.copyCrop(image, x: x, y: y, height: height, width: width);
-
-    final encoder = img.JpegEncoder();
 
     return encoder.encode(cropped);
   } else {
