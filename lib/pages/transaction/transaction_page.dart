@@ -218,6 +218,8 @@ class _TransactionPageState extends State<TransactionPage> {
       currentTransaction.insertAll(0, pinnedTransaction);
 
       return CustomScrollView(
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
         slivers: [
           transactionTopBar(
               selectedTab: selectedTab,

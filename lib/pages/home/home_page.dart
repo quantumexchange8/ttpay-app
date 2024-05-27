@@ -83,7 +83,8 @@ class _HomePageState extends State<HomePage> {
       );
 
       return CustomScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
         slivers: [
           homeSliverAppbar(
             onTapProfile: onTapProfile,
