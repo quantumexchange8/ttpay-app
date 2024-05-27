@@ -48,50 +48,52 @@ class _RiskDisclaimerDialogState extends State<RiskDisclaimerDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       insetPadding: EdgeInsets.symmetric(horizontal: width24 / 2),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-        child: Container(
-          padding:
-              EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height24),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Risk Disclaimer',
-                textAlign: TextAlign.center,
-                style: textMd.copyWith(
-                  fontWeight: FontWeight.w700,
+      child: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: width08 * 2, vertical: height24),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.05),
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Risk Disclaimer',
+                  textAlign: TextAlign.center,
+                  style: textMd.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              SizedBox(height: height20),
-              ...riskList.mapIndexed((i, risk) => Padding(
-                    padding: EdgeInsets.only(
-                        bottom: isLast(i, riskList) ? 0 : height08),
-                    child: checkRiskRow(
-                      riskText: risk,
-                      isCheck: selectedRisk.contains(risk),
-                      onChanged: (selected) {
-                        onSelectedRisk(risk);
-                      },
-                    ),
-                  )),
-              SizedBox(height: height08 * 2),
-              Text(
-                'By clicking “Acknowledge”, you signify your acceptance of these terms and conditions. If you do not agree with any part of this agreement, please refrain from initiating the withdrawal process.',
-                style: textXS,
-              ),
-              SizedBox(height: height31),
-              ctaButton(
-                  onPressed: onPressedAcknowledge,
-                  isGradient: true,
-                  text: 'Aknowledge'),
-              SizedBox(height: height24 / 2),
-              ctaButton(onPressed: onPressedCancel, text: 'Cancel')
-            ],
+                SizedBox(height: height20),
+                ...riskList.mapIndexed((i, risk) => Padding(
+                      padding: EdgeInsets.only(
+                          bottom: isLast(i, riskList) ? 0 : height08),
+                      child: checkRiskRow(
+                        riskText: risk,
+                        isCheck: selectedRisk.contains(risk),
+                        onChanged: (selected) {
+                          onSelectedRisk(risk);
+                        },
+                      ),
+                    )),
+                SizedBox(height: height08 * 2),
+                Text(
+                  'By clicking “Acknowledge”, you signify your acceptance of these terms and conditions. If you do not agree with any part of this agreement, please refrain from initiating the withdrawal process.',
+                  style: textXS,
+                ),
+                SizedBox(height: height31),
+                ctaButton(
+                    onPressed: onPressedAcknowledge,
+                    isGradient: true,
+                    text: 'Aknowledge'),
+                SizedBox(height: height24 / 2),
+                ctaButton(onPressed: onPressedCancel, text: 'Cancel')
+              ],
+            ),
           ),
         ),
       ),
