@@ -23,11 +23,11 @@ SliverAppBarBuilder homeSliverAppbar({
     backgroundColorAll: Colors.transparent,
     initialBarHeight: height100 * 1.9,
     contentBelowBar: false,
-    barHeight: height10 * 8,
+    barHeight: height10 * 7,
     initialContentHeight: 0,
     contentBuilder:
         (context, expandRatio, contentHeight, centerPadding, overlapsContent) {
-      if (contentHeight > height100 * 1.5) {
+      if (contentHeight > height100 * 1.45) {
         return bigAppBar(
             onTapProfile: onTapProfile,
             onTapNoti: onTapNoti,

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:sliver_app_bar_builder/sliver_app_bar_builder.dart';
 import 'package:ttpay/component/tab_picker_row.dart';
@@ -24,64 +26,72 @@ SliverAppBarBuilder transactionTopBar({
   ];
 
   return SliverAppBarBuilder(
+    pinned: true,
     leadingActions: const [],
     backgroundColorBar: Colors.transparent,
     backgroundColorAll: Colors.transparent,
     initialBarHeight: height100 * 2,
     contentBelowBar: false,
-    barHeight: height100 * 1.5,
+    barHeight: height100 * 1.4,
     initialContentHeight: 0,
     floating: true,
     contentBuilder:
         (context, expandRatio, contentHeight, centerPadding, overlapsContent) {
-      bool isSmall = contentHeight < height100 * 2.2;
+      bool isSmall = contentHeight < height100 * 1.95;
 
-      return Container(
-        // height: height100 * (isSmall ? 1.5 : 2),
-        padding: EdgeInsets.symmetric(
-            vertical: height24 / 2, horizontal: width08 * 2),
-        decoration: BoxDecoration(
-          color: isSmall ? Colors.white.withOpacity(0.05) : Colors.transparent,
-        ),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: isSmall
-                    ? MainAxisAlignment.center
-                    : MainAxisAlignment.start,
+      return ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+              sigmaX: isSmall ? 10.0 : 0.0, sigmaY: isSmall ? 10.0 : 0.0),
+          child: Container(
+            // height: height100 * (isSmall ? 1.5 : 2),
+            padding: EdgeInsets.symmetric(
+                vertical: height24 / 2, horizontal: width08 * 2),
+            decoration: BoxDecoration(
+              color:
+                  isSmall ? Colors.white.withOpacity(0.05) : Colors.transparent,
+            ),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Transactions',
-                    style: textLg.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontSize: isSmall ? height10 * 1.4 : height20,
-                    ),
+                  Row(
+                    mainAxisAlignment: isSmall
+                        ? MainAxisAlignment.center
+                        : MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Transactions',
+                        style: textLg.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: isSmall ? height10 * 1.4 : height20,
+                        ),
+                      ),
+                    ],
                   ),
+                  if (!isSmall)
+                    Padding(
+                      padding: EdgeInsets.only(top: height08 * 2),
+                      child: searchBar(
+                          onChanged: onChangedSearch,
+                          controller: searchController,
+                          onTapClear: onTapClear),
+                    ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height24 / 2),
+                    child: dateFilterRow(
+                        startDatePicked: startDatePicked,
+                        lastDatePicked: lastDatePicked,
+                        onTapDatePicker: onTapDatePicker,
+                        onTapFilter: onTapFilter),
+                  ),
+                  tabPickerRow(
+                      tabNameList: tabNameList,
+                      selectedTab: selectedTab,
+                      onTapTab: onTapTab)
                 ],
               ),
-              if (!isSmall)
-                Padding(
-                  padding: EdgeInsets.only(top: height08 * 2),
-                  child: searchBar(
-                      onChanged: onChangedSearch,
-                      controller: searchController,
-                      onTapClear: onTapClear),
-                ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: height24 / 2),
-                child: dateFilterRow(
-                    startDatePicked: startDatePicked,
-                    lastDatePicked: lastDatePicked,
-                    onTapDatePicker: onTapDatePicker,
-                    onTapFilter: onTapFilter),
-              ),
-              tabPickerRow(
-                  tabNameList: tabNameList,
-                  selectedTab: selectedTab,
-                  onTapTab: onTapTab)
-            ],
+            ),
           ),
         ),
       );
