@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+const String apiAddress = 'https://ttpay-admin.currenttech.pro/api';
 const Color backgroundColor = Colors.black;
 const List<Map<String, dynamic>> languageList = [
   {'language_name': 'English', 'locale': Locale('en', 'UK')},

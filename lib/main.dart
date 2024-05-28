@@ -5,10 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ttpay/controller/auth_controller.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/controller/group_controller.dart';
 import 'package:ttpay/controller/notification_controller.dart';
+import 'package:ttpay/controller/token_controller.dart';
 import 'package:ttpay/controller/transaction_controller.dart';
 import 'package:ttpay/controller/user_controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
@@ -23,6 +25,8 @@ void main() {
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
 
+  Get.put(AuthController());
+  Get.put(TokenController());
   Get.put(TransactionController());
   Get.put(GroupController());
   Get.put(UserController());
@@ -137,6 +141,11 @@ Widget splashScreen = FlutterSplashScreen.fadeIn(
 
 Future<dynamic> asyncNavigationCallback() async {
   await Future.delayed(const Duration(milliseconds: 1500)).then((val) async {
+    await tokenController.getToken();
+    if (tokenController.token.isEmpty) {
+      Get.offNamed('/login');
+      return;
+    }
     final getTransactionErrorText =
         await transactionController.getAllTransaction();
     if (getTransactionErrorText != null) {

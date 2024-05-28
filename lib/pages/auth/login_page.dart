@@ -3,6 +3,7 @@ import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
 import 'package:ttpay/component/unfocus_gesturedetector.dart';
+import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -41,12 +42,28 @@ class _LoginPageState extends State<LoginPage> {
           ));
     }
 
-    void login() {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AppLayout(),
-          ));
+    void login() async {
+      idValidationErrorText = idValidator(idNumberController.text);
+      passwordValidationErrorText = passwordValidator(passwordController.text);
+
+      if (idValidationErrorText == null &&
+          passwordValidationErrorText == null) {
+        await authController
+            .login(context,
+                userId: idNumberController.text,
+                password: passwordController.text)
+            .then((success) {
+          if (success) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AppLayout(),
+                ));
+          }
+        });
+      } else {
+        setState(() {});
+      }
     }
 
     return unfocusGestureDetector(

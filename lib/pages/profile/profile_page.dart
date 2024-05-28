@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
 import 'package:ttpay/component/warning_dialog.dart';
+import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/dummyData/accounts.dart';
@@ -127,14 +128,16 @@ class _ProfilePageState extends State<ProfilePage> {
               context: context,
               title: 'Are you sure you want to log out?',
               redButtonText: 'Log Out')
-          .then((yes) {
+          .then((yes) async {
         if (yes != null && yes) {
-          Navigator.popUntil(context, (route) => true);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginPage(),
-              ));
+          await tokenController.clearToken().then((nothing) {
+            Navigator.popUntil(context, (route) => true);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage(),
+                ));
+          });
         }
       });
     }
