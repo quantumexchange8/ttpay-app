@@ -1,5 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
@@ -89,7 +90,11 @@ Column pickedDateColumn({
           fontWeight: FontWeight.w500,
         ),
       ),
+      SizedBox(
+        height: height24 / 4,
+      ),
       Container(
+        width: double.infinity,
         padding:
             EdgeInsets.symmetric(horizontal: width08 * 2, vertical: height08),
         decoration: ShapeDecoration(
@@ -119,9 +124,17 @@ class DatePickerBottomsheet extends StatefulWidget {
 }
 
 class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
-  late DateTime firstDatePicked = widget.firstDatePicked;
-  late DateTime lastDatePicked = widget.lastDatePicked;
+  late DateTime firstDatePicked;
+  late DateTime lastDatePicked;
   List<DateTime?> pickedDateList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    firstDatePicked = widget.firstDatePicked;
+    lastDatePicked = widget.lastDatePicked;
+    pickedDateList.addAll([firstDatePicked, lastDatePicked]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -212,24 +225,34 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
                   isSelected,
                   textStyle,
                   required year}) {
-                return Container(
-                  // padding: EdgeInsets.symmetric(
-                  //     horizontal: width20, vertical: height08 / 2),
-                  decoration: BoxDecoration(
-                    color: isSelected != null && isSelected
-                        ? Colors.white.withOpacity(0.1)
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: Center(
-                    child: Text(
-                      year.toString(),
-                      textAlign: TextAlign.center,
-                      style: textSm.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: width20, vertical: height10),
+                            decoration: BoxDecoration(
+                              color: isSelected != null && isSelected
+                                  ? Colors.white.withOpacity(0.1)
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Center(
+                              child: Text(
+                                year.toString(),
+                                textAlign: TextAlign.center,
+                                style: textSm.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 );
               },
               disableMonthPicker: true,
@@ -274,7 +297,7 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
             onValueChanged: (dates) {
               setState(() {
                 pickedDateList = dates;
-                if (!dates.contains(null)) {
+                if (!dates.contains(null) && dates.isNotEmpty) {
                   firstDatePicked = dates.first!;
                   lastDatePicked = dates.last!;
                 }
