@@ -40,4 +40,31 @@ class AuthController extends GetxController {
       return false;
     }
   }
+
+  Future<bool> logout(
+    BuildContext context, {
+    required String token,
+  }) async {
+    try {
+      final response = await authServices.logout(token: token);
+
+      if (response.statusCode != 200) {
+        showToastNotification(context,
+            title: 'Error ${response.statusCode}', type: 'error');
+        return false;
+      }
+      final data = jsonDecode(response.body);
+      if (data['status'] != 'success') {
+        showToastNotification(context,
+            title: data['message'].toString(), type: 'error');
+        return false;
+      }
+      await tokenController.clearToken();
+      return true;
+    } catch (e) {
+      showToastNotification(context,
+          title: 'Error', description: e.toString(), type: 'error');
+      return false;
+    }
+  }
 }

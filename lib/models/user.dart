@@ -13,6 +13,7 @@ List<User> listUserFromListMap(List<Map<String, dynamic>> userList) {
 class User {
   int id;
   String name;
+  String managerName;
   String email;
   String? profilePhoto;
   String profileId;
@@ -20,6 +21,7 @@ class User {
   User({
     required this.id,
     required this.name,
+    required this.managerName,
     required this.email,
     this.profilePhoto,
     required this.profileId,
@@ -30,6 +32,7 @@ class User {
     return <String, dynamic>{
       'id': id,
       'name': name,
+      'manager_name': managerName,
       'email': email,
       'profile_photo': profilePhoto,
       'profile_id': profileId,
@@ -41,12 +44,12 @@ class User {
     return User(
       id: map['id'] as int,
       name: map['name'] as String,
+      managerName: map['manager_name'] as String,
       email: map['email'] as String,
       profilePhoto:
           map['profile_photo'] != null ? map['profile_photo'] as String : null,
-      profileId: map['profile_id'] as String,
-      phoneNumber:
-          map['phone_number'] != null ? map['phone_number'] as String : null,
+      profileId: map['role_id'] as String,
+      phoneNumber: map['phone'] != null ? map['phone'] as String : null,
     );
   }
 

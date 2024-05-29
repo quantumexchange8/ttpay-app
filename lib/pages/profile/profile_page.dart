@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
 import 'package:ttpay/component/warning_dialog.dart';
 import 'package:ttpay/controller/controller.dart';
@@ -26,28 +27,14 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-User profile = User.fromMap({
-  'id': 500,
-  'name': 'CC POWER GROUP',
-  'email': 'you@example.com',
-  'profile_photo': null,
-  'profile_id': 'MID000001',
-  'phone_number': '0162723683'
-});
-
 class _ProfilePageState extends State<ProfilePage> {
   final storage = const FlutterSecureStorage();
-  dynamic profilePhoto = profile.profilePhoto;
+  dynamic profilePhoto;
 
   @override
   Widget build(BuildContext context) {
     List<User> userAccount = listUserFromListMap(dummyAccounts);
 
-    Map<String, dynamic> details = {
-      'Manager Name': profile.name,
-      'Email': profile.email,
-      'Phone Number': profile.phoneNumber ?? '-'
-    };
     void onOpenSettingPage() async {
       bool biometricPermission = bool.parse(
           await storage.read(key: biometricPermissionStorageKey) ?? 'false');
@@ -130,7 +117,9 @@ class _ProfilePageState extends State<ProfilePage> {
               redButtonText: 'Log Out')
           .then((yes) async {
         if (yes != null && yes) {
-          await tokenController.clearToken().then((nothing) {
+          await authController
+              .logout(context, token: tokenController.token)
+              .then((success) {
             Navigator.popUntil(context, (route) => true);
             Navigator.push(
                 context,
@@ -142,64 +131,76 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     }
 
-    return SafeArea(
-      child: Column(
-        children: [
-          Padding(
-            padding:
-                EdgeInsets.fromLTRB(width08 * 2, 0, width08 * 2, height24 / 2),
-            child: twoSimpleAppbar(
-                title: 'My Profile',
-                onPressedButton: () {
-                  customShowModalBottomSheet(
-                    context: context,
-                    builder: (context) => const EditProfilePhotoBottomsheet(),
-                  ).then((file) {
-                    if (file != null) {
-                      if (mounted) {
-                        setState(() {
-                          profilePhoto = file;
-                        });
+    return Obx(() {
+      final profile = userController.user.value;
+      bool profileIsNull = profile == null;
+
+      Map<String, dynamic> details = {
+        'Manager Name': profileIsNull ? 'No data' : profile.managerName,
+        'Email': profileIsNull ? 'No data' : profile.email,
+        'Phone Number': profileIsNull ? 'No data' : profile.phoneNumber ?? '-'
+      };
+
+      return SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                  width08 * 2, 0, width08 * 2, height24 / 2),
+              child: twoSimpleAppbar(
+                  title: 'My Profile',
+                  onPressedButton: () {
+                    customShowModalBottomSheet(
+                      context: context,
+                      builder: (context) => const EditProfilePhotoBottomsheet(),
+                    ).then((file) {
+                      if (file != null) {
+                        if (mounted) {
+                          setState(() {
+                            profilePhoto = file;
+                          });
+                        }
                       }
-                    }
-                  });
-                },
-                leftButtonIcon: Padding(
-                  padding: EdgeInsets.only(right: width08),
-                  child: Image.asset(
-                    'assets/icon_image/edit_icon.png',
-                    height: height08 * 2,
-                    fit: BoxFit.fitHeight,
+                    });
+                  },
+                  leftButtonIcon: Padding(
+                    padding: EdgeInsets.only(right: width08),
+                    child: Image.asset(
+                      'assets/icon_image/edit_icon.png',
+                      height: height08 * 2,
+                      fit: BoxFit.fitHeight,
+                    ),
                   ),
-                ),
-                buttonText: 'Profile Photo'),
-          ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.symmetric(
-                  horizontal: width08 * 2, vertical: height24 / 2),
-              children: [
-                profilePhotoRow(
-                    profilePhotoAddress: profilePhoto,
-                    profileName: profile.name,
-                    profileId: profile.profileId),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: height20),
-                  child: profileDetailsContainer(details),
-                ),
-                accountListContainer(
-                    onTapAddAccount: onTapAddAccount,
-                    userAccounts: userAccount),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: height20),
-                  child: settingListContainer(accountSettings: accountSettings),
-                ),
-                InkWell(onTap: onTapLogout, child: logoutContainer)
-              ],
+                  buttonText: 'Profile Photo'),
             ),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.symmetric(
+                    horizontal: width08 * 2, vertical: height24 / 2),
+                children: [
+                  profilePhotoRow(
+                      profilePhotoAddress: profilePhoto,
+                      profileName: profileIsNull ? 'No data' : profile.name,
+                      profileId: profileIsNull ? 'No data' : profile.profileId),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height20),
+                    child: profileDetailsContainer(details),
+                  ),
+                  accountListContainer(
+                      onTapAddAccount: onTapAddAccount,
+                      userAccounts: userAccount),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: height20),
+                    child:
+                        settingListContainer(accountSettings: accountSettings),
+                  ),
+                  InkWell(onTap: onTapLogout, child: logoutContainer)
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

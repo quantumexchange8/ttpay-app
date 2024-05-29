@@ -13,4 +13,11 @@ class AuthServices {
       body: {'role_id': userId, 'password': password},
     );
   }
+
+  Future<http.Response> logout({
+    required String token,
+  }) {
+    return client.post(Uri.parse('$apiAddress/logout'),
+        headers: {'Authorization': 'Bearer $token'});
+  }
 }

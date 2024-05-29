@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
+import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/component/unfocus_gesturedetector.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
@@ -52,13 +53,29 @@ class _LoginPageState extends State<LoginPage> {
             .login(context,
                 userId: idNumberController.text,
                 password: passwordController.text)
-            .then((success) {
+            .then((success) async {
           if (success) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AppLayout(),
-                ));
+            await userController
+                .getUser(token: tokenController.token)
+                .then((getUserErrorText) {
+              if (getUserErrorText == null) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AppLayout(),
+                    ));
+              } else {
+                if (getUserErrorText.length > 20) {
+                  showToastNotification(context,
+                      title: 'Error',
+                      description: getUserErrorText,
+                      type: 'error');
+                } else {
+                  showToastNotification(context,
+                      title: getUserErrorText, type: 'error');
+                }
+              }
+            });
           }
         });
       } else {
