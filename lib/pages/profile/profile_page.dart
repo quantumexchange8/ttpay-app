@@ -6,7 +6,6 @@ import 'package:ttpay/component/warning_dialog.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
-import 'package:ttpay/helper/dummyData/accounts.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/models/user.dart';
 import 'package:ttpay/pages/auth/login_page.dart';
@@ -31,10 +30,20 @@ class _ProfilePageState extends State<ProfilePage> {
   final storage = const FlutterSecureStorage();
   dynamic profilePhoto;
 
+  Future<void> getData() async {
+    await transactionController.getAllTransaction();
+
+    await groupController.getAllGroup();
+
+    await userController.getCurrentUser(token: tokenController.currentToken);
+
+    await userController.getAllAccounts();
+
+    await notificationController.getAllNotifications();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<User> userAccount = listUserFromListMap(dummyAccounts);
-
     void onOpenSettingPage() async {
       bool biometricPermission = bool.parse(
           await storage.read(key: biometricPermissionStorageKey) ?? 'false');
@@ -103,11 +112,37 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Colors.white,
                 ),
               ),
-              onLogin: () {
-                Navigator.pop(context);
+              onLogin: (loginSuccess) async {
+                if (loginSuccess) {
+                  final newToken = tokenController.tokenList.last;
+                  final newAccount =
+                      await userController.getUser(token: newToken);
+                  if (userController.accountList.contains(newAccount)) {
+                    // ignore: use_build_context_synchronously
+                    showErrorNotification(context,
+                        errorText: 'Cannot add same account!');
+                    tokenController.deleteToken(newToken);
+                  } else {
+                    await userController
+                        .getAllAccounts()
+                        .then((getAllAccountErrorText) {
+                      if (getAllAccountErrorText == null) {
+                        Navigator.pop(context);
+                      } else {
+                        showErrorNotification(context,
+                            errorText: getAllAccountErrorText);
+                      }
+                    });
+                  }
+                }
               },
             ),
           ));
+    }
+
+    void onTapAccount(int index) async {
+      await tokenController.setCurrentToken(tokenController.tokenList[index]);
+      await getData();
     }
 
     void onTapLogout() async {
@@ -118,14 +153,20 @@ class _ProfilePageState extends State<ProfilePage> {
           .then((yes) async {
         if (yes != null && yes) {
           await authController
-              .logout(context, token: tokenController.token)
-              .then((success) {
-            Navigator.popUntil(context, (route) => true);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ));
+              .logout(context, token: tokenController.currentToken)
+              .then((success) async {
+            if (success) {
+              if (tokenController.tokenList.isEmpty) {
+                Navigator.popUntil(context, (route) => true);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ));
+              } else {
+                await getData();
+              }
+            }
           });
         }
       });
@@ -133,13 +174,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Obx(() {
       final profile = userController.user.value;
-      bool profileIsNull = profile == null;
 
       Map<String, dynamic> details = {
-        'Manager Name': profileIsNull ? 'No data' : profile.managerName,
-        'Email': profileIsNull ? 'No data' : profile.email,
-        'Phone Number': profileIsNull ? 'No data' : profile.phoneNumber ?? '-'
+        'Manager Name': profile?.managerName ?? 'No data',
+        'Email': profile?.email ?? 'No data',
+        'Phone Number': profile?.phoneNumber ?? '-'
       };
+
+      List<User> userAccount = userController.accountList;
 
       return SafeArea(
         child: Column(
@@ -180,13 +222,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   profilePhotoRow(
                       profilePhotoAddress: profilePhoto,
-                      profileName: profileIsNull ? 'No data' : profile.name,
-                      profileId: profileIsNull ? 'No data' : profile.profileId),
+                      profileName: profile?.name ?? 'No data',
+                      profileId: profile?.profileId ?? 'No data'),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: height20),
                     child: profileDetailsContainer(details),
                   ),
                   accountListContainer(
+                      onTapAccount: onTapAccount,
                       onTapAddAccount: onTapAddAccount,
                       userAccounts: userAccount),
                   Padding(

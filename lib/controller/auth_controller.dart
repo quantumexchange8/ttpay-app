@@ -14,6 +14,7 @@ class AuthController extends GetxController {
 
   Future<bool> login(
     BuildContext context, {
+    bool setCurrentToken = true,
     required String userId,
     required String password,
   }) async {
@@ -32,7 +33,11 @@ class AuthController extends GetxController {
             title: data['message'].toString(), type: 'error');
         return false;
       }
-      tokenController.storeToken(data['token'].toString().split('|').last);
+      final token = data['token'].toString().split('|').last;
+      await tokenController.storeToken(token);
+      if (setCurrentToken) {
+        await tokenController.setCurrentToken(token);
+      }
       return true;
     } catch (e) {
       showToastNotification(context,
@@ -59,7 +64,7 @@ class AuthController extends GetxController {
             title: data['message'].toString(), type: 'error');
         return false;
       }
-      await tokenController.clearToken();
+      await tokenController.clearCurrentToken();
       return true;
     } catch (e) {
       showToastNotification(context,
