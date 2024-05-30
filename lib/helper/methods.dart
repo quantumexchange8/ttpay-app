@@ -81,3 +81,12 @@ Future<void> copyToClipboard(BuildContext context, String text) async {
         type: 'error', title: 'Error', description: e.toString());
   }
 }
+
+void showErrorNotification(BuildContext context, {required String errorText}) {
+  if (errorText.length > 20) {
+    showToastNotification(context,
+        title: 'Error', description: errorText, type: 'error');
+  } else {
+    showToastNotification(context, title: errorText, type: 'error');
+  }
+}

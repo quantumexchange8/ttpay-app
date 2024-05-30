@@ -141,8 +141,8 @@ Widget splashScreen = FlutterSplashScreen.fadeIn(
 
 Future<dynamic> asyncNavigationCallback() async {
   await Future.delayed(const Duration(milliseconds: 1500)).then((val) async {
-    await tokenController.getToken();
-    final token = tokenController.token;
+    await tokenController.getCurrentKeyToken();
+    final token = tokenController.currentToken;
     if (token.isEmpty) {
       Get.offNamed('/login');
       return;
@@ -158,7 +158,7 @@ Future<dynamic> asyncNavigationCallback() async {
       Get.offNamed('/login');
       return;
     }
-    final getUserErrorText = await userController.getUser(token: token);
+    final getUserErrorText = await userController.getCurrentUser(token: token);
     if (getUserErrorText != null) {
       Get.offNamed('/login');
       return;
@@ -166,6 +166,7 @@ Future<dynamic> asyncNavigationCallback() async {
     final getAccountListErrorText = await userController.getAllAccounts();
     if (getAccountListErrorText != null) {
       Get.offNamed('/login');
+
       return;
     }
     final getNotificationsErrorText =

@@ -1,13 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
-import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/component/unfocus_gesturedetector.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
+import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/helper/validator.dart';
 import 'package:ttpay/pages/app_layout.dart';
@@ -17,7 +19,7 @@ import 'package:ttpay/pages/auth/widgets.dart';
 
 class LoginPage extends StatefulWidget {
   final Widget? topRightWidget;
-  final void Function()? onLogin;
+  final void Function(bool loginSuccess)? onLogin;
   const LoginPage({super.key, this.topRightWidget, this.onLogin});
 
   @override
@@ -55,27 +57,46 @@ class _LoginPageState extends State<LoginPage> {
                 password: passwordController.text)
             .then((success) async {
           if (success) {
-            await userController
-                .getUser(token: tokenController.token)
-                .then((getUserErrorText) {
-              if (getUserErrorText == null) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AppLayout(),
-                    ));
-              } else {
-                if (getUserErrorText.length > 20) {
-                  showToastNotification(context,
-                      title: 'Error',
-                      description: getUserErrorText,
-                      type: 'error');
-                } else {
-                  showToastNotification(context,
-                      title: getUserErrorText, type: 'error');
-                }
-              }
-            });
+            final getTransactionErrorText =
+                await transactionController.getAllTransaction();
+            if (getTransactionErrorText != null) {
+              showErrorNotification(
+                context,
+                errorText: getTransactionErrorText,
+              );
+              return;
+            }
+            final getGroupsErrorText = await groupController.getAllGroup();
+            if (getGroupsErrorText != null) {
+              showErrorNotification(context, errorText: getGroupsErrorText);
+              return;
+            }
+            final getUserErrorText = await userController.getCurrentUser(
+                token: tokenController.currentToken);
+            if (getUserErrorText != null) {
+              showErrorNotification(context, errorText: getUserErrorText);
+              return;
+            }
+            final getAccountListErrorText =
+                await userController.getAllAccounts();
+            if (getAccountListErrorText != null) {
+              showErrorNotification(context,
+                  errorText: getAccountListErrorText);
+
+              return;
+            }
+            final getNotificationsErrorText =
+                await notificationController.getAllNotifications();
+            if (getNotificationsErrorText != null) {
+              showErrorNotification(context,
+                  errorText: getNotificationsErrorText);
+              return;
+            }
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AppLayout(),
+                ));
           }
         });
       } else {
@@ -147,7 +168,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               ctaButton(
-                  onPressed: widget.onLogin ?? login,
+                  onPressed: widget.onLogin != null
+                      ? () async {
+                          final loginSuccess = await authController.login(
+                              context,
+                              setCurrentToken: false,
+                              userId: idNumberController.text,
+                              password: passwordController.text);
+                          widget.onLogin!(loginSuccess);
+                        }
+                      : login,
                   padding: EdgeInsets.symmetric(
                     horizontal: width20,
                     vertical: height08 * 2,

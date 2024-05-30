@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sliver_app_bar_builder/sliver_app_bar_builder.dart';
+import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
@@ -57,139 +59,142 @@ Widget bigAppBar({
   required double feeAmount,
   required double expandRatio,
 }) {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: width08 * 2),
-    decoration: const ShapeDecoration(
-      gradient: LinearGradient(
-        begin: Alignment(-0.68, 0.73),
-        end: Alignment(1.2, -0.73),
-        stops: [0.1, 0.9, 1],
-        colors: [
-          Color(0xFF210077),
-          Color(0xFF6214FF),
-          Color(0xFF9173FF),
-        ],
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
+  return Obx(() {
+    final user = userController.user.value;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: width08 * 2),
+      decoration: const ShapeDecoration(
+        gradient: LinearGradient(
+          begin: Alignment(-0.68, 0.73),
+          end: Alignment(1.2, -0.73),
+          stops: [0.1, 0.9, 1],
+          colors: [
+            Color(0xFF210077),
+            Color(0xFF6214FF),
+            Color(0xFF9173FF),
+          ],
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(40),
+            bottomRight: Radius.circular(40),
+          ),
         ),
       ),
-    ),
-    child: SafeArea(
-      bottom: false,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: height05,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hello, CC Power Group! 👋',
-                    style: textSm.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: height08,
-                  ),
-                  Text(
-                    'Net Amount',
-                    style: textXS.copyWith(
-                      color: neutralGrayScale,
-                    ),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '\$ ${amountFormatter.format(netAmount)} ',
-                          style: textXXL.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'USDT',
-                          style: textSm.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                width: width10 * 4.4,
-                height: height10 * 8.8,
-                padding: EdgeInsets.all(height08 / 2),
-                decoration: ShapeDecoration(
-                  color: const Color(0x33030712),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-                child: Column(
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: height05,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                        onTap: onTapNoti,
-                        child: notificationContainer(unreadNoti)),
-                    SizedBox(height: height08),
-                    InkWell(
-                      onTap: onTapProfile,
-                      child: Container(
-                        padding: EdgeInsets.all(height24 / 4),
-                        decoration: ShapeDecoration(
-                          color: Colors.white.withOpacity(0.05),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                    Text(
+                      'Hello, ${user?.name ?? ''}! 👋',
+                      style: textSm.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(
+                      height: height08,
+                    ),
+                    Text(
+                      'Net Amount',
+                      style: textXS.copyWith(
+                        color: neutralGrayScale,
+                      ),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '\$ ${amountFormatter.format(netAmount)} ',
+                            style: textXXL.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                        child: Image.asset(
-                          "assets/icon_image/merchant_pp.png",
-                          fit: BoxFit.fitHeight,
-                          height: height24,
-                        ),
+                          TextSpan(
+                            text: 'USDT',
+                            style: textSm.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: height24 / 2,
-          ),
-          Row(
-            children: [
-              _dataColumnBig(
-                  title: 'Gross Amount',
-                  subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
-              SizedBox(
-                width: width10 * 2.7,
-              ),
-              _dataColumnBig(
-                  title: 'Fee',
-                  subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
-            ],
-          ),
-          SizedBox(
-            height: height24,
-          )
-        ],
+                Container(
+                  width: width10 * 4.4,
+                  height: height10 * 8.8,
+                  padding: EdgeInsets.all(height08 / 2),
+                  decoration: ShapeDecoration(
+                    color: const Color(0x33030712),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                          onTap: onTapNoti,
+                          child: notificationContainer(unreadNoti)),
+                      SizedBox(height: height08),
+                      InkWell(
+                        onTap: onTapProfile,
+                        child: Container(
+                          padding: EdgeInsets.all(height24 / 4),
+                          decoration: ShapeDecoration(
+                            color: Colors.white.withOpacity(0.05),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          ),
+                          child: Image.asset(
+                            "assets/icon_image/merchant_pp.png",
+                            fit: BoxFit.fitHeight,
+                            height: height24,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height24 / 2,
+            ),
+            Row(
+              children: [
+                _dataColumnBig(
+                    title: 'Gross Amount',
+                    subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
+                SizedBox(
+                  width: width10 * 2.7,
+                ),
+                _dataColumnBig(
+                    title: 'Fee',
+                    subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
+              ],
+            ),
+            SizedBox(
+              height: height24,
+            )
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  });
 }
 
 Widget smallAppBar({

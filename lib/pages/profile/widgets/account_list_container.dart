@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ttpay/component/profile_image_container.dart';
 import 'package:ttpay/helper/color_pallete.dart';
@@ -57,7 +58,9 @@ Container paddingWithBottomDividerContainer({Widget? child}) {
 }
 
 Container accountListContainer(
-    {required List<User> userAccounts, void Function()? onTapAddAccount}) {
+    {required List<User> userAccounts,
+    void Function()? onTapAddAccount,
+    required void Function(int index) onTapAccount}) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: width24 / 2),
     decoration: ShapeDecoration(
@@ -69,10 +72,15 @@ Container accountListContainer(
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ...userAccounts.map(
-          (e) => paddingWithBottomDividerContainer(
-              child: accountListRow(
-                  accountName: e.name, accountPhoto: e.profilePhoto)),
+        ...userAccounts.mapIndexed(
+          (i, e) => paddingWithBottomDividerContainer(
+              child: InkWell(
+            onTap: () {
+              onTapAccount(i);
+            },
+            child: accountListRow(
+                accountName: e.name, accountPhoto: e.profilePhoto),
+          )),
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: height24 / 2),

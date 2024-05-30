@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
+import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 
 Container translucentProfileContainer({Widget? child}) {
@@ -21,7 +23,11 @@ Container profileDetailsContainer(Map<String, dynamic> details) {
   return translucentProfileContainer(
     child: Column(
       children: details.entries
-          .map((e) => _detailsRow(key: e.key, value: e.value))
+          .mapIndexed((i, e) => Padding(
+                padding: EdgeInsets.only(
+                    bottom: isLast(i, details.entries.toList()) ? 0 : height08),
+                child: _detailsRow(key: e.key, value: e.value),
+              ))
           .toList(),
     ),
   );

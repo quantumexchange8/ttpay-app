@@ -3,9 +3,9 @@ import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
 import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/component/two_simple_appbar.dart';
+import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
-import 'package:ttpay/helper/dummyData/transactions_history.dart';
 import 'package:ttpay/models/transaction.dart';
 import 'package:ttpay/pages/withdrawal/enter_account_password_page.dart';
 import 'package:ttpay/pages/withdrawal/widgets/available_balance_column.dart';
@@ -55,10 +55,9 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
     double minimumAmount = 100;
 
     void onPressedHistoryButton() {
-      List<Transaction> withdrawalList =
-          listTransactionFromListMap(dummyTransactions)
-              .where((element) => element.transactionType == 'withdrawal')
-              .toList();
+      List<Transaction> withdrawalList = transactionController.transactionList
+          .where((element) => element.transactionType == 'withdrawal')
+          .toList();
       Navigator.push(
           context,
           MaterialPageRoute(
