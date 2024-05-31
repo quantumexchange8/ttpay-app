@@ -122,15 +122,11 @@ void showToastNotification(
                   style: textSm.copyWith(fontWeight: FontWeight.w600),
                 ),
                 if (description != null)
-                  SizedBox(
-                    width: width100 * 2.52,
-                    height: height20 * 2,
-                    child: Text(
-                      description,
-                      style: textSm,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
+                  Text(
+                    description,
+                    style: textSm,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   )
               ],
             ),
