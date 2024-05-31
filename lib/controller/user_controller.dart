@@ -47,8 +47,7 @@ class UserController extends GetxController {
       for (var i = 0; i < tokenController.tokenList.length; i++) {
         final token = tokenController.tokenList[i];
         final account = await getUser(token: token);
-        if (account != null &&
-            !accountList.map((element) => element.id).contains(account.id)) {
+        if (account != null) {
           accountList.add(account);
         }
       }
