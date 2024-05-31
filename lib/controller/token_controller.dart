@@ -23,14 +23,15 @@ class TokenController extends GetxController {
         .then((tokenListLengthString) async {
       if (tokenListLengthString != null) {
         final tokenListLength = int.parse(tokenListLengthString);
+        final List<String> newTokenList = [];
         if (tokenListLength != 0) {
-          tokenList.clear();
           for (var i = 0; i < tokenListLength; i++) {
             final token = await storage.read(key: 'login_token_$i');
             if (token != null && token.isNotEmpty) {
-              tokenList.add(token);
+              newTokenList.add(token);
             }
           }
+          tokenList.value = newTokenList;
         }
       }
     });
@@ -40,6 +41,7 @@ class TokenController extends GetxController {
     currentToken = token;
     final newKey = 'login_token_${tokenList.indexOf(currentToken)}';
     await storage.write(key: 'current_token_key', value: newKey);
+    await storage.write(key: newKey, value: currentToken);
     currentKey = newKey;
     return;
   }
@@ -63,6 +65,7 @@ class TokenController extends GetxController {
     await storage.delete(key: currentKey);
     final newKey = 'login_token_$newTokenIndex';
     await storage.write(key: 'current_token_key', value: newKey);
+    await storage.write(key: newKey, value: currentToken);
     currentKey = newKey;
 
     return;
