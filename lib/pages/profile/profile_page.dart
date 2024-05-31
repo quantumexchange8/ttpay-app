@@ -30,14 +30,16 @@ class _ProfilePageState extends State<ProfilePage> {
   final storage = const FlutterSecureStorage();
   dynamic profilePhoto;
 
-  Future<void> getData() async {
+  Future<void> getData({bool getAllAccount = true}) async {
     await transactionController.getAllTransaction();
 
     await groupController.getAllGroup();
 
     await userController.getCurrentUser(token: tokenController.currentToken);
 
-    await userController.getAllAccounts();
+    if (getAllAccount) {
+      await userController.getAllAccounts();
+    }
 
     await notificationController.getAllNotifications();
   }
@@ -115,14 +117,22 @@ class _ProfilePageState extends State<ProfilePage> {
               onLogin: (loginSuccess) async {
                 if (loginSuccess) {
                   final newToken = tokenController.tokenList.last;
-                  final newAccount =
-                      await userController.getUser(token: newToken);
-                  if (userController.accountList.contains(newAccount)) {
-                    // ignore: use_build_context_synchronously
-                    showErrorNotification(context,
-                        errorText: 'Cannot add same account!');
-                    tokenController.deleteToken(newToken);
-                  } else {
+                  await userController
+                      .getUser(token: newToken)
+                      .then((newAccount) async {
+                    if (newAccount == null) {
+                      showErrorNotification(context,
+                          errorText: 'Retrieve account failed!');
+                      return;
+                    }
+                    if (userController.accountList
+                        .map((element) => element.id)
+                        .contains(newAccount.id)) {
+                      showErrorNotification(context,
+                          errorText: 'Cannot add same account!');
+                      tokenController.deleteToken(newToken);
+                      return;
+                    }
                     await userController
                         .getAllAccounts()
                         .then((getAllAccountErrorText) {
@@ -133,7 +143,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             errorText: getAllAccountErrorText);
                       }
                     });
-                  }
+                    return;
+                  });
                 }
               },
             ),
@@ -142,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     void onTapAccount(int index) async {
       await tokenController.setCurrentToken(tokenController.tokenList[index]);
-      await getData();
+      await getData(getAllAccount: false);
     }
 
     void onTapLogout() async {
