@@ -45,64 +45,75 @@ class _LoginPageState extends State<LoginPage> {
           ));
     }
 
-    void login() async {
-      idValidationErrorText = idValidator(idNumberController.text);
-      passwordValidationErrorText = passwordValidator(passwordController.text);
-
-      if (idValidationErrorText == null &&
-          passwordValidationErrorText == null) {
-        await authController
-            .login(context,
+    Future<void> Function() login = widget.onLogin != null
+        ? () async {
+            final loginSuccess = await authController.login(context,
+                setCurrentToken: false,
                 userId: idNumberController.text,
-                password: passwordController.text)
-            .then((success) async {
-          if (success) {
-            final getTransactionErrorText =
-                await transactionController.getAllTransaction();
-            if (getTransactionErrorText != null) {
-              showErrorNotification(
-                context,
-                errorText: getTransactionErrorText,
-              );
-              return;
-            }
-            final getGroupsErrorText = await groupController.getAllGroup();
-            if (getGroupsErrorText != null) {
-              showErrorNotification(context, errorText: getGroupsErrorText);
-              return;
-            }
-            final getUserErrorText = await userController.getCurrentUser(
-                token: tokenController.currentToken);
-            if (getUserErrorText != null) {
-              showErrorNotification(context, errorText: getUserErrorText);
-              return;
-            }
-            final getAccountListErrorText =
-                await userController.getAllAccounts();
-            if (getAccountListErrorText != null) {
-              showErrorNotification(context,
-                  errorText: getAccountListErrorText);
-
-              return;
-            }
-            final getNotificationsErrorText =
-                await notificationController.getAllNotifications();
-            if (getNotificationsErrorText != null) {
-              showErrorNotification(context,
-                  errorText: getNotificationsErrorText);
-              return;
-            }
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AppLayout(),
-                ));
+                password: passwordController.text);
+            widget.onLogin!(loginSuccess);
           }
-        });
-      } else {
-        setState(() {});
-      }
-    }
+        : () async {
+            idValidationErrorText = idValidator(idNumberController.text);
+            passwordValidationErrorText =
+                passwordValidator(passwordController.text);
+
+            if (idValidationErrorText == null &&
+                passwordValidationErrorText == null) {
+              await authController
+                  .login(context,
+                      userId: idNumberController.text,
+                      password: passwordController.text)
+                  .then((success) async {
+                if (success) {
+                  final getTransactionErrorText =
+                      await transactionController.getAllTransaction();
+                  if (getTransactionErrorText != null) {
+                    showErrorNotification(
+                      context,
+                      errorText: getTransactionErrorText,
+                    );
+                    return;
+                  }
+                  final getGroupsErrorText =
+                      await groupController.getAllGroup();
+                  if (getGroupsErrorText != null) {
+                    showErrorNotification(context,
+                        errorText: getGroupsErrorText);
+                    return;
+                  }
+                  final getUserErrorText = await userController.getCurrentUser(
+                      token: tokenController.currentToken);
+                  if (getUserErrorText != null) {
+                    showErrorNotification(context, errorText: getUserErrorText);
+                    return;
+                  }
+                  final getAccountListErrorText =
+                      await userController.getAllAccounts();
+                  if (getAccountListErrorText != null) {
+                    showErrorNotification(context,
+                        errorText: getAccountListErrorText);
+
+                    return;
+                  }
+                  final getNotificationsErrorText =
+                      await notificationController.getAllNotifications();
+                  if (getNotificationsErrorText != null) {
+                    showErrorNotification(context,
+                        errorText: getNotificationsErrorText);
+                    return;
+                  }
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AppLayout(),
+                      ));
+                }
+              });
+            } else {
+              setState(() {});
+            }
+          };
 
     return unfocusGestureDetector(
       context,
@@ -134,6 +145,14 @@ class _LoginPageState extends State<LoginPage> {
                           focusNode: idNumberFocusNode,
                           textLabel: 'ID Number',
                           controller: idNumberController,
+                          onFieldSubmitted: (idNumber) {
+                            setState(() {
+                              idValidationErrorText = idValidator(idNumber);
+                            });
+                            if (idValidationErrorText == null) {
+                              passwordFocusNode.requestFocus();
+                            }
+                          },
                           onChangedTextfield: (idNumber) {
                             setState(() {
                               idValidationErrorText = idValidator(idNumber);
@@ -148,6 +167,9 @@ class _LoginPageState extends State<LoginPage> {
                           focusNode: passwordFocusNode,
                           textLabel: 'Password',
                           controller: passwordController,
+                          onFieldSubmitted: (password) async {
+                            await login();
+                          },
                           onChangedTextfield: (password) {
                             setState(() {
                               passwordValidationErrorText =
@@ -168,16 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               ctaButton(
-                  onPressed: widget.onLogin != null
-                      ? () async {
-                          final loginSuccess = await authController.login(
-                              context,
-                              setCurrentToken: false,
-                              userId: idNumberController.text,
-                              password: passwordController.text);
-                          widget.onLogin!(loginSuccess);
-                        }
-                      : login,
+                  onPressed: login,
                   padding: EdgeInsets.symmetric(
                     horizontal: width20,
                     vertical: height08 * 2,
