@@ -8,50 +8,52 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/transaction/widgets/pin_under_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-List<Map<String, dynamic>> dateList = [
-  {
-    'date_name': 'Today',
-    'first_date':
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-    'last_date': DateTime.now(),
-  },
-  {
-    'date_name': 'Yesterday',
-    'first_date': DateTime(
-        DateTime.now().subtract(const Duration(days: 1)).year,
-        DateTime.now().subtract(const Duration(days: 1)).month,
-        DateTime.now().subtract(const Duration(days: 1)).day),
-    'last_date': DateTime.now(),
-  },
-  {
-    'date_name': 'Last 7 days',
-    'first_date': DateTime(
-        DateTime.now().subtract(const Duration(days: 7)).year,
-        DateTime.now().subtract(const Duration(days: 7)).month,
-        DateTime.now().subtract(const Duration(days: 7)).day),
-    'last_date': DateTime.now(),
-  },
-  {
-    'date_name': 'Last 30 days',
-    'first_date': DateTime(
-        DateTime.now().subtract(const Duration(days: 30)).year,
-        DateTime.now().subtract(const Duration(days: 30)).month,
-        DateTime.now().subtract(const Duration(days: 30)).day),
-    'last_date': DateTime.now(),
-  },
-  {
-    'date_name': 'This Month',
-    'first_date': DateTime(DateTime.now().year, DateTime.now().month, 1),
-    'last_date': DateTime.now(),
-  },
-  {
-    'date_name': 'Last Month',
-    'first_date': DateTime(determinelastMonthYear(), determinelastMonth(), 1),
-    'last_date': DateTime(determinelastMonthYear(), determinelastMonth(),
-        determinelastMonthLastDay()),
-  },
-];
+List<Map<String, dynamic>> dateList(BuildContext context) => [
+      {
+        'date_name': AppLocalizations.of(context)!.today,
+        'first_date': DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        'last_date': DateTime.now(),
+      },
+      {
+        'date_name': AppLocalizations.of(context)!.yesterday,
+        'first_date': DateTime(
+            DateTime.now().subtract(const Duration(days: 1)).year,
+            DateTime.now().subtract(const Duration(days: 1)).month,
+            DateTime.now().subtract(const Duration(days: 1)).day),
+        'last_date': DateTime.now(),
+      },
+      {
+        'date_name': AppLocalizations.of(context)!.last_seven_days,
+        'first_date': DateTime(
+            DateTime.now().subtract(const Duration(days: 7)).year,
+            DateTime.now().subtract(const Duration(days: 7)).month,
+            DateTime.now().subtract(const Duration(days: 7)).day),
+        'last_date': DateTime.now(),
+      },
+      {
+        'date_name': AppLocalizations.of(context)!.last_thirty_days,
+        'first_date': DateTime(
+            DateTime.now().subtract(const Duration(days: 30)).year,
+            DateTime.now().subtract(const Duration(days: 30)).month,
+            DateTime.now().subtract(const Duration(days: 30)).day),
+        'last_date': DateTime.now(),
+      },
+      {
+        'date_name': AppLocalizations.of(context)!.this_month,
+        'first_date': DateTime(DateTime.now().year, DateTime.now().month, 1),
+        'last_date': DateTime.now(),
+      },
+      {
+        'date_name': AppLocalizations.of(context)!.last_month,
+        'first_date':
+            DateTime(determinelastMonthYear(), determinelastMonth(), 1),
+        'last_date': DateTime(determinelastMonthYear(), determinelastMonth(),
+            determinelastMonthLastDay()),
+      },
+    ];
 
 Container dateContainer(String dateName, {bool isPicked = false}) {
   return Container(
@@ -147,7 +149,7 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          topBottomsheet(context, 'Select Date'),
+          topBottomsheet(context, AppLocalizations.of(context)!.select_date),
           SizedBox(
             height: height24,
           ),
@@ -159,7 +161,7 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
               crossAxisSpacing: width08,
               mainAxisSpacing: height08,
             ),
-            children: dateList
+            children: dateList(context)
                 .map((e) => GestureDetector(
                       onTap: () {
                         setState(() {
@@ -180,14 +182,16 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
               children: [
                 Expanded(
                   child: pickedDateColumn(
-                      title: 'Start Date', pickedDate: firstDatePicked),
+                      title: AppLocalizations.of(context)!.start_date,
+                      pickedDate: firstDatePicked),
                 ),
                 SizedBox(
                   width: width24 / 2,
                 ),
                 Expanded(
                   child: pickedDateColumn(
-                      title: 'End Date', pickedDate: lastDatePicked),
+                      title: AppLocalizations.of(context)!.end_date,
+                      pickedDate: lastDatePicked),
                 ),
               ],
             ),
@@ -307,6 +311,7 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
             height: height24,
           ),
           bottomSheetBelowButtonRow(
+            context,
             onPressedReset: () {
               setState(() {
                 firstDatePicked =
@@ -325,7 +330,8 @@ class _DatePickerBottomsheetState extends State<DatePickerBottomsheet> {
   }
 }
 
-Row bottomSheetBelowButtonRow({
+Row bottomSheetBelowButtonRow(
+  BuildContext context, {
   required void Function()? onPressedReset,
   required void Function()? onPressedApply,
   String? resetString,
@@ -336,7 +342,7 @@ Row bottomSheetBelowButtonRow({
         child: ctaButton(
             onPressed: onPressedReset,
             bgColor: Colors.white.withOpacity(0.05),
-            text: resetString ?? 'Reset'),
+            text: resetString ?? AppLocalizations.of(context)!.reset),
       ),
       SizedBox(
         width: width24 / 2,
@@ -345,7 +351,7 @@ Row bottomSheetBelowButtonRow({
         child: ctaButton(
             onPressed: onPressedApply,
             bgColor: primaryPurpleScale.shade700,
-            text: 'Apply'),
+            text: AppLocalizations.of(context)!.apply),
       )
     ],
   );

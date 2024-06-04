@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ttpay/controller/controller.dart';
+import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
@@ -11,6 +12,7 @@ import 'package:ttpay/pages/home/widgets/no_transactions_found_column.dart';
 import 'package:ttpay/pages/home/widgets/summary_box_below_appbar.dart';
 import 'package:ttpay/pages/home/widgets/transaction_row.dart';
 import 'package:ttpay/component/tab_picker_row.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   final void Function(int index)? onChangeTab;
@@ -22,7 +24,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String selectedTransactionType = 'All';
-  final List<String> tabNameList = ['All', 'Deposit', 'Withdrawal'];
   List<Transaction> currentTransactions = [];
 
   @override
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width08 * 2),
-                  child: summartBoxBelowAppBar(
+                  child: summartBoxBelowAppBar(context,
                       totalDepositNumber: totalDepositNumber,
                       totalFreezingAmount: totalFreezingAmount),
                 ),
@@ -107,19 +108,20 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.symmetric(
                       horizontal: width08 * 2, vertical: height08),
                   child: Text(
-                    'Current Month Transactions',
+                    AppLocalizations.of(context)!.current_month_transactions,
                     style: textMd.copyWith(fontWeight: FontWeight.w700),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width08 * 2),
                   child: tabPickerRow(
-                      onTapTab: (tabName) {
+                      onTapTab: (transactionType) {
                         setState(() {
-                          selectedTransactionType = tabName;
+                          selectedTransactionType = transactionType;
                         });
                       },
-                      tabNameList: tabNameList,
+                      transactionTypeList: transactionTypeList,
+                      tabNameList: tabNameList(context),
                       selectedTab: selectedTransactionType),
                 ),
                 SizedBox(
@@ -128,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                 if (currentTransactions.isEmpty)
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: height20),
-                    child: noTransactionsColumn,
+                    child: noTransactionsColumn(context),
                   )
               ],
             ),

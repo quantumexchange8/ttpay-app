@@ -6,6 +6,7 @@ import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/pages/home/notification_detail_page.dart';
 import 'package:ttpay/pages/home/notification_widgets/no_notification_column.dart';
 import 'package:ttpay/pages/home/notification_widgets/notification_row.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});
@@ -18,7 +19,7 @@ class NotificationPage extends StatelessWidget {
           onTapBack: () {
             Navigator.pop(context);
           },
-          title: 'Notifications'),
+          title: AppLocalizations.of(context)!.notifications),
       body: backgroundContainer(
         child: Obx(() {
           final notificationsList = notificationController.notificationList;
@@ -43,7 +44,7 @@ class NotificationPage extends StatelessWidget {
                         child: notificationRow(notification: notification));
                   },
                 )
-              : noNotificationColumn;
+              : noNotificationColumn(context);
         }),
       ),
     );

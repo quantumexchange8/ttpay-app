@@ -4,6 +4,7 @@ import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<T?> showWarningDialog<T>({
   required BuildContext context,
@@ -62,7 +63,7 @@ Future<T?> showWarningDialog<T>({
                               Navigator.pop(context);
                             },
                             bgColor: Colors.white.withOpacity(0.05),
-                            text: 'Cancel')),
+                            text: AppLocalizations.of(context)!.cancel)),
                     SizedBox(width: width24 / 2),
                     Expanded(
                         child: ctaButton(

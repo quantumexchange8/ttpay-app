@@ -6,21 +6,27 @@ import 'package:ttpay/helper/text_style.dart';
 
 Widget tabPickerRow(
     {required List<String> tabNameList,
+    required List<String> transactionTypeList,
     required String selectedTab,
-    required void Function(String tabName) onTapTab}) {
+    required void Function(String transactionType) onTapTab}) {
   return Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      ...tabNameList.mapIndexed((i, e) => Padding(
-            padding: EdgeInsets.only(
-                right: isLast(i, tabNameList) ? 0 : width08 / 2),
-            child: GestureDetector(
-              onTap: () {
-                onTapTab(e);
-              },
-              child: tabContainer(tabName: e, isSelected: selectedTab == e),
-            ),
-          ))
+      ...tabNameList.mapIndexed((i, e) {
+        final transactionType = transactionTypeList[i];
+
+        return Padding(
+          padding:
+              EdgeInsets.only(right: isLast(i, tabNameList) ? 0 : width08 / 2),
+          child: GestureDetector(
+            onTap: () {
+              onTapTab(transactionType);
+            },
+            child: tabContainer(
+                tabName: e, isSelected: selectedTab == transactionType),
+          ),
+        );
+      })
     ],
   );
 }

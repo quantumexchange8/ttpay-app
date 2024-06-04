@@ -4,6 +4,7 @@ import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:ttpay/controller/auth_controller.dart';
 // import 'package:go_router/go_router.dart';
@@ -18,6 +19,7 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/app_layout.dart';
 import 'package:ttpay/pages/auth/login_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
@@ -35,8 +37,14 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
-  Future.delayed(const Duration(milliseconds: 200)).then((val) {
-    runApp(const MyApp());
+  const storage = FlutterSecureStorage();
+
+  Future.delayed(const Duration(milliseconds: 200)).then((val) async {
+    final languageCode = await storage.read(key: 'langCode');
+    print(languageCode);
+    runApp(MyApp(
+      languageCode: languageCode ?? 'en',
+    ));
   }, onError: (error) {});
 }
 
@@ -62,7 +70,8 @@ void main() {
 // ]);
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String languageCode;
+  const MyApp({super.key, required this.languageCode});
 
   // This widget is the root of your application.
   @override
@@ -71,6 +80,8 @@ class MyApp extends StatelessWidget {
     screenWidth = MediaQuery.of(context).size.width;
 
     return GetMaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       navigatorObservers: [ClearFocusOnPop()],
       initialRoute: '/initial',
       getPages: [
@@ -84,10 +95,10 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/initial',
-          page: () => splashScreen,
+          page: () => const SplashScreen(),
         )
       ],
-      locale: const Locale('en', 'UK'),
+      locale: Locale(languageCode),
       debugShowCheckedModeBanner: false,
       title: 'TTPAY',
       theme: ThemeData(
@@ -112,32 +123,39 @@ class ClearFocusOnPop extends NavigatorObserver {
   }
 }
 
-Widget splashScreen = FlutterSplashScreen.fadeIn(
-    asyncNavigationCallback: asyncNavigationCallback,
-    backgroundImage: Image.asset(
-      'assets/images/Background.png',
-      fit: BoxFit.fill,
-    ),
-    backgroundColor: Colors.black,
-    childWidget: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(
-          'assets/login_icon_image/ttpay-logo.png',
-          fit: BoxFit.fitHeight,
-          height: height30 * 2,
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterSplashScreen.fadeIn(
+        asyncNavigationCallback: asyncNavigationCallback,
+        backgroundImage: Image.asset(
+          'assets/images/Background.png',
+          fit: BoxFit.fill,
         ),
-        Padding(
-          padding: EdgeInsets.only(top: height20),
-          child: Text(
-            'Welcome to TTPAY! 👋',
-            style: textLg.copyWith(
-              fontWeight: FontWeight.w700,
+        backgroundColor: Colors.black,
+        childWidget: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/login_icon_image/ttpay-logo.png',
+              fit: BoxFit.fitHeight,
+              height: height30 * 2,
             ),
-          ),
-        )
-      ],
-    ));
+            Padding(
+              padding: EdgeInsets.only(top: height20),
+              child: Text(
+                AppLocalizations.of(context)!.welcome_to_ttpay,
+                style: textLg.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            )
+          ],
+        ));
+  }
+}
 
 Future<dynamic> asyncNavigationCallback() async {
   await Future.delayed(const Duration(milliseconds: 1500)).then((val) async {

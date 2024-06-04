@@ -3,28 +3,24 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:sliver_app_bar_builder/sliver_app_bar_builder.dart';
 import 'package:ttpay/component/tab_picker_row.dart';
+import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/transaction/widgets/date_filter_row.dart';
 import 'package:ttpay/pages/transaction/widgets/search_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-SliverAppBarBuilder transactionTopBar({
-  required String selectedTab,
-  required void Function(String) onTapTab,
-  required TextEditingController searchController,
-  void Function()? onTapDatePicker,
-  void Function()? onTapFilter,
-  required DateTime startDatePicked,
-  required DateTime lastDatePicked,
-  void Function(String)? onChangedSearch,
-  void Function()? onTapClear,
-}) {
-  List<String> tabNameList = [
-    'All',
-    'Deposit',
-    'Withdrawal',
-  ];
-
+SliverAppBarBuilder transactionTopBar(
+    {required String selectedTab,
+    required void Function(String) onTapTab,
+    required TextEditingController searchController,
+    void Function()? onTapDatePicker,
+    void Function()? onTapFilter,
+    required DateTime startDatePicked,
+    required DateTime lastDatePicked,
+    void Function(String)? onChangedSearch,
+    void Function()? onTapClear,
+    required List<String> tabNameList}) {
   return SliverAppBarBuilder(
     pinned: true,
     leadingActions: const [],
@@ -61,7 +57,7 @@ SliverAppBarBuilder transactionTopBar({
                         : MainAxisAlignment.start,
                     children: [
                       Text(
-                        'Transactions',
+                        AppLocalizations.of(context)!.transactions,
                         style: textLg.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: isSmall ? height10 * 1.4 : height20,
@@ -72,7 +68,7 @@ SliverAppBarBuilder transactionTopBar({
                   if (!isSmall)
                     Padding(
                       padding: EdgeInsets.only(top: height08 * 2),
-                      child: searchBar(
+                      child: searchBar(context,
                           onChanged: onChangedSearch,
                           controller: searchController,
                           onTapClear: onTapClear),
@@ -86,6 +82,7 @@ SliverAppBarBuilder transactionTopBar({
                         onTapFilter: onTapFilter),
                   ),
                   tabPickerRow(
+                      transactionTypeList: transactionTypeList,
                       tabNameList: tabNameList,
                       selectedTab: selectedTab,
                       onTapTab: onTapTab)

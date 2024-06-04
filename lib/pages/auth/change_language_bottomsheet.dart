@@ -6,6 +6,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 BottomSheet changeLanguageBottomsheet({
   required List<Map<String, dynamic>> languageList,
@@ -42,7 +43,7 @@ BottomSheet changeLanguageBottomsheet({
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Language',
+                    AppLocalizations.of(context)!.language,
                     style: textMd.copyWith(fontWeight: FontWeight.w700),
                   ),
                   Icon(
@@ -69,7 +70,7 @@ BottomSheet changeLanguageBottomsheet({
                       child: _languageRow(
                           languageName: e['language_name'],
                           isSelected:
-                              Get.locale?.countryCode == locale.countryCode),
+                              Get.locale?.languageCode == locale.languageCode),
                     ),
                     if (!isLast(i, languageList))
                       Divider(color: neutralGrayScale.shade900),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/simple_appbar.dart';
@@ -6,18 +7,31 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class ChangeLanguagePage extends StatelessWidget {
+class ChangeLanguagePage extends StatefulWidget {
   const ChangeLanguagePage({super.key});
+
+  @override
+  State<ChangeLanguagePage> createState() => _ChangeLanguagePageState();
+}
+
+class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
+  final storage = const FlutterSecureStorage();
+  Locale? currentLocale = Get.locale;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: simpleAppBar(
-          onTapBack: () {
-            Navigator.pop(context);
+          onTapBack: () async {
+            await storage
+                .write(key: 'langCode', value: currentLocale?.languageCode)
+                .then((nothing) {
+              Navigator.pop(context);
+            });
           },
-          title: 'Language'),
+          title: AppLocalizations.of(context)!.language),
       extendBodyBehindAppBar: true,
       body: backgroundContainer(
           child: SafeArea(
@@ -28,11 +42,14 @@ class ChangeLanguagePage extends StatelessWidget {
             Locale locale = e['locale'];
             return InkWell(
               onTap: () {
+                setState(() {
+                  currentLocale = locale;
+                });
                 Get.updateLocale(locale);
               },
               child: _languageRow(
                   language: e['language_name'],
-                  isSelected: locale.countryCode == Get.locale?.countryCode),
+                  isSelected: locale.languageCode == Get.locale?.languageCode),
             );
           }).toList(),
         ),

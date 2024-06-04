@@ -6,6 +6,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WithdrawalRequestSentSuccessfulPage extends StatelessWidget {
   const WithdrawalRequestSentSuccessfulPage({super.key});
@@ -13,10 +14,11 @@ class WithdrawalRequestSentSuccessfulPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> withdrawalRequestDetails = {
-      'Transaction ID': 'TXN7890123',
-      'Date & Time': '28 Apr 2024  13:26:02',
-      'Amount': '\$ 8,000.00 USDT',
-      'USDT Address': 'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+      AppLocalizations.of(context)!.transaction_id: 'TXN7890123',
+      AppLocalizations.of(context)!.date_and_time: '28 Apr 2024  13:26:02',
+      AppLocalizations.of(context)!.amount: '\$ 8,000.00 USDT',
+      AppLocalizations.of(context)!.usdt_address:
+          'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
     };
 
     void onPressedDone() {
@@ -51,7 +53,8 @@ class WithdrawalRequestSentSuccessfulPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Withdrawal Request Sent Successful!',
+                            AppLocalizations.of(context)!
+                                .withdrawal_request_sent_successful,
                             textAlign: TextAlign.center,
                             style: textMd.copyWith(
                               fontWeight: FontWeight.w600,
@@ -59,7 +62,8 @@ class WithdrawalRequestSentSuccessfulPage extends StatelessWidget {
                           ),
                           SizedBox(height: height08),
                           Text(
-                            'Your withdrawal request will be processed within 24 hours. Please wait patiently.',
+                            AppLocalizations.of(context)!
+                                .your_withdrawal_will_be_processed,
                             textAlign: TextAlign.center,
                             style: textSm,
                           ),
@@ -73,7 +77,9 @@ class WithdrawalRequestSentSuccessfulPage extends StatelessWidget {
               detailsContainer(withdrawalRequestDetails),
               const Expanded(child: SizedBox()),
               ctaButton(
-                  onPressed: onPressedDone, isGradient: true, text: 'Done'),
+                  onPressed: onPressedDone,
+                  isGradient: true,
+                  text: AppLocalizations.of(context)!.done),
               SizedBox(
                 height: height24,
               )

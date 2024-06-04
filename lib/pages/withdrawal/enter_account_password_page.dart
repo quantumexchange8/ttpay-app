@@ -8,6 +8,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/withdrawal/withdrawal_request_sent_successful_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EnterAccountPasswordPage extends StatefulWidget {
   const EnterAccountPasswordPage({super.key});
@@ -27,7 +28,8 @@ class _EnterAccountPasswordPageState extends State<EnterAccountPasswordPage> {
     void onPressedComfirm() {
       if (_passwordController.text.isEmpty) {
         showToastNotification(context,
-            type: 'error', title: 'Incorrect Password!');
+            type: 'error',
+            title: AppLocalizations.of(context)!.incorrect_password);
         return;
       }
       Navigator.pushReplacement(
@@ -63,7 +65,7 @@ class _EnterAccountPasswordPageState extends State<EnterAccountPasswordPage> {
                   ),
                   SizedBox(height: height31),
                   Text(
-                    'Enter Account Password',
+                    AppLocalizations.of(context)!.enter_account_password,
                     textAlign: TextAlign.center,
                     style: textLg.copyWith(
                       fontWeight: FontWeight.w600,
@@ -71,7 +73,8 @@ class _EnterAccountPasswordPageState extends State<EnterAccountPasswordPage> {
                   ),
                   SizedBox(height: height08),
                   Text(
-                    'Please enter password associated with this account to authorise this transaction.',
+                    AppLocalizations.of(context)!
+                        .enter_account_password_description,
                     textAlign: TextAlign.center,
                     style: textSm.copyWith(
                       color: neutralGrayScale.shade300,
@@ -95,7 +98,7 @@ class _EnterAccountPasswordPageState extends State<EnterAccountPasswordPage> {
                           bgColor: primaryPurpleScale.shade700,
                           padding: EdgeInsets.symmetric(
                               horizontal: width20, vertical: height24 / 2),
-                          text: 'Comfirm'),
+                          text: AppLocalizations.of(context)!.comfirm),
                     ),
                   ),
                 ],

@@ -160,7 +160,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
 
           return CustomScrollView(
             slivers: [
-              groupDetailTopBar(
+              groupDetailTopBar(context,
                   selectedTab: selectedTab,
                   onTapTab: onTapTab,
                   onTapDatePicker: onTapDatePicker,
@@ -174,7 +174,7 @@ class _GroupDetailPageState extends State<GroupDetailPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: height20 * 2, horizontal: width08 * 2),
-                        child: noTransactionsColumn,
+                        child: noTransactionsColumn(context),
                       )
                     ]))
                   : SliverList.builder(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ttpay/component/pinnable_list.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
+import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
@@ -17,6 +18,7 @@ import 'package:ttpay/pages/transaction/widgets/date_picker.dart';
 import 'package:ttpay/pages/transaction/widgets/filter_bottomsheet.dart';
 import 'package:ttpay/pages/transaction/widgets/pin_under_bottomsheet.dart';
 import 'package:ttpay/pages/transaction/widgets/transaction_top_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
@@ -222,6 +224,7 @@ class _TransactionPageState extends State<TransactionPage> {
             parent: AlwaysScrollableScrollPhysics()),
         slivers: [
           transactionTopBar(
+              tabNameList: tabNameList(context),
               selectedTab: selectedTab,
               onTapTab: onTapTab,
               onChangedSearch: onChangedSearch,
@@ -238,8 +241,8 @@ class _TransactionPageState extends State<TransactionPage> {
                     padding: EdgeInsets.symmetric(
                         vertical: height20 * 2, horizontal: width08 * 2),
                     child: _searchController.text.isNotEmpty
-                        ? noSearchColumn
-                        : noTransactionsColumn,
+                        ? noSearchColumn(context)
+                        : noTransactionsColumn(context),
                   )
                 ]))
               : SliverList.builder(
@@ -276,23 +279,23 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 }
 
-Column noSearchColumn = Column(
-  mainAxisSize: MainAxisSize.min,
-  children: [
-    Text(
-      'No Search Results',
-      textAlign: TextAlign.center,
-      style: textMd.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    SizedBox(height: height08),
-    Text(
-      'Oops! It seems there are no results matching your search. Please try another phrase.',
-      textAlign: TextAlign.center,
-      style: textXS.copyWith(
-        color: neutralGrayScale,
-      ),
-    ),
-  ],
-);
+Column noSearchColumn(BuildContext context) => Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          AppLocalizations.of(context)!.no_search_results,
+          textAlign: TextAlign.center,
+          style: textMd.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: height08),
+        Text(
+          AppLocalizations.of(context)!.no_search_results_description,
+          textAlign: TextAlign.center,
+          style: textXS.copyWith(
+            color: neutralGrayScale,
+          ),
+        ),
+      ],
+    );

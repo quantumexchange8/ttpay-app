@@ -7,8 +7,10 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/group.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Column noGroupsCreatedColumn({
+Column noGroupsCreatedColumn(
+  BuildContext context, {
   required void Function()? onPressedCreateGroup,
 }) {
   return Column(
@@ -20,7 +22,7 @@ Column noGroupsCreatedColumn({
         fit: BoxFit.fitWidth,
       ),
       Text(
-        'No Groups Created Yet',
+        AppLocalizations.of(context)!.no_groups,
         textAlign: TextAlign.center,
         style: textMd.copyWith(
           fontWeight: FontWeight.w600,
@@ -28,7 +30,7 @@ Column noGroupsCreatedColumn({
       ),
       SizedBox(height: height08),
       Text(
-        'It seems like you haven\'t created any groups yet. Start by creating your first one now! 🌟',
+        AppLocalizations.of(context)!.no_groups_description,
         textAlign: TextAlign.center,
         style: textSm.copyWith(
           color: neutralGrayScale,
@@ -40,7 +42,7 @@ Column noGroupsCreatedColumn({
       ctaButton(
           onPressed: onPressedCreateGroup,
           bgColor: primaryPurpleScale.shade700,
-          text: 'Create Group')
+          text: AppLocalizations.of(context)!.create_group)
     ],
   );
 }
@@ -143,7 +145,7 @@ class PinUnderBottomsheet extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              topBottomsheet(context, 'Pin Under'),
+              topBottomsheet(context, AppLocalizations.of(context)!.pin_under),
               SizedBox(
                 height: height24,
               ),
@@ -159,6 +161,7 @@ class PinUnderBottomsheet extends StatelessWidget {
                     )),
               if (groupList.isEmpty)
                 noGroupsCreatedColumn(
+                  context,
                   onPressedCreateGroup: onPressedCreateGroup,
                 )
             ],

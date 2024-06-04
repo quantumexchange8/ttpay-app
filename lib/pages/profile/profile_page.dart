@@ -18,6 +18,7 @@ import 'package:ttpay/pages/profile/widgets/logout_container.dart';
 import 'package:ttpay/pages/profile/widgets/profile_details_container.dart';
 import 'package:ttpay/pages/profile/widgets/profile_photo_row.dart';
 import 'package:ttpay/pages/profile/widgets/setting_list_container.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -79,12 +80,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ));
         },
         'icon_address': 'assets/icon_image/grey_globe_icon.png',
-        'name': 'Language',
+        'name': AppLocalizations.of(context)!.language,
       },
       {
         'on_tap': onOpenSettingPage,
         'icon_address': 'assets/icon_image/grey_setting_icon.png',
-        'name': 'Setting',
+        'name': AppLocalizations.of(context)!.setting,
       },
       {
         'on_tap': () {
@@ -95,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ));
         },
         'icon_address': 'assets/icon_image/grey_lock_icon.png',
-        'name': 'Change Password',
+        'name': AppLocalizations.of(context)!.change_password,
       }
     ];
 
@@ -159,8 +160,8 @@ class _ProfilePageState extends State<ProfilePage> {
     void onTapLogout() async {
       await showWarningDialog(
               context: context,
-              title: 'Are you sure you want to log out?',
-              redButtonText: 'Log Out')
+              title: AppLocalizations.of(context)!.log_out_comfirmation,
+              redButtonText: AppLocalizations.of(context)!.log_out)
           .then((yes) async {
         if (yes != null && yes) {
           await authController
@@ -187,9 +188,10 @@ class _ProfilePageState extends State<ProfilePage> {
       final profile = userController.user.value;
 
       Map<String, dynamic> details = {
-        'Manager Name': profile?.managerName ?? 'No data',
-        'Email': profile?.email ?? 'No data',
-        'Phone Number': profile?.phoneNumber ?? '-'
+        AppLocalizations.of(context)!.manager_name:
+            profile?.managerName ?? 'No data',
+        AppLocalizations.of(context)!.email: profile?.email ?? 'No data',
+        AppLocalizations.of(context)!.phone_number: profile?.phoneNumber ?? '-'
       };
 
       List<User> userAccount = userController.accountList;
@@ -201,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: EdgeInsets.fromLTRB(
                   width08 * 2, 0, width08 * 2, height24 / 2),
               child: twoSimpleAppbar(
-                  title: 'My Profile',
+                  title: AppLocalizations.of(context)!.my_profile,
                   onPressedButton: () {
                     customShowModalBottomSheet(
                       context: context,
@@ -224,7 +226,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       fit: BoxFit.fitHeight,
                     ),
                   ),
-                  buttonText: 'Profile Photo'),
+                  buttonText: AppLocalizations.of(context)!.profile_photo),
             ),
             Expanded(
               child: ListView(
@@ -239,7 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: EdgeInsets.symmetric(vertical: height20),
                     child: profileDetailsContainer(details),
                   ),
-                  accountListContainer(
+                  accountListContainer(context,
                       onTapAccount: onTapAccount,
                       onTapAddAccount: onTapAddAccount,
                       userAccounts: userAccount),
@@ -248,7 +250,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child:
                         settingListContainer(accountSettings: accountSettings),
                   ),
-                  InkWell(onTap: onTapLogout, child: logoutContainer)
+                  InkWell(onTap: onTapLogout, child: logoutContainer(context))
                 ],
               ),
             ),

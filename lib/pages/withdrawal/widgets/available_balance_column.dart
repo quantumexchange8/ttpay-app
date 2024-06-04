@@ -4,14 +4,15 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Column availableBalanceColumn(double balance) {
+Column availableBalanceColumn(BuildContext context, {required double balance}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'Available Net Balance',
+        AppLocalizations.of(context)!.available_net_balance,
         style: textXS.copyWith(
           color: neutralGrayScale.shade300,
         ),

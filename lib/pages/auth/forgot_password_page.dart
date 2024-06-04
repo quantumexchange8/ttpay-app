@@ -8,6 +8,7 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/pages/auth/check_email_page.dart';
 import 'package:ttpay/pages/auth/login_widgets/title_column.dart';
 import 'package:ttpay/pages/auth/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -60,21 +61,23 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
                 titleColumn(
                     iconAddress: 'assets/login_icon_image/Lock.png',
-                    title: 'Forgot password?',
-                    description:
-                        'No worries, we\'ll send you reset instructions.'),
+                    title: AppLocalizations.of(context)!.forgot_password,
+                    description: AppLocalizations.of(context)!.no_worries),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: height31),
                   child: customInputTextfield(
                       focusNode: _focusNode,
-                      textLabel: 'Email',
-                      hintText: 'Enter registered email',
+                      textLabel: AppLocalizations.of(context)!.email,
+                      hintText:
+                          AppLocalizations.of(context)!.enter_registered_email,
                       controller: _emailController,
                       showErrorWidget: sendEmailErrorText != null,
                       errorText: sendEmailErrorText ?? ''),
                 ),
                 ctaButton(
-                    onPressed: sendEmail, isGradient: true, text: 'Send Email'),
+                    onPressed: sendEmail,
+                    isGradient: true,
+                    text: AppLocalizations.of(context)!.send_email),
                 SizedBox(
                   height: height24 / 2,
                 ),

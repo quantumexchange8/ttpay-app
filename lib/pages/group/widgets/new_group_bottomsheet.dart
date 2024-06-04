@@ -12,6 +12,7 @@ import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/group.dart';
 import 'package:ttpay/pages/transaction/widgets/pin_under_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewGroupBottomsheet extends StatefulWidget {
   const NewGroupBottomsheet({super.key});
@@ -62,24 +63,23 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            topBottomsheet(context, 'New Group'),
+            topBottomsheet(context, AppLocalizations.of(context)!.new_group),
             Padding(
               padding: EdgeInsets.symmetric(vertical: height24),
               child: customInputTextfield(
                 focusNode: _groupNameFocusNode,
-                textLabel: 'Group Name',
+                textLabel: AppLocalizations.of(context)!.group_name,
                 controller: _groupNameController,
                 showErrorWidget: groupNameErrorText != null,
                 errorText: groupNameErrorText ?? '',
               ),
             ),
-            selectGroupColorColumn(
-                onTapColor: (color) {
-                  setState(() {
-                    selectedColor = color;
-                    showRedBorderColor = false;
-                  });
-                },
+            selectGroupColorColumn(context, onTapColor: (color) {
+              setState(() {
+                selectedColor = color;
+                showRedBorderColor = false;
+              });
+            },
                 showRedColorBorder: showRedBorderColor,
                 colorList: colorList,
                 selectedColor: selectedColor),
@@ -116,7 +116,7 @@ class _NewGroupBottomsheetState extends State<NewGroupBottomsheet> {
                   }
                 },
                 bgColor: primaryPurpleScale.shade700,
-                text: 'Add'),
+                text: AppLocalizations.of(context)!.add),
             SizedBox(
               height: height24,
             )
@@ -154,7 +154,7 @@ Container groupColorContainer(
   );
 }
 
-Column selectGroupColorColumn(
+Column selectGroupColorColumn(BuildContext context,
     {required void Function(Color color) onTapColor,
     required List<Color> colorList,
     required Color? selectedColor,
@@ -164,7 +164,7 @@ Column selectGroupColorColumn(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'Select Group Colour',
+        AppLocalizations.of(context)!.select_group_colour,
         style: textSm.copyWith(
           color: neutralGrayScale.shade300,
           fontWeight: FontWeight.w500,

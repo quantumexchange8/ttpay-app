@@ -10,6 +10,7 @@ import 'package:ttpay/models/group.dart';
 import 'package:ttpay/pages/group/group_detail_page.dart';
 import 'package:ttpay/pages/group/widgets/groups_row.dart';
 import 'package:ttpay/pages/group/widgets/new_group_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GroupPage extends StatefulWidget {
   const GroupPage({super.key});
@@ -39,8 +40,9 @@ class _GroupPageState extends State<GroupPage> {
     void onTapDeleteGroup(Group group) async {
       await showWarningDialog(
               context: context,
-              title: 'Are you sure you want to delete ${group.name}?',
-              redButtonText: 'Delete')
+              title:
+                  '${AppLocalizations.of(context)!.delete_comfirmation} ${group.name}?',
+              redButtonText: AppLocalizations.of(context)!.delete)
           .then((yes) {
         if (yes != null && yes) {
           setState(() {
@@ -59,7 +61,7 @@ class _GroupPageState extends State<GroupPage> {
               padding: EdgeInsets.fromLTRB(
                   width08 * 2, 0, width08 * 2, height24 / 2),
               child: twoSimpleAppbar(
-                buttonText: 'New Group',
+                buttonText: AppLocalizations.of(context)!.new_group,
                 onPressedButton: onPressedNewGroup,
                 leftButtonIcon: Padding(
                   padding: EdgeInsets.only(right: width24 / 4),
@@ -69,7 +71,7 @@ class _GroupPageState extends State<GroupPage> {
                     size: height08 * 2,
                   ),
                 ),
-                title: 'Groups',
+                title: AppLocalizations.of(context)!.groups,
               ),
             ),
             currentGroupList.isNotEmpty
@@ -88,12 +90,10 @@ class _GroupPageState extends State<GroupPage> {
                                       GroupDetailPage(group: group),
                                 ));
                           },
-                          child: groupsRow(
-                              onTapEdit: onTapEdit,
+                          child: groupsRow(context, onTapEdit: onTapEdit,
                               onTapDelete: () async {
-                                onTapDeleteGroup(group);
-                              },
-                              group: group),
+                            onTapDeleteGroup(group);
+                          }, group: group),
                         );
                       },
                       physics: const AlwaysScrollableScrollPhysics(),
@@ -104,9 +104,9 @@ class _GroupPageState extends State<GroupPage> {
                         vertical: height30 * 2, horizontal: width08 * 2),
                     child: emptyImageColumn(
                         imageAddress: 'assets/images/empty.png',
-                        title: 'No Groups Created Yet!',
-                        description:
-                            'It seems like you haven\'t created any groups yet. Start by creating your first one now! 🌟'),
+                        title: AppLocalizations.of(context)!.no_groups,
+                        description: AppLocalizations.of(context)!
+                            .no_groups_description),
                   ),
           ],
         );

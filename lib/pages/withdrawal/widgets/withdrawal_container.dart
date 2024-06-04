@@ -26,7 +26,7 @@ Container withdrawalContainer(Transaction transaction) {
                 color: neutralGrayScale.shade300,
               ),
             ),
-            statusBadges(transaction.status)
+            StatusBadges(status: transaction.status)
           ],
         ),
         SizedBox(height: height08 / 4),

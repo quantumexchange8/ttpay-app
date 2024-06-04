@@ -9,6 +9,7 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/auth/login_widgets/title_column.dart';
 import 'package:ttpay/pages/auth/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckEmailPage extends StatelessWidget {
   final String emailAddressSent;
@@ -64,23 +65,23 @@ class CheckEmailPage extends StatelessWidget {
               ),
               titleColumn(
                   iconAddress: 'assets/login_icon_image/Messages.png',
-                  title: 'Check your email',
+                  title: AppLocalizations.of(context)!.check_your_email,
                   description:
-                      'We\'ve sent a password reset link to $emailAddressSent'),
+                      '${AppLocalizations.of(context)!.we_have_sent_a_password} $emailAddressSent'),
               SizedBox(
                 height: height31,
               ),
               ctaButton(
                   onPressed: openEmailApp,
                   isGradient: true,
-                  text: 'Open email app'),
+                  text: AppLocalizations.of(context)!.open_email_app),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: height20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Didn’t receive the email?',
+                      AppLocalizations.of(context)!.did_not_receive,
                       textAlign: TextAlign.center,
                       style: textSm.copyWith(color: neutralGrayScale),
                     ),
@@ -88,10 +89,12 @@ class CheckEmailPage extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         showToastNotification(context,
-                            type: 'success', title: "Email Sent Successfully!");
+                            type: 'success',
+                            title: AppLocalizations.of(context)!
+                                .email_sent_successfully);
                       },
                       child: Text(
-                        'Click to resend',
+                        AppLocalizations.of(context)!.click_to_resend,
                         textAlign: TextAlign.center,
                         style: textSm.copyWith(
                             fontWeight: FontWeight.w600,

@@ -13,6 +13,7 @@ import 'package:ttpay/pages/withdrawal/widgets/full_withdrawal_textbutton.dart';
 import 'package:ttpay/pages/withdrawal/widgets/risk_disclaimer_dialog.dart';
 import 'package:ttpay/pages/withdrawal/widgets/withdrawal_amount_container.dart';
 import 'package:ttpay/pages/withdrawal/withdrawal_history_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WithdrawalPage extends StatefulWidget {
   const WithdrawalPage({super.key});
@@ -93,15 +94,16 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
       if (currentAmount < minimumAmount) {
         showToastNotification(context,
             type: 'warning',
-            title: 'Minimum Amount Required!',
+            title: AppLocalizations.of(context)!.minimum_amount_required,
             description:
-                'The minimum withdrawal amount must be \$ ${minimumAmount.toInt()} USDT');
+                '${AppLocalizations.of(context)!.the_minimum_withdrawal_amount_must_be} \$ ${minimumAmount.toInt()} USDT');
         return;
       }
 
       if (currentAmount > availableNetBalance) {
         showToastNotification(context,
-            type: 'warning', title: 'Insufficient Balance');
+            type: 'warning',
+            title: AppLocalizations.of(context)!.insufficient_balance);
         return;
       }
 
@@ -146,19 +148,20 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
                     fit: BoxFit.fitHeight,
                   ),
                 ),
-                title: 'Withdrawal',
-                buttonText: 'History'),
+                title: AppLocalizations.of(context)!.withdrawal,
+                buttonText: AppLocalizations.of(context)!.history),
           ),
           Expanded(
             child: ListView(
               padding: EdgeInsets.symmetric(
                   horizontal: width08 * 2, vertical: height24 / 2),
               children: [
-                availableBalanceColumn(availableNetBalance),
+                availableBalanceColumn(context, balance: availableNetBalance),
                 SizedBox(
                   height: height24,
                 ),
                 withdrawalAmountContainer(
+                  context,
                   controller: _amountController,
                   minimumAmount: minimumAmount,
                   onChangedAmount: onChangedAmount,
@@ -168,7 +171,7 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
                 ),
                 Align(
                   alignment: Alignment.center,
-                  child: fullWithdrawalTextButton(
+                  child: fullWithdrawalTextButton(context,
                       onPressed: onPressedFullWithdrawal, isFull: isFull),
                 ),
                 SizedBox(
@@ -179,8 +182,9 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
                     errorText: usdtErrorText ?? '',
                     controller: _usdtAddressController,
                     focusNode: _usdtAddressFocusNode,
-                    textLabel: 'USDT Address',
-                    hintText: 'Paste your USDT address here',
+                    textLabel: AppLocalizations.of(context)!.usdt_address,
+                    hintText: AppLocalizations.of(context)!
+                        .paste_your_usdt_address_here,
                     showErrorWidget: usdtErrorText != null),
                 SizedBox(
                   height: height10 * 4.8,
@@ -192,7 +196,7 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
                     vertical: height08 * 2,
                   ),
                   isGradient: true,
-                  text: 'Proceed',
+                  text: AppLocalizations.of(context)!.proceed,
                 )
               ],
             ),

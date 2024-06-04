@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 AppBar profilePhotoAppbar(BuildContext context) => AppBar(
       backgroundColor: Colors.transparent,
@@ -17,7 +18,7 @@ AppBar profilePhotoAppbar(BuildContext context) => AppBar(
         ),
       ),
       title: Text(
-        'Profile Photo',
+        AppLocalizations.of(context)!.profile_photo,
         style: textLg.copyWith(fontWeight: FontWeight.w700),
       ),
       centerTitle: false,

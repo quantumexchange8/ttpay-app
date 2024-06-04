@@ -5,6 +5,7 @@ import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/auth/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccessDeniedPage extends StatelessWidget {
   const AccessDeniedPage({super.key});
@@ -30,13 +31,13 @@ class AccessDeniedPage extends StatelessWidget {
                       fit: BoxFit.fitWidth,
                     ),
                     Text(
-                      'Access Denied',
+                      AppLocalizations.of(context)!.access_denied,
                       textAlign: TextAlign.center,
                       style: textMd.copyWith(fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: height08),
                     Text(
-                      'Uh-oh! It seems there\'s an issue with accessing the mobile app. Please make sure your bill is settled or contact your software provider to regain access. Let\'s get that sorted out together! 🛠️',
+                      AppLocalizations.of(context)!.access_denied_description,
                       textAlign: TextAlign.center,
                       style: textSm.copyWith(
                         color: neutralGrayScale,

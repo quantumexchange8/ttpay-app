@@ -9,6 +9,7 @@ import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/home/widgets/notification_container.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 SliverAppBarBuilder homeSliverAppbar({
   void Function()? onTapProfile,
@@ -30,7 +31,7 @@ SliverAppBarBuilder homeSliverAppbar({
     contentBuilder:
         (context, expandRatio, contentHeight, centerPadding, overlapsContent) {
       if (contentHeight > height100 * 1.45) {
-        return bigAppBar(
+        return bigAppBar(context,
             onTapProfile: onTapProfile,
             onTapNoti: onTapNoti,
             unreadNoti: unreadNoti,
@@ -39,7 +40,7 @@ SliverAppBarBuilder homeSliverAppbar({
             grossAmount: grossAmount,
             feeAmount: feeAmount);
       } else {
-        return smallAppBar(
+        return smallAppBar(context,
             onTapNoti: onTapNoti,
             unreadNoti: unreadNoti,
             netAmount: netAmount,
@@ -50,7 +51,8 @@ SliverAppBarBuilder homeSliverAppbar({
   );
 }
 
-Widget bigAppBar({
+Widget bigAppBar(
+  BuildContext context, {
   void Function()? onTapNoti,
   void Function()? onTapProfile,
   bool unreadNoti = false,
@@ -98,7 +100,7 @@ Widget bigAppBar({
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Hello, ${user?.name ?? ''}! 👋',
+                      '${AppLocalizations.of(context)!.hello}, ${user?.name ?? ''}! 👋',
                       style: textSm.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -107,7 +109,7 @@ Widget bigAppBar({
                       height: height08,
                     ),
                     Text(
-                      'Net Amount',
+                      AppLocalizations.of(context)!.net_amount,
                       style: textXS.copyWith(
                         color: neutralGrayScale,
                       ),
@@ -177,13 +179,13 @@ Widget bigAppBar({
             Row(
               children: [
                 _dataColumnBig(
-                    title: 'Gross Amount',
+                    title: AppLocalizations.of(context)!.gross_amount,
                     subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
                 SizedBox(
                   width: width10 * 2.7,
                 ),
                 _dataColumnBig(
-                    title: 'Fee',
+                    title: AppLocalizations.of(context)!.fee,
                     subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
               ],
             ),
@@ -197,7 +199,8 @@ Widget bigAppBar({
   });
 }
 
-Widget smallAppBar({
+Widget smallAppBar(
+  BuildContext context, {
   void Function()? onTapNoti,
   bool unreadNoti = false,
   required double netAmount,
@@ -219,16 +222,16 @@ Widget smallAppBar({
               child: Row(
                 children: [
                   _dataColumnSmall(
-                      title: 'Net Amount',
+                      title: AppLocalizations.of(context)!.net_amount,
                       subtitle: '\$ ${amountFormatter.format(netAmount)}'),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: width08 * 2),
                     child: _dataColumnSmall(
-                        title: 'Gross Amount',
+                        title: AppLocalizations.of(context)!.gross_amount,
                         subtitle: '\$ ${amountFormatter.format(grossAmount)}'),
                   ),
                   _dataColumnSmall(
-                      title: 'Fee',
+                      title: AppLocalizations.of(context)!.fee,
                       subtitle: '\$ ${amountFormatter.format(feeAmount)}'),
                 ],
               ),

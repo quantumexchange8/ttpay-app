@@ -14,6 +14,7 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/profile/edit_gallery_photo_page.dart';
 import 'package:ttpay/pages/profile/take_photo_page.dart';
 import 'package:ttpay/pages/transaction/widgets/pin_under_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> editImageFromGallery({
   required BuildContext context,
@@ -69,7 +70,7 @@ class EditProfilePhotoBottomsheet extends StatelessWidget {
           });
         },
         'icon_address': 'assets/icon_image/Icon=camera.png',
-        'option': 'Take Photo'
+        'option': AppLocalizations.of(context)!.take_photo
       },
       {
         'on_tap': () async {
@@ -91,7 +92,7 @@ class EditProfilePhotoBottomsheet extends StatelessWidget {
           });
         },
         'icon_address': 'assets/icon_image/Icon=photo.png',
-        'option': 'Import from Gallery'
+        'option': AppLocalizations.of(context)!.import_from_gallery
       },
       {
         'on_tap': () async {
@@ -106,7 +107,7 @@ class EditProfilePhotoBottomsheet extends StatelessWidget {
           });
         },
         'icon_address': 'assets/icon_image/Icon=file.png',
-        'option': 'Browse'
+        'option': AppLocalizations.of(context)!.browse
       },
     ];
 
@@ -132,7 +133,8 @@ class EditProfilePhotoBottomsheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            topBottomsheet(context, 'Profile Photo'),
+            topBottomsheet(
+                context, AppLocalizations.of(context)!.profile_photo),
             SizedBox(height: height24),
             Column(
               mainAxisSize: MainAxisSize.min,

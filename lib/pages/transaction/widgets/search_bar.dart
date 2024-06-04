@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget searchBar({
+Widget searchBar(
+  BuildContext context, {
   required TextEditingController controller,
   void Function(String)? onChanged,
   void Function()? onTapClear,
@@ -23,7 +25,7 @@ Widget searchBar({
       maxHeight: height10 * 4,
     ),
     controller: controller,
-    hintText: 'Search',
+    hintText: AppLocalizations.of(context)!.search,
     hintStyle: MaterialStatePropertyAll(
       textMd.copyWith(
         color: neutralGrayScale,

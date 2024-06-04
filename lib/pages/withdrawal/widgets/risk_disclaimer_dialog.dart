@@ -9,6 +9,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RiskDisclaimerDialog extends StatefulWidget {
   const RiskDisclaimerDialog({super.key});
@@ -35,7 +36,9 @@ class _RiskDisclaimerDialogState extends State<RiskDisclaimerDialog> {
     void onPressedAcknowledge() {
       if (selectedRisk.length < 3) {
         showToastNotification(context,
-            type: 'warning', title: 'Terms & Conditions Unchecked!');
+            type: 'warning',
+            title:
+                AppLocalizations.of(context)!.terms_and_conditions_unchecked);
         return;
       }
       Navigator.pop(context, true);
@@ -62,16 +65,16 @@ class _RiskDisclaimerDialogState extends State<RiskDisclaimerDialog> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Risk Disclaimer',
+                  AppLocalizations.of(context)!.risk_disclaimer,
                   textAlign: TextAlign.center,
                   style: textMd.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 SizedBox(height: height20),
-                ...riskList.mapIndexed((i, risk) => Padding(
+                ...riskList(context).mapIndexed((i, risk) => Padding(
                       padding: EdgeInsets.only(
-                          bottom: isLast(i, riskList) ? 0 : height08),
+                          bottom: isLast(i, riskList(context)) ? 0 : height08),
                       child: checkRiskRow(
                         riskText: risk,
                         isCheck: selectedRisk.contains(risk),
@@ -82,16 +85,18 @@ class _RiskDisclaimerDialogState extends State<RiskDisclaimerDialog> {
                     )),
                 SizedBox(height: height08 * 2),
                 Text(
-                  'By clicking “Acknowledge”, you signify your acceptance of these terms and conditions. If you do not agree with any part of this agreement, please refrain from initiating the withdrawal process.',
+                  AppLocalizations.of(context)!.by_clicking_aknowledge,
                   style: textXS,
                 ),
                 SizedBox(height: height31),
                 ctaButton(
                     onPressed: onPressedAcknowledge,
                     isGradient: true,
-                    text: 'Aknowledge'),
+                    text: AppLocalizations.of(context)!.acknowledge),
                 SizedBox(height: height24 / 2),
-                ctaButton(onPressed: onPressedCancel, text: 'Cancel')
+                ctaButton(
+                    onPressed: onPressedCancel,
+                    text: AppLocalizations.of(context)!.cancel)
               ],
             ),
           ),
@@ -126,8 +131,8 @@ Row checkRiskRow({
   );
 }
 
-const List<String> riskList = [
-  'All withdrawal transactions processed through the Payment Gateway are typically completed within 24 hours. However, discrepancies may occur between the withdrawal amount and the amount received due to fees charged by the wallet platform.',
-  'Please ensure the accuracy of the USDT Address you provide. Inaccurate or incorrect USDT addresses, or addresses associated with illicit digital currencies, may result in partial or complete loss of funds. The payment gateway disclaims any responsibility for compensation, whether partial or full, as well as any criminal liability, arising from such incidents.',
-  'When withdrawing funds, please ensure to input your withdrawal password diligently and maintain confidentiality to prevent any unnecessary losses.',
-];
+List<String> riskList(BuildContext context) => [
+      AppLocalizations.of(context)!.risk_disclaimer_one,
+      AppLocalizations.of(context)!.risk_disclaimer_two,
+      AppLocalizations.of(context)!.risk_disclaimer_three,
+    ];

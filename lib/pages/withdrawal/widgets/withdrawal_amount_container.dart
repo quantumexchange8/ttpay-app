@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Container withdrawalAmountContainer(
+Container withdrawalAmountContainer(BuildContext context,
     {required TextEditingController controller,
     required double minimumAmount,
     void Function(String amount)? onChangedAmount}) {
@@ -24,14 +25,14 @@ Container withdrawalAmountContainer(
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Enter Withdrawal Amount ',
+                text: AppLocalizations.of(context)!.enter_withdrawal_amount,
                 style: textSm.copyWith(
                   color: neutralGrayScale.shade300,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               TextSpan(
-                text: '*',
+                text: ' *',
                 style: textSm.copyWith(
                   color: errorRedScale.shade600,
                   fontWeight: FontWeight.w500,
@@ -95,7 +96,7 @@ Container withdrawalAmountContainer(
           ),
         ),
         Text(
-          'Min withdrawal amount: \$ ${minimumAmount.toInt()} USDT',
+          '${AppLocalizations.of(context)!.min_withdrawal_amount}: \$ ${minimumAmount.toInt()} USDT',
           textAlign: TextAlign.center,
           style: textXS.copyWith(
             color: neutralGrayScale,

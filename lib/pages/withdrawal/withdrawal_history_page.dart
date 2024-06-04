@@ -10,6 +10,7 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/transaction.dart';
 import 'package:ttpay/pages/withdrawal/widgets/withdrawal_container.dart';
 import 'package:ttpay/pages/withdrawal/widgets/withdrawal_details_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WithdrawalHistoryPage extends StatelessWidget {
   final List<Transaction> withdrawalTransaction;
@@ -29,7 +30,7 @@ class WithdrawalHistoryPage extends StatelessWidget {
           onTapBack: () {
             Navigator.pop(context);
           },
-          title: 'Withdrawal History'),
+          title: AppLocalizations.of(context)!.withdrawal_history),
       extendBodyBehindAppBar: true,
       body: backgroundContainer(
           padding:
@@ -39,9 +40,10 @@ class WithdrawalHistoryPage extends StatelessWidget {
                   width: double.infinity,
                   child: emptyImageColumn(
                       imageAddress: 'assets/images/no-transaction.png',
-                      title: 'Your Withdrawal History Is Empty!',
-                      description:
-                          'It looks like you haven\'t made any withdrawals yet.'),
+                      title: AppLocalizations.of(context)!
+                          .withdrawal_history_empty,
+                      description: AppLocalizations.of(context)!
+                          .withdrawal_history_empty_description),
                 )
               : SafeArea(
                   child: ListView.builder(

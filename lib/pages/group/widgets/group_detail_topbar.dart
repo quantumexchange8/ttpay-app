@@ -8,8 +8,9 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/group.dart';
 import 'package:ttpay/pages/group/widgets/overview_container.dart';
 import 'package:ttpay/pages/transaction/widgets/date_filter_row.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-SliverAppBarBuilder groupDetailTopBar(
+SliverAppBarBuilder groupDetailTopBar(BuildContext context,
     {void Function()? onTapDatePicker,
     void Function()? onTapFilter,
     required void Function(String) onTapTab,
@@ -18,23 +19,20 @@ SliverAppBarBuilder groupDetailTopBar(
     required DateTime lastDatePicked,
     required String selectedTab}) {
   Map<String, dynamic> overviewData = {
-    'Total Deposit Number': group.totalDepositNumber.toString(),
-    'Total Deposit Amount (Gross)':
+    AppLocalizations.of(context)!.total_deposit_number:
+        group.totalDepositNumber.toString(),
+    AppLocalizations.of(context)!.total_deposit_amount_gross:
         '\$ ${amountFormatter.format(group.totalGrossDepositAmount)}',
-    'Total Deposit Amount (Net)':
+    AppLocalizations.of(context)!.total_deposit_amount_net:
         '\$ ${amountFormatter.format(group.totalNetDepositAmount)}',
-    'Total Withdrawal Number': group.totalWithdrawalNumber.toString(),
-    'Total Withdrawal Amount (Gross)':
+    AppLocalizations.of(context)!.total_withdrawal_number:
+        group.totalWithdrawalNumber.toString(),
+    AppLocalizations.of(context)!.total_withdrawal_amount_gross:
         '\$ ${amountFormatter.format(group.totalGrossWithdrawalAmount)}',
-    'Total Withdrawal Amount (Net)':
+    AppLocalizations.of(context)!.total_withdrawal_amount_net:
         '\$ ${amountFormatter.format(group.totalNetWithdrawalAmount)}',
   };
 
-  List<String> tabNameList = [
-    'All',
-    'Deposit',
-    'Withdrawal',
-  ];
   return SliverAppBarBuilder(
     leadingActions: const [],
     backgroundColorBar: Colors.transparent,
@@ -94,7 +92,8 @@ SliverAppBarBuilder groupDetailTopBar(
                     lastDatePicked: lastDatePicked),
               ),
               tabPickerRow(
-                  tabNameList: tabNameList,
+                  transactionTypeList: transactionTypeList,
+                  tabNameList: tabNameList(context),
                   selectedTab: selectedTab,
                   onTapTab: onTapTab)
             ],

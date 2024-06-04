@@ -15,6 +15,7 @@ import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/pages/profile/widgets/custom_zoomable_image_container.dart';
 import 'package:ttpay/pages/profile/widgets/profile_photo_appbar.dart';
 import 'package:zoomable_image_cropper/zoomable_image_cropper.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditGalleryPhotoPage extends StatefulWidget {
   final FileImage image;
@@ -123,13 +124,15 @@ class _EditGalleryPhotoPageState extends State<EditGalleryPhotoPage> {
                   height: height20 * 2,
                 ),
                 ctaButton(
-                    onPressed: onPressedDone, isGradient: true, text: 'Done'),
+                    onPressed: onPressedDone,
+                    isGradient: true,
+                    text: AppLocalizations.of(context)!.done),
                 SizedBox(
                   height: height24 / 2,
                 ),
                 ctaButton(
                     onPressed: onChooseAnotherPhoto,
-                    text: 'Choose another photo')
+                    text: AppLocalizations.of(context)!.choose_another_photo)
               ],
             ),
           )),

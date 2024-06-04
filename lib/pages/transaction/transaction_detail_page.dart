@@ -9,6 +9,7 @@ import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/transaction.dart';
 import 'package:ttpay/pages/transaction/widgets/pin_under_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TransactionDetailPage extends StatelessWidget {
   final Transaction transaction;
@@ -20,26 +21,30 @@ class TransactionDetailPage extends StatelessWidget {
     String indicator = isDeposit ? '+' : '-';
 
     Map<String, dynamic> userData = {
-      'Name': transaction.userInfo.name,
-      'Email': transaction.userInfo.email,
-      'Under Group':
+      AppLocalizations.of(context)!.name: transaction.userInfo.name,
+      AppLocalizations.of(context)!.email: transaction.userInfo.email,
+      AppLocalizations.of(context)!.under_group:
           transaction.pinnedGroup == null ? '-' : transaction.pinnedGroup!.name
     };
 
     Map<String, dynamic> feeAmount = {
-      'Transaction ID': transaction.transactionNumber,
-      'Approval Date': transaction.approvalDate == null
-          ? '-'
-          : rowDateFormat.format(transaction.approvalDate!),
-      'Amount':
+      AppLocalizations.of(context)!.transaction_id:
+          transaction.transactionNumber,
+      AppLocalizations.of(context)!.approval_date:
+          transaction.approvalDate == null
+              ? '-'
+              : rowDateFormat.format(transaction.approvalDate!),
+      AppLocalizations.of(context)!.amount:
           '$indicator\$ ${amountFormatter.format(transaction.amount)} USDT',
-      'Fee': '\$ ${amountFormatter.format(transaction.fee)} USDT',
+      AppLocalizations.of(context)!.fee:
+          '\$ ${amountFormatter.format(transaction.fee)} USDT',
     };
 
     Map<String, dynamic> addressData = {
-      'TxID': transaction.txId,
-      'Send Address': transaction.sentAddress,
-      'Receiving Address': transaction.receivingAddress
+      AppLocalizations.of(context)!.txid: transaction.txId,
+      AppLocalizations.of(context)!.sent_address: transaction.sentAddress,
+      AppLocalizations.of(context)!.receiving_address:
+          transaction.receivingAddress
     };
 
     return backgroundContainer(
@@ -55,7 +60,8 @@ class TransactionDetailPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          topBottomsheet(context, 'Transaction Details'),
+          topBottomsheet(
+              context, AppLocalizations.of(context)!.transaction_details),
           SizedBox(height: height24),
           Text(
             '$indicator \$ ${amountFormatter.format(transaction.amount)}',
@@ -73,7 +79,7 @@ class TransactionDetailPage extends StatelessWidget {
                   color: neutralGrayScale.shade300,
                 ),
               ),
-              statusBadges(transaction.status),
+              StatusBadges(status: transaction.status),
             ],
           ),
           Padding(
@@ -91,7 +97,7 @@ class TransactionDetailPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: height08),
                   child: transactionInfoRow(
-                      key: 'Net Amount',
+                      key: AppLocalizations.of(context)!.net_amount,
                       value:
                           '$indicator\$ ${amountFormatter.format(transaction.netAmount)} USDT',
                       valueStyle: textSm.copyWith(
@@ -111,7 +117,8 @@ class TransactionDetailPage extends StatelessWidget {
                 addressData: addressData),
           ),
           if (transaction.description != null)
-            descriptionContainer(transaction.description!),
+            descriptionContainer(context,
+                description: transaction.description!),
         ],
       ),
     );
@@ -156,7 +163,8 @@ Container addressContainer(
   );
 }
 
-Container descriptionContainer(String description) {
+Container descriptionContainer(BuildContext context,
+    {required String description}) {
   return containerOnlyTopBorder(
     child: Column(
       mainAxisSize: MainAxisSize.min,
@@ -164,7 +172,7 @@ Container descriptionContainer(String description) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Description',
+          AppLocalizations.of(context)!.description,
           style: textXS.copyWith(
             color: neutralGrayScale,
             fontWeight: FontWeight.w500,

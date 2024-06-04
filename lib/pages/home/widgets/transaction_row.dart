@@ -50,7 +50,7 @@ Widget transactionRow({
                 SizedBox(
                   width: width08,
                 ),
-                statusBadges(transaction.status),
+                StatusBadges(status: transaction.status),
               ],
             )
           ],

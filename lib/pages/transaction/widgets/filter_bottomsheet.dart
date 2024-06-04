@@ -13,6 +13,7 @@ import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/transaction/widgets/date_picker.dart';
 import 'package:ttpay/pages/transaction/widgets/pin_under_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Row statusRow(String status,
     {bool isCheck = false, required void Function(bool?)? onChanged}) {
@@ -38,7 +39,7 @@ Row statusRow(String status,
   );
 }
 
-Column amountRangeSlider(
+Column amountRangeSlider(BuildContext context,
     {required double startAmount,
     required double endAmount,
     required double maxAmount,
@@ -64,7 +65,7 @@ Column amountRangeSlider(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text(
-        'Amount Range',
+        AppLocalizations.of(context)!.amount_range,
         style: textSm.copyWith(
           color: neutralGrayScale.shade300,
           fontWeight: FontWeight.w600,
@@ -134,6 +135,13 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
 
   @override
   Widget build(BuildContext context) {
+    final statusListLocale = [
+      AppLocalizations.of(context)!.success,
+      AppLocalizations.of(context)!.rejected,
+      AppLocalizations.of(context)!.pending,
+      AppLocalizations.of(context)!.freezing
+    ];
+
     double maxAmount = widget.maxAmount;
     double minAmount = widget.minAmount;
 
@@ -158,12 +166,12 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          topBottomsheet(context, 'Filters'),
+          topBottomsheet(context, AppLocalizations.of(context)!.filters),
           SizedBox(
             height: height24,
           ),
           Text(
-            'Status',
+            AppLocalizations.of(context)!.status,
             style: textSm.copyWith(fontWeight: FontWeight.w600),
           ),
           SizedBox(
@@ -177,7 +185,7 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
                       onTapStatus(e.toLowerCase());
                     },
                     child: statusRow(
-                      e,
+                      statusListLocale[i],
                       isCheck: selectedStatus.contains(e.toLowerCase()),
                       onChanged: (value) {
                         onTapStatus(e.toLowerCase());
@@ -193,6 +201,7 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
             ),
           ),
           amountRangeSlider(
+            context,
             startAmount: startAmount,
             endAmount: endAmount,
             maxAmount: maxAmount,
@@ -208,6 +217,7 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
             height: height10 * 4.8,
           ),
           bottomSheetBelowButtonRow(
+            context,
             onPressedReset: () {
               setState(() {
                 selectedStatus.clear();
@@ -216,7 +226,7 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
             onPressedApply: () {
               Navigator.pop(context, [selectedStatus, startAmount, endAmount]);
             },
-            resetString: 'Clear',
+            resetString: AppLocalizations.of(context)!.clear,
           )
         ],
       ),

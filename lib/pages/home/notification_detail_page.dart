@@ -42,7 +42,9 @@ class NotificationDetailPage extends StatelessWidget {
               ),
             ),
             Text(
-              'You\'ve just received a deposit of \$ 200.00 from JOHN DOE.',
+              notification.body,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: textSm.copyWith(
                 color: neutralGrayScale.shade300,
               ),

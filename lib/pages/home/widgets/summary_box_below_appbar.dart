@@ -3,8 +3,10 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget summartBoxBelowAppBar({
+Widget summartBoxBelowAppBar(
+  BuildContext context, {
   required int totalDepositNumber,
   required double totalFreezingAmount,
 }) {
@@ -12,14 +14,14 @@ Widget summartBoxBelowAppBar({
     children: [
       Expanded(
         child: _summaryBox(
-          title: 'Total Deposit Number ',
+          title: '${AppLocalizations.of(context)!.total_deposit_number} ',
           subtitle: amountFormatterWithoutDecimal.format(totalDepositNumber),
         ),
       ),
       SizedBox(width: width24 / 2),
       Expanded(
         child: _summaryBox(
-          title: 'Total Freezing Amount',
+          title: AppLocalizations.of(context)!.total_freezing_amount,
           subtitle: '\$ ${amountFormatter.format(totalFreezingAmount)}',
         ),
       )

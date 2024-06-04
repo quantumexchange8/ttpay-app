@@ -5,6 +5,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/user.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Row accountListRow({
   String? accountPhoto,
@@ -24,7 +25,7 @@ Row accountListRow({
   );
 }
 
-Row addAccountRow() {
+Row addAccountRow(BuildContext context) {
   return Row(
     children: [
       Icon(
@@ -35,7 +36,7 @@ Row addAccountRow() {
       SizedBox(width: width08),
       Expanded(
         child: Text(
-          'Add Account',
+          AppLocalizations.of(context)!.add_account,
           style: textSm.copyWith(
             color: primaryPurpleScale.shade600,
             fontWeight: FontWeight.w500,
@@ -57,7 +58,7 @@ Container paddingWithBottomDividerContainer({Widget? child}) {
       child: child);
 }
 
-Container accountListContainer(
+Container accountListContainer(BuildContext context,
     {required List<User> userAccounts,
     void Function()? onTapAddAccount,
     required void Function(int index) onTapAccount}) {
@@ -84,7 +85,7 @@ Container accountListContainer(
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: height24 / 2),
-          child: InkWell(onTap: onTapAddAccount, child: addAccountRow()),
+          child: InkWell(onTap: onTapAddAccount, child: addAccountRow(context)),
         )
       ],
     ),

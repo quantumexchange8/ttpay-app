@@ -9,6 +9,7 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/transaction.dart';
 import 'package:ttpay/pages/transaction/transaction_detail_page.dart';
 import 'package:ttpay/pages/transaction/widgets/pin_under_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WithdrawalDetailsBottomsheet extends StatelessWidget {
   final Transaction withdrawal;
@@ -17,18 +18,23 @@ class WithdrawalDetailsBottomsheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> withdrawalDetails = {
-      'Transaction ID': withdrawal.transactionNumber,
-      'Requested Date': rowDateFormat.format(withdrawal.createdAt),
-      'Approval Date': withdrawal.approvalDate == null
-          ? '-'
-          : rowDateFormat.format(withdrawal.approvalDate!),
-      'Amount': '\$ ${amountFormatter.format(withdrawal.amount)} USDT',
-      'Fee': '\$ ${amountFormatter.format(withdrawal.fee)} USDT',
+      AppLocalizations.of(context)!.transaction_id:
+          withdrawal.transactionNumber,
+      AppLocalizations.of(context)!.requested_date:
+          rowDateFormat.format(withdrawal.createdAt),
+      AppLocalizations.of(context)!.approval_date:
+          withdrawal.approvalDate == null
+              ? '-'
+              : rowDateFormat.format(withdrawal.approvalDate!),
+      AppLocalizations.of(context)!.amount:
+          '\$ ${amountFormatter.format(withdrawal.amount)} USDT',
+      AppLocalizations.of(context)!.fee:
+          '\$ ${amountFormatter.format(withdrawal.fee)} USDT',
     };
 
     Map<String, dynamic> addressData = {
-      'From': withdrawal.receivingAddress,
-      'To': withdrawal.sentAddress,
+      AppLocalizations.of(context)!.from: withdrawal.receivingAddress,
+      AppLocalizations.of(context)!.to: withdrawal.sentAddress,
     };
 
     return backgroundContainer(
@@ -53,7 +59,8 @@ class WithdrawalDetailsBottomsheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            topBottomsheet(context, 'Withdrawal Details'),
+            topBottomsheet(
+                context, AppLocalizations.of(context)!.withdrawal_details),
             SizedBox(height: height24),
             transactionInfoColumn(withdrawalDetails),
             Padding(
@@ -62,7 +69,7 @@ class WithdrawalDetailsBottomsheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Status',
+                      AppLocalizations.of(context)!.status,
                       style: textXS.copyWith(
                         color: neutralGrayScale,
                         fontWeight: FontWeight.w500,
@@ -73,7 +80,7 @@ class WithdrawalDetailsBottomsheet extends StatelessWidget {
                     flex: 2,
                     child: Row(
                       children: [
-                        statusBadges(withdrawal.status),
+                        StatusBadges(status: withdrawal.status),
                       ],
                     ),
                   )
@@ -89,7 +96,8 @@ class WithdrawalDetailsBottomsheet extends StatelessWidget {
                   addressData: addressData),
             ),
             if (withdrawal.description != null)
-              descriptionContainer(withdrawal.description!),
+              descriptionContainer(context,
+                  description: withdrawal.description!),
           ],
         ),
       ),

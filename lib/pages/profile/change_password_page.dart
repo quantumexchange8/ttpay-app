@@ -8,6 +8,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/validator.dart';
 import 'package:ttpay/pages/auth/login_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -72,7 +73,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             onTapBack: () {
               Navigator.pop(context);
             },
-            title: 'Change Password'),
+            title: AppLocalizations.of(context)!.change_password),
         extendBodyBehindAppBar: true,
         extendBody: true,
         body: backgroundContainer(
@@ -89,8 +90,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                     customInputTextfield(
                         onFieldSubmitted: onFieldSubmittedOldPassword,
-                        textLabel: 'Old Password',
-                        hintText: 'Old Password',
+                        textLabel: AppLocalizations.of(context)!.old_password,
+                        hintText: AppLocalizations.of(context)!.old_password,
                         focusNode: oldPasswordFocusNode,
                         controller: oldPasswordController,
                         showErrorWidget: oldPasswordErrorText != null,
@@ -113,8 +114,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                     customInputTextfield(
                         onFieldSubmitted: onFieldSubmittedNewPassword,
-                        textLabel: 'New Password',
-                        hintText: 'New Password',
+                        textLabel: AppLocalizations.of(context)!.new_password,
+                        hintText: AppLocalizations.of(context)!.new_password,
                         focusNode: newPasswordFocusNode,
                         controller: newPasswordController,
                         showErrorWidget: newPasswordErrorText != null,
@@ -128,15 +129,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             },
                             obscureText: newPasswordObscureText),
                         obscureText: newPasswordObscureText,
-                        helperText:
-                            'Must be at least 8 characters containing one uppercase letter, one lowercase letter, one number, and one special character.'),
+                        helperText: AppLocalizations.of(context)!
+                            .new_password_description),
                     SizedBox(
                       height: height20,
                     ),
                     customInputTextfield(
                       onFieldSubmitted: onFieldSubmittedComfirmPassword,
-                      textLabel: 'Comfirm Password',
-                      hintText: 'Comfirm New Password',
+                      textLabel: AppLocalizations.of(context)!.comfirm_password,
+                      hintText:
+                          AppLocalizations.of(context)!.comfirm_new_password,
                       focusNode: comfirmPasswordFocusNode,
                       controller: comfirmPasswordController,
                       showErrorWidget: comfirmPasswordErrorText != null,
@@ -161,7 +163,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       horizontal: width08 * 2, vertical: height08),
                   child: ctaButton(
                       onPressed: onPressedComfirm,
-                      text: 'Comfirm',
+                      text: AppLocalizations.of(context)!.comfirm,
                       isGradient: true),
                 ),
               ),

@@ -4,6 +4,7 @@ import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/pages/auth/change_language_bottomsheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Widget languageIconButton(BuildContext context) {
   return InkWell(
@@ -36,5 +37,5 @@ Widget backToLoginPageButton(BuildContext context) {
         color: Colors.white,
         size: height20,
       ),
-      text: 'Back to log in');
+      text: AppLocalizations.of(context)!.back_to_log_in);
 }

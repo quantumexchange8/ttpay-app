@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Row _actionRow({
   required String actionName,
@@ -47,7 +48,7 @@ PopupMenuButton<bool?> moreButton({
           padding: EdgeInsets.symmetric(
               vertical: height10 * 1.4, horizontal: width24 / 2),
           child: _actionRow(
-            actionName: 'Edit',
+            actionName: AppLocalizations.of(context)!.edit,
             iconAddress: 'assets/icon_image/edit_icon.png',
           ),
         ),
@@ -65,7 +66,7 @@ PopupMenuButton<bool?> moreButton({
           padding: EdgeInsets.symmetric(
               vertical: height10 * 1.4, horizontal: width24 / 2),
           child: _actionRow(
-              actionName: 'Delete',
+              actionName: AppLocalizations.of(context)!.delete,
               iconAddress: 'assets/icon_image/delete_icon.png',
               actionNameStyle: textSm.copyWith(
                 color: errorRedScale.shade600,

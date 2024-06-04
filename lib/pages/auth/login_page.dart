@@ -16,6 +16,7 @@ import 'package:ttpay/pages/app_layout.dart';
 import 'package:ttpay/pages/auth/forgot_password_page.dart';
 import 'package:ttpay/pages/auth/login_widgets/title_column.dart';
 import 'package:ttpay/pages/auth/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   final Widget? topRightWidget;
@@ -132,8 +133,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               titleColumn(
                   iconAddress: 'assets/login_icon_image/ttpay-logo.png',
-                  title: 'Merchant Portal',
-                  description: 'Welcome back! Please enter your details.'),
+                  title: AppLocalizations.of(context)!.merchant_portal,
+                  description: AppLocalizations.of(context)!.welcome_back),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: height31),
                 child: Form(
@@ -143,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                       customInputTextfield(
                           showErrorWidget: idValidationErrorText != null,
                           focusNode: idNumberFocusNode,
-                          textLabel: 'ID Number',
+                          textLabel: AppLocalizations.of(context)!.id_number,
                           controller: idNumberController,
                           onFieldSubmitted: (idNumber) {
                             setState(() {
@@ -165,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                       customInputTextfield(
                           showErrorWidget: passwordValidationErrorText != null,
                           focusNode: passwordFocusNode,
-                          textLabel: 'Password',
+                          textLabel: AppLocalizations.of(context)!.password,
                           controller: passwordController,
                           onFieldSubmitted: (password) async {
                             await login();
@@ -197,13 +198,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   haveShadow: true,
                   isGradient: true,
-                  text: 'Log In'),
+                  text: AppLocalizations.of(context)!.log_in),
               SizedBox(
                 height: height24 / 2,
               ),
               ctaButton(
                   onPressed: forgotPassword,
-                  text: 'Forgot password',
+                  text: AppLocalizations.of(context)!.forgot_password,
                   textStyle: textSm.copyWith(
                       fontWeight: FontWeight.w600,
                       color: primaryPurpleScale.shade700))
