@@ -4,8 +4,10 @@ import 'package:ttpay/models/group.dart';
 import 'package:ttpay/models/user.dart';
 
 List<Transaction> listTransactionFromJson(String json) {
-  List data = jsonDecode(json);
-  return List<Transaction>.from(data.map((e) => Transaction.fromMap(e)));
+  Map data = jsonDecode(json);
+  List transactionList = data['transaction'];
+  return List<Transaction>.from(
+      transactionList.map((e) => Transaction.fromMap(e)));
 }
 
 List<Transaction> listTransactionFromListMap(
@@ -24,8 +26,8 @@ class Transaction {
   double amount;
   double fee;
   double netAmount;
-  String txId;
-  String sentAddress;
+  String? txId;
+  String? sentAddress;
   String receivingAddress;
   String? description;
   DateTime? approvalDate;
@@ -40,8 +42,8 @@ class Transaction {
     required this.amount,
     required this.fee,
     required this.netAmount,
-    required this.txId,
-    required this.sentAddress,
+    this.txId,
+    this.sentAddress,
     required this.receivingAddress,
     this.description,
     this.approvalDate,
@@ -70,18 +72,26 @@ class Transaction {
   }
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
+    double amount = double.parse(map['amount'] ?? "0.00");
+    double fee = double.parse(map['fee']);
+    double netAmount = amount - fee;
+    int clientId = map['client_id'];
+    String? clientName = map['client_name'];
+    String? clientEmail = map['client_email'];
+
     return Transaction(
         id: map['id'] as int,
         createdAt: DateTime.parse(map['created_at']),
         transactionNumber: map['transaction_number'] as String,
         transactionType: map['transaction_type'] as String,
         status: map['status'] as String,
-        amount: double.parse(map['amount']),
-        fee: double.parse(map['fee']),
-        netAmount: double.parse(map['net_amount']),
-        txId: map['txID'] as String,
-        sentAddress: map['sent_address'] as String,
-        receivingAddress: map['receiving_address'] as String,
+        amount: amount,
+        fee: fee,
+        netAmount: netAmount,
+        txId: map['txID'] == null ? null : map['txID'] as String,
+        sentAddress:
+            map['from_wallet'] == null ? null : map['from_wallet'] as String,
+        receivingAddress: map['to_wallet'] as String,
         description:
             map['description'] != null ? map['description'] as String : null,
         approvalDate: map['approval_date'] != null
@@ -90,7 +100,12 @@ class Transaction {
         pinnedGroup: map['pinned_group'] == null
             ? null
             : Group.fromMap(map['pinned_group']),
-        userInfo: User.fromMap(map['user']));
+        userInfo: User(
+            id: clientId,
+            name: clientName ?? 'Not Available',
+            managerName: 'Not Available',
+            email: clientEmail ?? 'Not Available',
+            profileId: 'Not Available'));
   }
 
   String toJson() => json.encode(toMap());

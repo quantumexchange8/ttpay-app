@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   dynamic profilePhoto;
 
   Future<void> getData({bool getAllAccount = true}) async {
-    await transactionController.getAllTransaction();
+    await transactionController.getAllTransaction(tokenController.currentToken);
 
     await groupController.getAllGroup();
 

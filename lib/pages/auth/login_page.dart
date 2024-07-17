@@ -67,8 +67,8 @@ class _LoginPageState extends State<LoginPage> {
                       password: passwordController.text)
                   .then((success) async {
                 if (success) {
-                  final getTransactionErrorText =
-                      await transactionController.getAllTransaction();
+                  final getTransactionErrorText = await transactionController
+                      .getAllTransaction(tokenController.currentToken);
                   if (getTransactionErrorText != null) {
                     showErrorNotification(
                       context,

@@ -34,7 +34,8 @@ class WithdrawalDetailsBottomsheet extends StatelessWidget {
 
     Map<String, dynamic> addressData = {
       AppLocalizations.of(context)!.from: withdrawal.receivingAddress,
-      AppLocalizations.of(context)!.to: withdrawal.sentAddress,
+      AppLocalizations.of(context)!.to:
+          withdrawal.sentAddress ?? 'not available',
     };
 
     return backgroundContainer(

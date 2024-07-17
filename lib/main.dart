@@ -166,7 +166,7 @@ Future<dynamic> asyncNavigationCallback() async {
       return;
     }
     final getTransactionErrorText =
-        await transactionController.getAllTransaction();
+        await transactionController.getAllTransaction(token);
     if (getTransactionErrorText != null) {
       Get.offNamed('/login');
       return;

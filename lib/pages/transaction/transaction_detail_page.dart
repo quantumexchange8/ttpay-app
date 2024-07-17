@@ -41,8 +41,9 @@ class TransactionDetailPage extends StatelessWidget {
     };
 
     Map<String, dynamic> addressData = {
-      AppLocalizations.of(context)!.txid: transaction.txId,
-      AppLocalizations.of(context)!.sent_address: transaction.sentAddress,
+      AppLocalizations.of(context)!.txid: transaction.txId ?? 'not available',
+      AppLocalizations.of(context)!.sent_address:
+          transaction.sentAddress ?? 'not available',
       AppLocalizations.of(context)!.receiving_address:
           transaction.receivingAddress
     };

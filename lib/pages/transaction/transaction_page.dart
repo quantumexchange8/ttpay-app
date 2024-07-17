@@ -58,9 +58,9 @@ class _TransactionPageState extends State<TransactionPage> {
     if (allAmount.isNotEmpty) {
       minAmount = allAmount.min;
       maxAmount = allAmount.max;
-      startAmount = minAmount;
-      endAmount = maxAmount;
     }
+    startAmount = minAmount;
+    endAmount = maxAmount;
   }
 
   @override
