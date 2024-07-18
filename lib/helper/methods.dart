@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ttpay/component/top_snackbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 bool isLast(int currentIndex, List setOfList) {
   return currentIndex == (setOfList.length - 1);
@@ -88,5 +89,19 @@ void showErrorNotification(BuildContext context, {required String errorText}) {
         title: 'Error', description: errorText, type: 'error');
   } else {
     showToastNotification(context, title: errorText, type: 'error');
+  }
+}
+
+Future<void> openLink(BuildContext context, {required String link}) async {
+  try {
+    await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication)
+        .then((canLaunch) {
+      if (!canLaunch) {
+        showToastNotification(context,
+            title: 'Cannot open link', type: 'error');
+      }
+    });
+  } catch (e) {
+    debugPrint(e.toString());
   }
 }

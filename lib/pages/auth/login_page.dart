@@ -14,7 +14,6 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/helper/validator.dart';
 import 'package:ttpay/pages/app_layout.dart';
 import 'package:ttpay/pages/auth/forgot_password_page.dart';
-import 'package:ttpay/pages/auth/login_widgets/title_column.dart';
 import 'package:ttpay/pages/auth/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -76,13 +75,13 @@ class _LoginPageState extends State<LoginPage> {
                     );
                     return;
                   }
-                  final getGroupsErrorText =
-                      await groupController.getAllGroup();
-                  if (getGroupsErrorText != null) {
-                    showErrorNotification(context,
-                        errorText: getGroupsErrorText);
-                    return;
-                  }
+                  // final getGroupsErrorText =
+                  //     await groupController.getAllGroup();
+                  // if (getGroupsErrorText != null) {
+                  //   showErrorNotification(context,
+                  //       errorText: getGroupsErrorText);
+                  //   return;
+                  // }
                   final getUserErrorText = await userController.getCurrentUser(
                       token: tokenController.currentToken);
                   if (getUserErrorText != null) {
@@ -97,13 +96,13 @@ class _LoginPageState extends State<LoginPage> {
 
                     return;
                   }
-                  final getNotificationsErrorText =
-                      await notificationController.getAllNotifications();
-                  if (getNotificationsErrorText != null) {
-                    showErrorNotification(context,
-                        errorText: getNotificationsErrorText);
-                    return;
-                  }
+                  // final getNotificationsErrorText =
+                  //     await notificationController.getAllNotifications();
+                  // if (getNotificationsErrorText != null) {
+                  //   showErrorNotification(context,
+                  //       errorText: getNotificationsErrorText);
+                  //   return;
+                  // }
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -131,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: widget.topRightWidget ?? languageIconButton(context),
                 ),
               ),
-              titleColumn(
+              _titleColumn(
                   iconAddress: 'assets/login_icon_image/ttpay-logo.png',
                   title: AppLocalizations.of(context)!.merchant_portal,
                   description: AppLocalizations.of(context)!.welcome_back),
@@ -229,5 +228,39 @@ Widget eyeObscureIcon({void Function()? onTap, required bool obscureText}) {
           : Icon(Icons.visibility,
               color: neutralGrayScale.shade400, size: height20),
     ),
+  );
+}
+
+Column _titleColumn(
+    {required String iconAddress,
+    required String title,
+    required String description}) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Container(
+        width: width100 * 1.4,
+        height: height10 * 3.6,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(iconAddress), fit: BoxFit.cover),
+        ),
+      ),
+      SizedBox(height: height24),
+      Text(
+        title,
+        textAlign: TextAlign.center,
+        style: textLg.copyWith(fontWeight: FontWeight.w600),
+      ),
+      SizedBox(height: height08),
+      Text(
+        description,
+        textAlign: TextAlign.center,
+        style: textSm.copyWith(
+          color: neutralGrayScale,
+        ),
+      ),
+    ],
   );
 }

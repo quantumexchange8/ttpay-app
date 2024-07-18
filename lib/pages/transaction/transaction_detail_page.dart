@@ -41,12 +41,23 @@ class TransactionDetailPage extends StatelessWidget {
     };
 
     Map<String, dynamic> addressData = {
-      AppLocalizations.of(context)!.txid: transaction.txId ?? 'not available',
       AppLocalizations.of(context)!.sent_address:
           transaction.sentAddress ?? 'not available',
       AppLocalizations.of(context)!.receiving_address:
           transaction.receivingAddress
     };
+
+    void onTapCopy(String address) async {
+      await copyToClipboard(context, address);
+    }
+
+    void onTapOpenReceipt() async {
+      debugPrint('tap');
+      if (transaction.txId != null) {
+        await openLink(context,
+            link: 'https://tronscan.org/#/transaction/${transaction.txId!}');
+      }
+    }
 
     return backgroundContainer(
       borderRadius: const BorderRadius.only(
@@ -111,12 +122,18 @@ class TransactionDetailPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height20),
-            child: addressContainer(
-                onTapCopy: (address) async {
-                  copyToClipboard(context, address);
-                },
-                addressData: addressData),
+            child: containerOnlyTopBorder(
+              child: _txIDRow(
+                  onTapCopy: () {
+                    if (transaction.txId != null) {
+                      onTapCopy(transaction.txId!);
+                    }
+                  },
+                  onTapOpenReceipt: onTapOpenReceipt,
+                  txID: transaction.txId),
+            ),
           ),
+          addressContainer(onTapCopy: onTapCopy, addressData: addressData),
           if (transaction.description != null)
             descriptionContainer(context,
                 description: transaction.description!),
@@ -124,6 +141,68 @@ class TransactionDetailPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Row _txIDRow(
+    {void Function()? onTapOpenReceipt,
+    void Function()? onTapCopy,
+    required String? txID}) {
+  return Row(
+    children: [
+      Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'TxID',
+              style: textXS.copyWith(
+                color: neutralGrayScale,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: height08 / 2),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    txID ?? "Not available",
+                    style: textSm.copyWith(),
+                  ),
+                ),
+                SizedBox(width: width08),
+              ],
+            ),
+          ],
+        ),
+      ),
+      SizedBox(width: width08),
+      if (txID != null)
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            InkWell(
+              onTap: onTapOpenReceipt,
+              child: Icon(
+                Icons.receipt,
+                color: Colors.white,
+                size: height08 * 2,
+              ),
+            ),
+            SizedBox(height: height08 * 2),
+            InkWell(
+              onTap: onTapCopy,
+              child: Image.asset(
+                'assets/icon_image/copy_icon.png',
+                height: height08 * 2,
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+          ],
+        )
+    ],
+  );
 }
 
 Container containerOnlyTopBorder({Widget? child}) {
@@ -139,28 +218,26 @@ Container containerOnlyTopBorder({Widget? child}) {
   );
 }
 
-Container addressContainer(
+Column addressContainer(
     {required void Function(String address) onTapCopy,
     required Map<String, dynamic> addressData}) {
-  return containerOnlyTopBorder(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: addressData.entries
-          .mapIndexed((i, e) => Padding(
-                padding: EdgeInsets.only(
-                    bottom:
-                        isLast(i, addressData.entries.toList()) ? 0 : height08),
-                child: addressColumn(
-                    onTapCopy: () {
-                      onTapCopy(e.value);
-                    },
-                    key: e.key,
-                    value: e.value),
-              ))
-          .toList(),
-    ),
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: addressData.entries
+        .mapIndexed((i, e) => Padding(
+              padding: EdgeInsets.only(
+                  bottom:
+                      isLast(i, addressData.entries.toList()) ? 0 : height08),
+              child: addressColumn(
+                  onTapCopy: () {
+                    onTapCopy(e.value);
+                  },
+                  key: e.key,
+                  value: e.value),
+            ))
+        .toList(),
   );
 }
 

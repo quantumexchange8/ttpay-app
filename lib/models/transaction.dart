@@ -72,12 +72,14 @@ class Transaction {
   }
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
-    double amount = double.parse(map['amount'] ?? "0.00");
+    double? amount = map['amount'] == null ? null : double.parse(map['amount']);
     double fee = double.parse(map['fee']);
-    double netAmount = amount - fee;
     int clientId = map['client_id'];
     String? clientName = map['client_name'];
     String? clientEmail = map['client_email'];
+    double txnAmount =
+        map['txn_amount'] == null ? 0.0 : double.parse(map['txn_amount']);
+    double netAmount = amount ?? txnAmount - fee;
 
     return Transaction(
         id: map['id'] as int,
@@ -85,7 +87,7 @@ class Transaction {
         transactionNumber: map['transaction_number'] as String,
         transactionType: map['transaction_type'] as String,
         status: map['status'] as String,
-        amount: amount,
+        amount: amount ?? txnAmount,
         fee: fee,
         netAmount: netAmount,
         txId: map['txID'] == null ? null : map['txID'] as String,

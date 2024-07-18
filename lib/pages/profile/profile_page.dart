@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> getData({bool getAllAccount = true}) async {
     await transactionController.getAllTransaction(tokenController.currentToken);
 
-    await groupController.getAllGroup();
+    // await groupController.getAllGroup();
 
     await userController.getCurrentUser(token: tokenController.currentToken);
 
@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
       await userController.getAllAccounts();
     }
 
-    await notificationController.getAllNotifications();
+    // await notificationController.getAllNotifications();
   }
 
   @override

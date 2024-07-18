@@ -171,11 +171,11 @@ Future<dynamic> asyncNavigationCallback() async {
       Get.offNamed('/login');
       return;
     }
-    final getGroupsErrorText = await groupController.getAllGroup();
-    if (getGroupsErrorText != null) {
-      Get.offNamed('/login');
-      return;
-    }
+    // final getGroupsErrorText = await groupController.getAllGroup();
+    // if (getGroupsErrorText != null) {
+    //   Get.offNamed('/login');
+    //   return;
+    // }
     final getUserErrorText = await userController.getCurrentUser(token: token);
     if (getUserErrorText != null) {
       Get.offNamed('/login');
@@ -187,12 +187,12 @@ Future<dynamic> asyncNavigationCallback() async {
 
       return;
     }
-    final getNotificationsErrorText =
-        await notificationController.getAllNotifications();
-    if (getNotificationsErrorText != null) {
-      Get.offNamed('/login');
-      return;
-    }
+    // final getNotificationsErrorText =
+    //     await notificationController.getAllNotifications();
+    // if (getNotificationsErrorText != null) {
+    //   Get.offNamed('/login');
+    //   return;
+    // }
 
     Get.offNamed('/app_layout');
     return;
