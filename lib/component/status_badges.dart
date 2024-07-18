@@ -20,7 +20,7 @@ class StatusBadges extends StatelessWidget {
         backgroundColor = successGreenScale.shade600.withOpacity(0.1);
         textColor = successGreenScale;
         text = AppLocalizations.of(context)!.success;
-      case 'rejected':
+      case 'rejected' || 'fail' || 'failed':
         borderColor = errorRedScale.shade600;
         backgroundColor = errorRedScale.shade600.withOpacity(0.1);
         textColor = errorRedScale.shade600;

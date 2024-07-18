@@ -145,12 +145,14 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
     double maxAmount = widget.maxAmount;
     double minAmount = widget.minAmount;
 
-    void onTapStatus(String status) {
+    void onTapStatus(List<String> statuses) {
       setState(() {
-        if (selectedStatus.contains(status)) {
-          selectedStatus.remove(status);
-        } else {
-          selectedStatus.add(status);
+        for (var status in statuses) {
+          if (selectedStatus.contains(status)) {
+            selectedStatus.remove(status);
+          } else {
+            selectedStatus.add(status);
+          }
         }
       });
     }
@@ -177,21 +179,28 @@ class _FilterBottomsheetState extends State<FilterBottomsheet> {
           SizedBox(
             height: height20,
           ),
-          ...statusList.mapIndexed((i, e) => Padding(
-                padding: EdgeInsets.only(
-                    bottom: isLast(i, statusList) ? 0 : height08 * 2),
-                child: GestureDetector(
-                    onTap: () {
-                      onTapStatus(e.toLowerCase());
+          ...statusList.mapIndexed((i, e) {
+            List<String> statuses = [e.toLowerCase()];
+            if (e.toLowerCase() == 'rejected') {
+              statuses = [e.toLowerCase(), 'fail', 'failed'];
+            }
+
+            return Padding(
+              padding: EdgeInsets.only(
+                  bottom: isLast(i, statusList) ? 0 : height08 * 2),
+              child: GestureDetector(
+                  onTap: () {
+                    onTapStatus(statuses);
+                  },
+                  child: statusRow(
+                    statusListLocale[i],
+                    isCheck: selectedStatus.contains(e.toLowerCase()),
+                    onChanged: (value) {
+                      onTapStatus(statuses);
                     },
-                    child: statusRow(
-                      statusListLocale[i],
-                      isCheck: selectedStatus.contains(e.toLowerCase()),
-                      onChanged: (value) {
-                        onTapStatus(e.toLowerCase());
-                      },
-                    )),
-              )),
+                  )),
+            );
+          }),
           Padding(
             padding: EdgeInsets.symmetric(vertical: height20),
             child: Divider(
