@@ -13,13 +13,11 @@ Row accountListRow({
 }) {
   return Row(
     children: [
-      profileImageContainer(accountPhoto: accountPhoto, size: height20),
+      profileImageContainer(accountPhoto: accountPhoto, size: height24),
       SizedBox(width: width08),
       Text(
         accountName,
-        style: textXS.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
+        style: textSm.copyWith(fontWeight: FontWeight.w500),
       ),
     ],
   );

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:ttpay/controller/controller.dart';
+import 'package:ttpay/models/merchant_wallet.dart';
 import 'package:ttpay/models/user.dart';
 import 'package:ttpay/services/profile_services.dart';
 
@@ -12,6 +13,8 @@ class UserController extends GetxController {
   final userServices = ProfileServices();
   Rxn<User> user = Rxn<User>();
   RxList<User> accountList = List<User>.empty(growable: true).obs;
+  Rxn<MerchantWallet> merchantWallet = Rxn<MerchantWallet>();
+  Rx<dynamic> profilePhoto = Rxn<dynamic>();
 
   Future<String?> getCurrentUser({required String token}) async {
     try {
@@ -56,5 +59,23 @@ class UserController extends GetxController {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<String?> getMerchantWallet({required String token}) async {
+    try {
+      final response = await userServices.getMerchantWallet(token: token);
+      if (response.statusCode != 200) {
+        return 'Error ${response.statusCode}';
+      }
+      merchantWallet.value = MerchantWallet.fromJson(response.body);
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  void updateProfilePhoto(dynamic newPhoto) {
+    profilePhoto.value = newPhoto;
+    update();
   }
 }

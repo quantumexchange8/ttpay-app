@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
 import 'package:ttpay/component/top_snackbar.dart';
@@ -6,6 +7,7 @@ import 'package:ttpay/component/two_simple_appbar.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
+import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/models/transaction.dart';
 import 'package:ttpay/pages/withdrawal/enter_account_password_page.dart';
 import 'package:ttpay/pages/withdrawal/widgets/available_balance_column.dart';
@@ -27,9 +29,8 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
   String? usdtErrorText;
   static const double availableNetBalance = 80828.93;
   final FocusNode _usdtAddressFocusNode = FocusNode();
-  final TextEditingController _amountController = TextEditingController(
-    text: '0.00',
-  );
+  final TextEditingController _amountController =
+      TextEditingController(text: '0.00');
   bool isFull = false;
 
   @override
@@ -126,7 +127,10 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const EnterAccountPasswordPage(),
+                builder: (context) => EnterAccountPasswordPage(
+                  amount: _amountController.text,
+                  usdtAddress: _usdtAddressController.text,
+                ),
               ));
         }
       });
@@ -174,9 +178,16 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
                   child: fullWithdrawalTextButton(context,
                       onPressed: onPressedFullWithdrawal, isFull: isFull),
                 ),
-                SizedBox(
-                  height: height24,
-                ),
+                // Obx(() {
+                //   return Padding(
+                //     padding: EdgeInsets.symmetric(vertical: height08 * 2),
+                //     child: _feeContainer(
+                //         feePercentage:
+                //             transactionController.feeChargePercentage.value,
+                //         currentAmount: double.parse(_amountController.text)),
+                //   );
+                // }),
+                SizedBox(height: height24),
                 customInputTextfield(
                     isRequired: true,
                     errorText: usdtErrorText ?? '',
@@ -205,4 +216,69 @@ class _WithdrawalPageState extends State<WithdrawalPage> {
       ),
     );
   }
+}
+
+Container _feeContainer({
+  required double feePercentage,
+  required double currentAmount,
+}) {
+  final feeAmount = currentAmount * feePercentage;
+  final netAmount = currentAmount - feeAmount;
+  return Container(
+    padding:
+        EdgeInsets.symmetric(horizontal: width24 / 2, vertical: height08 * 2),
+    decoration: ShapeDecoration(
+      color: Colors.white.withOpacity(0.05),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: width100 * 1.2,
+              child: Text(
+                'Fee Charge (${(feePercentage * 100).round()}%)',
+                style: textXS.copyWith(color: const Color(0xFF6B7280)),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                currentAmount == 0
+                    ? '-'
+                    : '\$${amountFormatter.format(feeAmount)}USDT',
+                style: textSm,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: height08),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: width100 * 1.2,
+              child: Text(
+                'Net Amount',
+                style: textXS.copyWith(
+                  color: const Color(0xFF6B7280),
+                ),
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                child: Text(
+                    netAmount == 0
+                        ? '-'
+                        : '\$${amountFormatter.format(currentAmount)}USDT',
+                    style: textSm),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

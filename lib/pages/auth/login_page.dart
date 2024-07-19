@@ -103,6 +103,14 @@ class _LoginPageState extends State<LoginPage> {
                   //       errorText: getNotificationsErrorText);
                   //   return;
                   // }
+                  final getMerchantWallet = await userController
+                      .getMerchantWallet(token: tokenController.currentToken);
+                  if (getMerchantWallet != null) {
+                    showErrorNotification(context,
+                        errorText: getMerchantWallet);
+
+                    return;
+                  }
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

@@ -31,6 +31,7 @@ Container profileImageContainer(
     height: size,
     padding: EdgeInsets.all(height08 / 2),
     decoration: BoxDecoration(
+      color: Colors.white.withOpacity(0.05000000074505806),
       image: decoImage,
       shape: BoxShape.circle,
     ),

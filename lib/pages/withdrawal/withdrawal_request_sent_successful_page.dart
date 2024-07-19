@@ -1,24 +1,32 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ttpay/component/background_container.dart';
 import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/helper/color_pallete.dart';
+import 'package:ttpay/helper/const.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/methods.dart';
 import 'package:ttpay/helper/text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:ttpay/models/withdraw_response.dart';
 
 class WithdrawalRequestSentSuccessfulPage extends StatelessWidget {
-  const WithdrawalRequestSentSuccessfulPage({super.key});
+  final WithdrawResponse withdrawResponse;
+  const WithdrawalRequestSentSuccessfulPage(
+      {super.key, required this.withdrawResponse});
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> withdrawalRequestDetails = {
-      AppLocalizations.of(context)!.transaction_id: 'TXN7890123',
-      AppLocalizations.of(context)!.date_and_time: '28 Apr 2024  13:26:02',
-      AppLocalizations.of(context)!.amount: '\$ 8,000.00 USDT',
+      AppLocalizations.of(context)!.transaction_id:
+          withdrawResponse.transactionId,
+      AppLocalizations.of(context)!.date_and_time:
+          DateFormat('dd MMM yyyy HH:mm:ss').format(withdrawResponse.dateTime),
+      AppLocalizations.of(context)!.amount:
+          '\$ ${amountFormatter.format(withdrawResponse.amount)} USDT',
       AppLocalizations.of(context)!.usdt_address:
-          'TAzY2emMte5Zs4vJu2La8KmXwkzoE78qgs',
+          withdrawResponse.usdtAddress ?? "Not available",
     };
 
     void onPressedDone() {

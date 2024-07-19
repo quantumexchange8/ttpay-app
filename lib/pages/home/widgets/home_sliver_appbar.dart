@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sliver_app_bar_builder/sliver_app_bar_builder.dart';
+import 'package:ttpay/component/profile_image_container.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/const.dart';
@@ -11,14 +12,14 @@ import 'package:ttpay/helper/text_style.dart';
 import 'package:ttpay/pages/home/widgets/notification_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-SliverAppBarBuilder homeSliverAppbar({
-  void Function()? onTapProfile,
-  void Function()? onTapNoti,
-  bool unreadNoti = false,
-  required double netAmount,
-  required double grossAmount,
-  required double feeAmount,
-}) {
+SliverAppBarBuilder homeSliverAppbar(
+    {void Function()? onTapProfile,
+    void Function()? onTapNoti,
+    bool unreadNoti = false,
+    required double netAmount,
+    required double grossAmount,
+    required double feeAmount,
+    required dynamic profilePhoto}) {
   return SliverAppBarBuilder(
     pinned: true,
     leadingActions: const [],
@@ -32,6 +33,7 @@ SliverAppBarBuilder homeSliverAppbar({
         (context, expandRatio, contentHeight, centerPadding, overlapsContent) {
       if (contentHeight > height100 * 1.45) {
         return bigAppBar(context,
+            profilePhoto: profilePhoto,
             onTapProfile: onTapProfile,
             onTapNoti: onTapNoti,
             unreadNoti: unreadNoti,
@@ -60,6 +62,7 @@ Widget bigAppBar(
   required double grossAmount,
   required double feeAmount,
   required double expandRatio,
+  required dynamic profilePhoto,
 }) {
   return Obx(() {
     final user = userController.user.value;
@@ -161,11 +164,8 @@ Widget bigAppBar(
                               borderRadius: BorderRadius.circular(50),
                             ),
                           ),
-                          child: Image.asset(
-                            "assets/icon_image/merchant_pp.png",
-                            fit: BoxFit.fitHeight,
-                            height: height24,
-                          ),
+                          child: profileImageContainer(
+                              accountPhoto: profilePhoto, size: height24),
                         ),
                       ),
                     ],

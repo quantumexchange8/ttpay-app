@@ -28,12 +28,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const netAmount = 8280828.93;
-    const grossAmount = 8973728.37;
-    const feeAmount = 8362.38;
-    const totalDepositNumber = 1372;
-    const totalFreezingAmount = 8362.38;
-
     void onTapNoti() {
       Navigator.push(
           context,
@@ -51,6 +45,8 @@ class _HomePageState extends State<HomePage> {
     return Obx(() {
       final allTransactions = transactionController.transactionList;
       final notifications = notificationController.notificationList;
+      final merchantWallet = userController.merchantWallet.value!;
+      final profilePhoto = userController.profilePhoto.value;
 
       final unreadNoti =
           notifications.map((element) => element.unread).contains(true);
@@ -88,11 +84,12 @@ class _HomePageState extends State<HomePage> {
             parent: AlwaysScrollableScrollPhysics()),
         slivers: [
           homeSliverAppbar(
+            profilePhoto: profilePhoto,
             onTapProfile: onTapProfile,
             onTapNoti: onTapNoti,
-            feeAmount: feeAmount,
-            grossAmount: grossAmount,
-            netAmount: netAmount,
+            feeAmount: merchantWallet.totalDepositFee,
+            grossAmount: merchantWallet.grossDeposit,
+            netAmount: merchantWallet.netDeposit,
             unreadNoti: unreadNoti,
           ),
           SliverList(
@@ -101,8 +98,8 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width08 * 2),
                   child: summartBoxBelowAppBar(context,
-                      totalDepositNumber: totalDepositNumber,
-                      totalFreezingAmount: totalFreezingAmount),
+                      totalDepositNumber: merchantWallet.totalDepositNumber,
+                      totalFreezingAmount: merchantWallet.totalFreezingAmount),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(

@@ -4,6 +4,7 @@ import 'package:ttpay/component/button_cta.dart';
 import 'package:ttpay/component/input_textfield.dart';
 import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/component/unfocus_gesturedetector.dart';
+import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/helper/color_pallete.dart';
 import 'package:ttpay/helper/dimensions.dart';
 import 'package:ttpay/helper/text_style.dart';
@@ -11,7 +12,10 @@ import 'package:ttpay/pages/withdrawal/withdrawal_request_sent_successful_page.d
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EnterAccountPasswordPage extends StatefulWidget {
-  const EnterAccountPasswordPage({super.key});
+  final String amount;
+  final String usdtAddress;
+  const EnterAccountPasswordPage(
+      {super.key, required this.amount, required this.usdtAddress});
 
   @override
   State<EnterAccountPasswordPage> createState() =>
@@ -25,18 +29,30 @@ class _EnterAccountPasswordPageState extends State<EnterAccountPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    void onPressedComfirm() {
+    void onPressedComfirm() async {
       if (_passwordController.text.isEmpty) {
         showToastNotification(context,
             type: 'error',
             title: AppLocalizations.of(context)!.incorrect_password);
         return;
       }
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const WithdrawalRequestSentSuccessfulPage(),
-          ));
+      await transactionController
+          .withdrawAmount(context,
+              token: tokenController.currentToken,
+              amount: widget.amount,
+              usdtAddress: widget.usdtAddress,
+              password: _passwordController.text)
+          .then((withdrawResponse) {
+        if (withdrawResponse != null) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WithdrawalRequestSentSuccessfulPage(
+                  withdrawResponse: withdrawResponse,
+                ),
+              ));
+        }
+      });
     }
 
     return unfocusGestureDetector(

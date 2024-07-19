@@ -29,7 +29,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final storage = const FlutterSecureStorage();
-  dynamic profilePhoto;
 
   Future<void> getData({bool getAllAccount = true}) async {
     await transactionController.getAllTransaction(tokenController.currentToken);
@@ -186,6 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Obx(() {
       final profile = userController.user.value;
+      final profilePhoto = userController.profilePhoto.value;
 
       Map<String, dynamic> details = {
         AppLocalizations.of(context)!.manager_name:
@@ -210,11 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       builder: (context) => const EditProfilePhotoBottomsheet(),
                     ).then((file) {
                       if (file != null) {
-                        if (mounted) {
-                          setState(() {
-                            profilePhoto = file;
-                          });
-                        }
+                        userController.updateProfilePhoto(file);
                       }
                     });
                   },
@@ -241,10 +237,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: EdgeInsets.symmetric(vertical: height20),
                     child: profileDetailsContainer(details),
                   ),
-                  accountListContainer(context,
-                      onTapAccount: onTapAccount,
-                      onTapAddAccount: onTapAddAccount,
-                      userAccounts: userAccount),
+                  Obx(() {
+                    return accountListContainer(context,
+                        onTapAccount: onTapAccount,
+                        onTapAddAccount: onTapAddAccount,
+                        userAccounts: userAccount);
+                  }),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: height20),
                     child:

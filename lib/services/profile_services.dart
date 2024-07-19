@@ -10,4 +10,11 @@ class ProfileServices {
     return client.get(Uri.parse('$apiAddress/merchant'),
         headers: {'Authorization': 'Bearer $token'});
   }
+
+  Future<http.Response> getMerchantWallet({
+    required String token,
+  }) {
+    return client.get(Uri.parse('$apiAddress/merchant_wallet'),
+        headers: {'Authorization': 'Bearer $token'});
+  }
 }

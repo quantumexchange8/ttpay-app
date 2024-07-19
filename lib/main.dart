@@ -193,6 +193,13 @@ Future<dynamic> asyncNavigationCallback() async {
     //   Get.offNamed('/login');
     //   return;
     // }
+    final getMerchantWallet =
+        await userController.getMerchantWallet(token: token);
+    if (getMerchantWallet != null) {
+      Get.offNamed('/login');
+
+      return;
+    }
 
     Get.offNamed('/app_layout');
     return;
