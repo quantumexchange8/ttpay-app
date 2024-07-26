@@ -18,7 +18,7 @@ class TransactionServices {
       'Authorization': 'Bearer $token'
     }, body: {
       "withdraw_amount": amount,
-      "usdt_address": usdtAddress,
+      "wallet_address": usdtAddress,
       "password": password,
     });
   }
