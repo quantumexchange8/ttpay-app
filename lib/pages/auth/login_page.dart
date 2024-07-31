@@ -69,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   final getTransactionErrorText = await transactionController
                       .getAllTransaction(tokenController.currentToken);
                   if (getTransactionErrorText != null) {
+                    print('transaction error');
                     showErrorNotification(
                       context,
                       errorText: getTransactionErrorText,
@@ -85,12 +86,14 @@ class _LoginPageState extends State<LoginPage> {
                   final getUserErrorText = await userController.getCurrentUser(
                       token: tokenController.currentToken);
                   if (getUserErrorText != null) {
+                    print('user error');
                     showErrorNotification(context, errorText: getUserErrorText);
                     return;
                   }
                   final getAccountListErrorText =
                       await userController.getAllAccounts();
                   if (getAccountListErrorText != null) {
+                    print('account list error');
                     showErrorNotification(context,
                         errorText: getAccountListErrorText);
 
@@ -106,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   final getMerchantWallet = await userController
                       .getMerchantWallet(token: tokenController.currentToken);
                   if (getMerchantWallet != null) {
+                    print('merchant error');
                     showErrorNotification(context,
                         errorText: getMerchantWallet);
 

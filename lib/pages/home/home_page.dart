@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
       final allTransactions = transactionController.transactionList;
       final notifications = notificationController.notificationList;
       final merchantWallet = userController.merchantWallet.value!;
-      final profilePhoto = userController.profilePhoto.value;
+      final profilePhoto = userController.user.value?.profilePhoto;
 
       final unreadNoti =
           notifications.map((element) => element.unread).contains(true);

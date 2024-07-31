@@ -41,13 +41,14 @@ class User {
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
+    List media = map['media'];
+
     return User(
       id: map['id'] as int,
       name: map['name'] as String,
       managerName: map['manager_name'] as String,
       email: map['email'] as String,
-      profilePhoto:
-          map['profile_photo'] != null ? map['profile_photo'] as String : null,
+      profilePhoto: media.isNotEmpty ? media.last['original_url'] : null,
       profileId: map['role_id'] as String,
       phoneNumber: map['phone'] != null ? map['phone'] as String : null,
     );

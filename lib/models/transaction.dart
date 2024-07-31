@@ -73,7 +73,7 @@ class Transaction {
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
     double? amount = map['amount'] == null ? null : double.parse(map['amount']);
-    double fee = double.parse(map['fee']);
+    double fee = double.parse(map['fee'] ?? "0");
     int clientId = map['client_id'];
     String? clientName = map['client_name'];
     String? clientEmail = map['client_email'];

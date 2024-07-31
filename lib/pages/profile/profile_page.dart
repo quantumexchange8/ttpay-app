@@ -185,7 +185,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Obx(() {
       final profile = userController.user.value;
-      final profilePhoto = userController.profilePhoto.value;
 
       Map<String, dynamic> details = {
         AppLocalizations.of(context)!.manager_name:
@@ -230,7 +229,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     horizontal: width08 * 2, vertical: height24 / 2),
                 children: [
                   profilePhotoRow(
-                      profilePhotoAddress: profilePhoto,
+                      profilePhotoAddress: profile?.profilePhoto,
                       profileName: profile?.name ?? 'No data',
                       profileId: profile?.profileId ?? 'No data'),
                   Padding(
