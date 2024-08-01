@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ttpay/component/top_snackbar.dart';
 import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/models/merchant_wallet.dart';
 import 'package:ttpay/models/user.dart';
@@ -14,7 +17,6 @@ class UserController extends GetxController {
   Rxn<User> user = Rxn<User>();
   RxList<User> accountList = List<User>.empty(growable: true).obs;
   Rxn<MerchantWallet> merchantWallet = Rxn<MerchantWallet>();
-  Rx<dynamic> profilePhoto = Rxn<dynamic>();
 
   Future<String?> getCurrentUser({required String token}) async {
     try {
@@ -40,6 +42,40 @@ class UserController extends GetxController {
       return User.fromMap(data);
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<bool> updateProfilePhoto(BuildContext context,
+      {required String token, required File file}) async {
+    try {
+      final response =
+          await userServices.updateProfilePicture(token: token, file: file);
+      if (response.statusCode != 200) {
+        if (context.mounted) {
+          showToastNotification(context,
+              title: 'Error ${response.statusCode}', type: 'error');
+        }
+        return false;
+      }
+      Map<String, dynamic> data = jsonDecode(response.body);
+      if (!data['message'].toString().contains('success')) {
+        if (context.mounted) {
+          showToastNotification(context,
+              title: 'Error',
+              description: data['message'].toString(),
+              type: 'error');
+        }
+        return false;
+      }
+      await getCurrentUser(token: token);
+      await getAllAccounts();
+      return true;
+    } catch (e) {
+      if (context.mounted) {
+        showToastNotification(context,
+            title: 'Error', description: e.toString(), type: 'error');
+      }
+      return false;
     }
   }
 
@@ -72,10 +108,5 @@ class UserController extends GetxController {
     } catch (e) {
       return e.toString();
     }
-  }
-
-  void updateProfilePhoto(dynamic newPhoto) {
-    profilePhoto.value = newPhoto;
-    update();
   }
 }

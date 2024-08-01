@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:ttpay/component/top_snackbar.dart';
+import 'package:ttpay/controller/controller.dart';
 import 'package:ttpay/models/transaction.dart';
 import 'package:ttpay/models/withdraw_response.dart';
 import 'package:ttpay/services/transaction_services.dart';
@@ -56,6 +57,8 @@ class TransactionController extends GetxController {
         }
         return null;
       }
+      await userController.getMerchantWallet(token: token);
+      await getAllTransaction(token);
       return WithdrawResponse.fromJson(response.body);
     } catch (e) {
       if (context.mounted) {

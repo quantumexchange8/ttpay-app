@@ -209,7 +209,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       builder: (context) => const EditProfilePhotoBottomsheet(),
                     ).then((file) {
                       if (file != null) {
-                        userController.updateProfilePhoto(file);
+                        userController.updateProfilePhoto(context,
+                            token: tokenController.currentToken, file: file);
                       }
                     });
                   },

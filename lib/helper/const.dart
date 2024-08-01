@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // live-server: https://ttadmin.ttpays.io/api
 // testing-server: https://ttpay-admin.currenttech.pro
-const String apiAddress = 'https://ttpay-admin.currenttech.pro/api';
+const String apiAddress = 'https://ttadmin.ttpays.io/api';
 const Color backgroundColor = Colors.black;
 const List<Map<String, dynamic>> languageList = [
   {'language_name': 'English', 'locale': Locale('en')},
